@@ -31,7 +31,7 @@ available options: movies, tvshows, episodes, musicvideos, artists, albums, song
 
 I. Infolabels available in script-globalsearch-main.xml
 -------------------------------------------------------
-MOVIES:
+MOVIES (and movies by actor):
 ListItem.Label
 ListItem.Icon
 ListItem.Property(Fanart)
@@ -250,7 +250,6 @@ IV. Control id's used in script-globalsearch-infodialog.xml
 160 - The script will set this id to visible when the selected item is a artist
 170 - The script will set this id to visible when the selected item is a album
 180 - The script will set this id to visible when the selected item is a song
-210 - The script will set this id to visible when the selected item is a movie containing the actor
 
 191 - First button (OK), but you can specify a diffrent label for it if you like
 192 - Second button. The script will set the button label and the visible condition.

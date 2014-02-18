@@ -63,3 +63,27 @@ msgstr "시즌 정보"
 msgctxt "#32205"
 msgid "Play trailer"
 msgstr "예고편 재생"
+
+msgctxt "#32206"
+msgid "Find album"
+msgstr "앨범 찾기"
+
+msgctxt "#32207"
+msgid "Find all seasons"
+msgstr "모든 시즌 찾기"
+
+msgctxt "#32208"
+msgid "Find all episodes"
+msgstr "모든 에피소드 찾기"
+
+msgctxt "#32209"
+msgid "Find all albums"
+msgstr "모든 앨범 찾기"
+
+msgctxt "#32210"
+msgid "Find all songs"
+msgstr "모든 노래 찾기"
+
+msgctxt "#32299"
+msgid "NEW SEARCH"
+msgstr "새로 찾기"

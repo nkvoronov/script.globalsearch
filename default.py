@@ -18,7 +18,7 @@ if ( __name__ == "__main__" ):
         searchstring = keyboard.getText()
         if searchstring:
             import gui
-            ui = gui.GUI( "script-globalsearch-main-new.xml", __cwd__, "Default", searchstring=searchstring )
+            ui = gui.GUI( "script-globalsearch-main.xml", __cwd__, "Default", searchstring=searchstring )
             ui.doModal()
             del ui
             sys.modules.clear()

@@ -36,6 +36,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         else:
             self.window_id = xbmcgui.getCurrentWindowDialogId()
             xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
+            self.ACTORSUPPORT = True
             self._hide_controls()
             if not self.nextsearch:
                 self._parse_argv()
@@ -48,7 +49,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _fetch_items( self ):
         if self.movies == 'true':
             self._fetch_movies()
-        if self.actors == 'true':
+        if self.actors == 'true' and self.ACTORSUPPORT:
             self._fetch_actors()
         if self.tvshows == 'true':
             self._fetch_tvshows()
@@ -73,7 +74,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.getControl( 169 ).setVisible( False )
         self.getControl( 179 ).setVisible( False )
         self.getControl( 189 ).setVisible( False )
-        self.getControl( 219 ).setVisible( False )
+        try:
+            self.getControl( 219 ).setVisible( False )
+        except:
+            self.ACTORSUPPORT = False
         self.getControl( 198 ).setVisible( False )
         self.getControl( 199 ).setVisible( False )
 
@@ -86,7 +90,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.getControl( 161 ).reset()
         self.getControl( 171 ).reset()
         self.getControl( 181 ).reset()
-        self.getControl( 211 ).reset()
+        if self.ACTORSUPPORT:
+            self.getControl( 211 ).reset()
 
     def _parse_argv( self ):
         try:
@@ -1081,9 +1086,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self._showInfo()
 
     def _close( self ):
-            xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
             log('script stopped')
             self.close()
+            xbmc.sleep(300)
+            xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
 
 class MyPlayer(xbmc.Player):
     def __init__(self):

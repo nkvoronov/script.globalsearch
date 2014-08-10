@@ -12,13 +12,19 @@ sys.path.append(__resource__)
 
 
 if ( __name__ == "__main__" ):
-    keyboard = xbmc.Keyboard( '', __language__(32101), False )
-    keyboard.doModal()
-    if ( keyboard.isConfirmed() ):
-        searchstring = keyboard.getText()
-        if searchstring:
-            import gui
-            ui = gui.GUI( "script-globalsearch-main.xml", __cwd__, "Default", searchstring=searchstring )
-            ui.doModal()
-            del ui
-            sys.modules.clear()
+    searchstring = None
+    try:
+        params = dict( arg.split( "=" ) for arg in sys.argv[ 1 ].split( "&" ) )
+        searchstring = params.get("searchstring")
+        searchstring = urllib.unquote_plus(searchstring)
+    except:
+        keyboard = xbmc.Keyboard( '', __language__(32101), False )
+        keyboard.doModal()
+        if ( keyboard.isConfirmed() ):
+            searchstring = keyboard.getText()
+    if searchstring:
+        import gui
+        ui = gui.GUI( "script-globalsearch-main.xml", __cwd__, "Default", searchstring=searchstring )
+        ui.doModal()
+        del ui
+        sys.modules.clear()

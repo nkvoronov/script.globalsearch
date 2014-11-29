@@ -1,4 +1,4 @@
-import sys, datetime
+import sys, datetime, re
 import xbmc, xbmcgui
 import contextmenu, infodialog
 if sys.version_info < (2, 7):
@@ -37,6 +37,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.window_id = xbmcgui.getCurrentWindowDialogId()
             xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
             self.ACTORSUPPORT = True
+            self.EPGSUPPORT = True
             self._hide_controls()
             if not self.nextsearch:
                 self._parse_argv()
@@ -47,6 +48,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._fetch_items()
 
     def _fetch_items( self ):
+        if self.epg == 'true' and self.EPGSUPPORT:
+            self._fetch_channels()
         if self.movies == 'true':
             self._fetch_movies()
         if self.actors == 'true' and self.ACTORSUPPORT:
@@ -78,6 +81,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.getControl( 219 ).setVisible( False )
         except:
             self.ACTORSUPPORT = False
+        try:
+            self.getControl( 229 ).setVisible( False )
+        except:
+            self.EPGSUPPORT = False
         self.getControl( 198 ).setVisible( False )
         self.getControl( 199 ).setVisible( False )
 
@@ -92,6 +99,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.getControl( 181 ).reset()
         if self.ACTORSUPPORT:
             self.getControl( 211 ).reset()
+        if self.EPGSUPPORT:
+            self.getControl( 221 ).reset()
 
     def _parse_argv( self ):
         try:
@@ -106,6 +115,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.albums = self.params.get( "albums", "" )
         self.songs = self.params.get( "songs", "" )
         self.actors = self.params.get( "actors", "" )
+        self.epg = self.params.get( "epg", "" )
 
     def _load_settings( self ):
         self.movies = __addon__.getSetting( "movies" )
@@ -116,6 +126,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.albums = __addon__.getSetting( "albums" )
         self.songs = __addon__.getSetting( "songs" )
         self.actors = __addon__.getSetting( "actors" )
+        self.epg = __addon__.getSetting( "epg" )
 
     def _reset_variables( self ):
         self.focusset= 'false'
@@ -788,6 +799,72 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self.setFocus( self.getControl( 211 ) )
                 self.focusset = 'true'
 
+    def _fetch_channels( self ):
+        self.getControl( 191 ).setLabel( '[B]' + xbmc.getLocalizedString(19069) + '[/B]' )
+        # get all channel id's
+        self.channellist = []
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannels", "params": {"channelgroupid": 2, "properties": ["thumbnail"]}, "id": 1}')
+        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_response = simplejson.loads(json_query)
+        if (json_response.has_key('result')) and (json_response['result'] != None) and (json_response['result'].has_key('channels')):
+            gotnumber = False
+            for item in json_response['result']['channels']:
+                channelid = item['channelid']
+                if not gotnumber:
+                    offset = item['channelid'] - 1
+                    gotnumber = True
+                channelname = item['label']
+                channelthumb = item['thumbnail']
+                channelnumber = channelid - offset
+                self.channellist.append([channelid, channelname, channelthumb, channelnumber])
+        if not self.channellist == []:
+            self._fetch_epg()
+
+    def _fetch_epg( self ):
+        listitems = []
+        count = 0
+        # get all programs for every channel id
+        for channel in self.channellist:
+            channelid = channel[0]
+            channelname = channel[1]
+            channelthumb = channel[2]
+            channelnumber = channel[3]
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetBroadcasts", "params": {"channelid": %i, "properties": ["starttime", "endtime", "runtime", "genre", "plot"]}, "id": 1}' % channelid)
+            json_query = unicode(json_query, 'utf-8', errors='ignore')
+            json_response = simplejson.loads(json_query)
+            if (json_response.has_key('result')) and (json_response['result'] != None) and (json_response['result'].has_key('broadcasts')):
+                for item in json_response['result']['broadcasts']:
+                    broadcastname = item['label']
+                    epgmatch = re.search( '.*' + self.searchstring + '.*', broadcastname, re.I )
+                    if epgmatch:
+                        count = count + 1
+                        broadcastid = item['broadcastid']
+                        duration = item['runtime']
+                        genre = item['genre'][0]
+                        plot = item['plot']
+                        starttime = item['starttime']
+                        endtime = item['endtime']
+                        path = 'pvr://channels/tv/All channels/%i.pvr' % channelnumber
+                        listitem = xbmcgui.ListItem(label=broadcastname, iconImage='DefaultFolder.png', thumbnailImage=channelthumb)
+                        listitem.setProperty( "icon", channelthumb )
+                        listitem.setProperty( "genre", genre )
+                        listitem.setProperty( "plot", plot )
+                        listitem.setProperty( "starttime", starttime )
+                        listitem.setProperty( "endtime", endtime )
+                        listitem.setProperty( "duration", duration )
+                        listitem.setProperty( "channelname", channelname )
+                        listitem.setProperty( "channelnumber", str(channelnumber) )
+                        listitem.setProperty( "path", path )
+                        listitems.append(listitem)
+        self.getControl( 221 ).addItems( listitems )
+        if count > 0:
+            self.getControl( 220 ).setLabel( str(count) )
+            self.getControl( 229 ).setVisible( True )
+            if self.focusset == 'false':
+                xbmc.sleep(100)
+                self.setFocus( self.getControl( 221 ) )
+                self.focusset = 'true'
+
     def _getTvshow_Seasons( self ):
         self.fetch_seasonepisodes = 'true'
         listitem = self.getControl( 121 ).getSelectedItem()
@@ -935,6 +1012,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
             if self.trailer:
                 labels += ( __language__(32205), )
                 functions += ( self._play_trailer, )
+        elif controlId == 221:
+            labels += ( xbmc.getLocalizedString(19047), )
+            functions += ( self._showInfo, )
         context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , __cwd__, "Default", labels=labels )
         context_menu.doModal()
         if context_menu.selection is not None:
@@ -971,10 +1051,17 @@ class GUI( xbmcgui.WindowXMLDialog ):
         elif controlId == 211:
             listitem = self.getControl( controlId ).getSelectedItem()
             content = "actors"
+        elif controlId == 221:
+            listitem = self.getControl( controlId ).getSelectedItem()
+            content = "epg"
         info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , __cwd__, "Default", listitem=listitem, content=content )
         info_dialog.doModal()
         if info_dialog.action is not None:
-            if info_dialog.action == 'play_movie':
+            if info_dialog.action == 'play_programme':
+                listitem = self.getControl( 221 ).getSelectedItem()
+                path = listitem.getProperty('path')
+                self._play_video(path)
+            elif info_dialog.action == 'play_movie':
                 listitem = self.getControl( 111 ).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
@@ -1067,6 +1154,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._play_audio(path, listitem)
         if controlId == 211:
             listitem = self.getControl( 211 ).getSelectedItem()
+            path = listitem.getProperty('path')
+            self._play_video(path)
+        elif controlId == 221:
+            listitem = self.getControl( 221 ).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 198:

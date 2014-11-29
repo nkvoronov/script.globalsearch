@@ -118,6 +118,116 @@
 				</control>
 			</control>
 			<control type="group" id="101">
+				<control type="list" id="200">
+					<posx>430</posx>
+					<posy>118</posy>
+					<width>800</width>
+					<height>330</height>
+					<onleft>200</onleft>
+					<onright>200</onright>
+					<onup>190</onup>
+					<ondown>195</ondown>
+					<pagecontrol>-</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<itemlayout width="800" height="30">
+						<control type="label">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>165</width>
+							<height>30</height>
+							<font>font13</font>
+							<align>right</align>
+							<aligny>center</aligny>
+							<textcolor>FF4DBAFF</textcolor>
+							<selectedcolor>FF4DBAFF</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<control type="label">
+							<posx>175</posx>
+							<posy>0</posy>
+							<width>625</width>
+							<height>30</height>
+							<font>font13</font>
+							<align>left</align>
+							<aligny>center</aligny>
+							<textcolor>FFFFFFFF</textcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
+							<label>$INFO[ListItem.Label2]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout width="800" height="30">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>800</width>
+							<height>30</height>
+							<texture>MenuItemFO.png</texture>
+							<visible>Control.HasFocus(200)</visible>
+						</control>
+						<control type="label">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>165</width>
+							<height>30</height>
+							<font>font13</font>
+							<align>right</align>
+							<aligny>center</aligny>
+							<textcolor>FF4DBAFF</textcolor>
+							<selectedcolor>FF4DBAFF</selectedcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+						<control type="label">
+							<posx>175</posx>
+							<posy>0</posy>
+							<width>625</width>
+							<height>30</height>
+							<font>font13</font>
+							<align>left</align>
+							<aligny>center</aligny>
+							<textcolor>FFFFFFFF</textcolor>
+							<selectedcolor>FFFFFFFF</selectedcolor>
+							<label>$INFO[ListItem.Label2]</label>
+						</control>
+					</focusedlayout>
+					<content>
+						<item>
+							<label>$LOCALIZE[19080]:</label>
+							<label2>$INFO[Container(100).ListItem.Property(StartTime)]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(StartTime))</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[19081]:</label>
+							<label2>$INFO[Container(100).ListItem.Property(EndTime)]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(EndTime))</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[2050]:</label>
+							<label2>$INFO[Container(100).ListItem.Property(Duration),, $LOCALIZE[12391]]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(Duration))</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[515]:</label>
+							<label2>$INFO[Container(100).ListItem.Property(Genre)]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(Genre))</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[19148]:</label>
+							<label2>$INFO[Container(100).ListItem.Property(ChannelNumber)]. $INFO[Container(100).ListItem.Property(ChannelName)]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(ChannelName))</visible>
+						</item>
+						<item>
+							<label>$LOCALIZE[15311]</label>
+							<label2>$INFO[Container(100).ListItem.Property(Path)]</label2>
+							<onclick>-</onclick>
+							<visible>!IsEmpty(Container(100).ListItem.Property(Path))</visible>
+						</item>
+					</content>
+				</control>
 				<control type="list" id="110">
 					<posx>430</posx>
 					<posy>118</posy>
@@ -1168,7 +1278,7 @@
 				<pagecontrol>195</pagecontrol>
 				<label>$INFO[Container(100).ListItem.Property(Plot)]</label>
 				<autoscroll time="3000" delay="20000" repeat="5000">true</autoscroll>
-				<visible>Control.IsVisible(110) | Control.IsVisible(120) | Control.IsVisible(140) | Control.IsVisible(150)</visible>
+				<visible>Control.IsVisible(110) | Control.IsVisible(120) | Control.IsVisible(140) | Control.IsVisible(150) | Control.IsVisible(200)</visible>
 			</control>
 			<control type="textbox">
 				<posx>60</posx>

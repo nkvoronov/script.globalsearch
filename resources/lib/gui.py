@@ -137,7 +137,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"title","operator":"contains","value":"%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('movies')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
                 movie = item['title']
                 count = count + 1
@@ -235,7 +235,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": ["title", "genre", "studio", "premiered", "plot", "fanart", "thumbnail", "playcount", "year", "mpaa", "episode", "rating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('tvshows')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('tvshows'):
             for item in json_response['result']['tvshows']:
                 tvshow = item['title']
                 count = count + 1
@@ -289,7 +289,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", "params": {"properties": ["showtitle", "season", "fanart", "thumbnail", "playcount", "episode"], "sort": { "method": "label" }, "tvshowid":%s }, "id": 1}' % self.tvshowid)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('seasons')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('seasons'):
             for item in json_response['result']['seasons']:
                 tvshow = item['showtitle']
                 count = count + 1
@@ -327,7 +327,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": ["title", "streamdetails", "plot", "firstaired", "runtime", "season", "episode", "showtitle", "thumbnail", "fanart", "file", "playcount", "director", "rating"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('episodes')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('episodes'):
             for item in json_response['result']['episodes']:
                 if self.fetch_seasonepisodes == 'true':
                     episode = item['showtitle']
@@ -425,7 +425,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": ["title", "streamdetails", "runtime", "genre", "studio", "artist", "album", "year", "plot", "fanart", "thumbnail", "file", "playcount", "director"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('musicvideos')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
             for item in json_response['result']['musicvideos']:
                 musicvideo = item['title']
                 count = count + 1
@@ -518,7 +518,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists", "params": {"properties": ["genre", "description", "fanart", "thumbnail", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style"], "sort": { "method": "label" }, "filter": {"field": "artist", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('artists')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('artists'):
             for item in json_response['result']['artists']:
                 artist = item['label']
                 count = count + 1
@@ -569,7 +569,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating"], "sort": { "method": "label" }, "filter": {"field": "album", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('albums')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('albums'):
             for item in json_response['result']['albums']:
                 if self.fetch_albumssongs == 'true':
                     album = " / ".join(item['artist'])
@@ -640,7 +640,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "track", "playcount"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('songs')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('songs'):
             for item in json_response['result']['songs']:
                 if self.fetch_albumssongs == 'true':
                     song = " / ".join(item['artist'])
@@ -697,7 +697,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"actor","operator":"contains","value":"%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = simplejson.loads(json_query)
-        if (json_response['result'] != None) and (json_response['result'].has_key('movies')):
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
                 movie = item['title']
                 count = count + 1

@@ -33,7 +33,7 @@
 				<height>623</height>
 				<colordiffuse>4FFFFFFF</colordiffuse>
 				<aspectratio>scale</aspectratio>
-				<texture>$INFO[Container(100).ListItem.Property(Fanart_Image)]</texture>
+				<texture>$INFO[Container(100).ListItem.Property(Fanart)]</texture>
 			</control>
 			<control type="image">
 				<posx>20</posx>

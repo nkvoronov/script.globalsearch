@@ -1,3 +1,7 @@
+v3.0.5
+- add support for epg search
+- fix fanart in infodialog
+
 v3.0.4
 - update language files from Transifex
 

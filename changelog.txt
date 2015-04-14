@@ -1,4 +1,4 @@
-v3.0.5
+v4.0.0
 - add support for epg search
 - fix fanart in infodialog
 

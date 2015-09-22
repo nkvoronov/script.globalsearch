@@ -14,7 +14,7 @@ __cwd__          = sys.modules[ "__main__" ].__cwd__
 
 ACTION_CANCEL_DIALOG = ( 9, 10, 92, 216, 247, 257, 275, 61467, 61448, )
 ACTION_CONTEXT_MENU = ( 117, )
-ACTION_OSD = ( 122, )
+ACTION_OSD = ( 107, 163, )
 ACTION_SHOW_GUI = ( 18, )
 ACTION_SHOW_INFO = ( 11, )
 

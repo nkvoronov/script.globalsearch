@@ -151,6 +151,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_response = simplejson.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
+                movieid = str(item['movieid'])
                 movie = item['title']
                 count = count + 1
                 director = " / ".join(item['director'])
@@ -230,6 +231,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiocodec", audiocodec )
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", movieid )
                 listitems.append(listitem)
         self.getControl( 111 ).addItems( listitems )
         if count > 0:
@@ -283,7 +285,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "starrating", starrating )
                 listitem.setProperty( "playcount", playcount )
                 listitem.setProperty( "path", path )
-                listitem.setProperty( "id", tvshowid )
+                listitem.setProperty( "dbid", tvshowid )
                 listitems.append(listitem)
         self.getControl( 121 ).addItems( listitems )
         if count > 0:
@@ -318,6 +320,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "tvshowtitle", tvshow )
                 listitem.setProperty( "playcount", playcount )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", str(self.tvshowid) )
                 listitems.append(listitem)
         self.getControl( 131 ).addItems( listitems )
         if count > 0:
@@ -353,6 +356,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     tvshowname = item['showtitle']
                 director = " / ".join(item['director'])
                 fanart = item['fanart']
+                episodeid = str(item['episodeid'])
                 episodenumber = "%.2d" % float(item['episode'])
                 path = item['file']
                 plot = item['plot']
@@ -420,6 +424,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiocodec", audiocodec )
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", episodeid )
                 listitems.append(listitem)
         self.getControl( 141 ).addItems( listitems )
         if count > 0:
@@ -439,6 +444,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_response = simplejson.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
             for item in json_response['result']['musicvideos']:
+                musicvideoid = str(item['musicvideoid'])
                 musicvideo = item['title']
                 count = count + 1
                 album = item['album']
@@ -513,6 +519,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiocodec", audiocodec )
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", musicvideoid )
                 listitems.append(listitem)
         self.getControl( 151 ).addItems( listitems )
         if count > 0:
@@ -560,7 +567,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "artist_genre", genre )
                 listitem.setProperty( "artist_description", description )
                 listitem.setProperty( "path", path )
-                listitem.setProperty( "id", artistid )
+                listitem.setProperty( "dbid", artistid )
                 listitems.append(listitem)
         self.getControl( 161 ).addItems( listitems )
         if count > 0:
@@ -631,7 +638,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "album_mood", mood )
                 listitem.setProperty( "year", year )
                 listitem.setProperty( "path", path )
-                listitem.setProperty( "id", albumid )
+                listitem.setProperty( "dbid", albumid )
                 listitems.append(listitem)
         self.getControl( 171 ).addItems( listitems )
         if count > 0:
@@ -664,6 +671,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     song = item['label']
                 else:
                     artist = " / ".join(item['artist'])
+                songid = str(item['songid'])
                 album = item['album']
                 comment = item['comment']
                 duration = str(datetime.timedelta(seconds=int(item['duration'])))
@@ -692,6 +700,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "fanart", fanart )
                 listitem.setProperty( "year", year )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", songid )
                 listitems.append(listitem)
         self.getControl( 181 ).addItems( listitems )
         if count > 0:
@@ -711,6 +720,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_response = simplejson.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
+                movieid = str(item['movieid'])
                 movie = item['title']
                 count = count + 1
                 director = " / ".join(item['director'])
@@ -790,6 +800,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiocodec", audiocodec )
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
+                listitem.setProperty( "dbid", movieid )
                 listitems.append(listitem)
         self.getControl( 211 ).addItems( listitems )
         if count > 0:
@@ -858,6 +869,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                         listitem.setProperty( "channelname", channelname )
                         listitem.setProperty( "channelnumber", str(channelnumber) )
                         listitem.setProperty( "path", path )
+                        listitem.setProperty( "dbid", str(channelid) )
                         listitems.append(listitem)
         self.getControl( 221 ).addItems( listitems )
         if count > 0:
@@ -871,7 +883,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _getTvshow_Seasons( self ):
         self.fetch_seasonepisodes = 'true'
         listitem = self.getControl( 121 ).getSelectedItem()
-        self.tvshowid = listitem.getProperty('id')
+        self.tvshowid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
         self._hide_controls()
@@ -883,7 +895,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _getTvshow_Episodes( self ):
         self.fetch_seasonepisodes = 'true'
         listitem = self.getControl( 121 ).getSelectedItem()
-        self.tvshowid = listitem.getProperty('id')
+        self.tvshowid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
         self._hide_controls()
@@ -895,7 +907,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _getArtist_Albums( self ):
         self.fetch_albumssongs = 'true'
         listitem = self.getControl( 161 ).getSelectedItem()
-        self.artistid = listitem.getProperty('id')
+        self.artistid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
         self._hide_controls()
@@ -907,7 +919,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _getArtist_Songs( self ):
         self.fetch_albumssongs = 'true'
         listitem = self.getControl( 161 ).getSelectedItem()
-        self.artistid = listitem.getProperty('id')
+        self.artistid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
         self._hide_controls()
@@ -1094,7 +1106,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self._browse_audio(path)
             elif info_dialog.action == 'play_album':
                 listitem = self.getControl( 171 ).getSelectedItem()
-                self.albumid = listitem.getProperty('id')
+                self.albumid = listitem.getProperty('dbid')
                 self._play_album()
             elif info_dialog.action == 'browse_album':
                 listitem = self.getControl( 171 ).getSelectedItem()
@@ -1149,7 +1161,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._browse_audio(path)
         elif controlId == 171:
             listitem = self.getControl( 171 ).getSelectedItem()
-            self.albumid = listitem.getProperty('id')
+            self.albumid = listitem.getProperty('dbid')
             self._play_album()
         elif controlId == 181:
             listitem = self.getControl( 181 ).getSelectedItem()

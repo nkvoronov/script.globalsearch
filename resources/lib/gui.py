@@ -6,11 +6,11 @@ if sys.version_info < (2, 7):
 else:
     import json as simplejson
 
-__addon__        = sys.modules[ "__main__" ].__addon__
-__addonid__      = sys.modules[ "__main__" ].__addonid__
-__addonversion__ = sys.modules[ "__main__" ].__addonversion__
-__language__     = sys.modules[ "__main__" ].__language__
-__cwd__          = sys.modules[ "__main__" ].__cwd__
+ADDON        = sys.modules[ "__main__" ].ADDON
+ADDONID      = sys.modules[ "__main__" ].ADDONID
+ADDONVERSION = sys.modules[ "__main__" ].ADDONVERSION
+LANGUAGE     = sys.modules[ "__main__" ].LANGUAGE
+CWD          = sys.modules[ "__main__" ].CWD
 
 ACTION_CANCEL_DIALOG = ( 9, 10, 92, 216, 247, 257, 275, 61467, 61448, )
 ACTION_CONTEXT_MENU = ( 117, )
@@ -21,14 +21,14 @@ ACTION_SHOW_INFO = ( 11, )
 def log(txt):
     if isinstance (txt,str):
         txt = txt.decode("utf-8")
-    message = u'%s: %s' % (__addonid__, txt)
+    message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
 
 class GUI( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         # some sanitize work for search string: strip the input and escape some chars
         self.searchstring = kwargs[ "searchstring" ].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
-        log('script version %s started' % __addonversion__)
+        log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
 
     def onInit( self ):
@@ -119,15 +119,15 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.epg = self.params.get( "epg", "" )
 
     def _load_settings( self ):
-        self.movies = __addon__.getSetting( "movies" )
-        self.tvshows = __addon__.getSetting( "tvshows" )
-        self.episodes = __addon__.getSetting( "episodes" )
-        self.musicvideos = __addon__.getSetting( "musicvideos" )
-        self.artists = __addon__.getSetting( "artists" )
-        self.albums = __addon__.getSetting( "albums" )
-        self.songs = __addon__.getSetting( "songs" )
-        self.actors = __addon__.getSetting( "actors" )
-        self.epg = __addon__.getSetting( "epg" )
+        self.movies = ADDON.getSetting( "movies" )
+        self.tvshows = ADDON.getSetting( "tvshows" )
+        self.episodes = ADDON.getSetting( "episodes" )
+        self.musicvideos = ADDON.getSetting( "musicvideos" )
+        self.artists = ADDON.getSetting( "artists" )
+        self.albums = ADDON.getSetting( "albums" )
+        self.songs = ADDON.getSetting( "songs" )
+        self.actors = ADDON.getSetting( "actors" )
+        self.epg = ADDON.getSetting( "epg" )
 
     def _reset_variables( self ):
         self.focusset= 'false'
@@ -138,7 +138,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.fetch_albumssongs = 'false'
         self.fetch_songalbum = 'false'
         self.playingtrailer = 'false'
-        self.getControl( 198 ).setLabel( __language__(32299) )
+        self.getControl( 198 ).setLabel( LANGUAGE(32299) )
         self.Player = MyPlayer()
         self.Player.gui = self
 
@@ -996,13 +996,13 @@ class GUI( xbmcgui.WindowXMLDialog ):
             listitem = self.getControl( 111 ).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels += ( __language__(32205), )
+                labels += ( LANGUAGE(32205), )
                 functions += ( self._play_trailer, )
         elif controlId == 121:
-            labels += ( xbmc.getLocalizedString(20351), __language__(32207), __language__(32208), )
+            labels += ( xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208), )
             functions += ( self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes, )
         elif controlId == 131:
-            labels += ( __language__(32204), )
+            labels += ( LANGUAGE(32204), )
             functions += ( self._showInfo, )
         elif controlId == 141:
             labels += ( xbmc.getLocalizedString(20352), )
@@ -1011,13 +1011,13 @@ class GUI( xbmcgui.WindowXMLDialog ):
             labels += ( xbmc.getLocalizedString(20393), )
             functions += ( self._showInfo, )
         elif controlId == 161:
-            labels += ( xbmc.getLocalizedString(21891), __language__(32209), __language__(32210), )
+            labels += ( xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210), )
             functions += ( self._showInfo, self._getArtist_Albums, self._getArtist_Songs, )
         elif controlId == 171:
-            labels += ( xbmc.getLocalizedString(13351), __language__(32203), )
+            labels += ( xbmc.getLocalizedString(13351), LANGUAGE(32203), )
             functions += ( self._showInfo, self._browse_album, )
         elif controlId == 181:
-            labels += ( xbmc.getLocalizedString(658), __language__(32206), )
+            labels += ( xbmc.getLocalizedString(658), LANGUAGE(32206), )
             functions += ( self._showInfo, self._getSong_Album, )
         elif controlId == 211:
             labels += ( xbmc.getLocalizedString(13346), )
@@ -1025,12 +1025,12 @@ class GUI( xbmcgui.WindowXMLDialog ):
             listitem = self.getControl( 211 ).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels += ( __language__(32205), )
+                labels += ( LANGUAGE(32205), )
                 functions += ( self._play_trailer, )
         elif controlId == 221:
             labels += ( xbmc.getLocalizedString(19047), )
             functions += ( self._showInfo, )
-        context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , __cwd__, "Default", labels=labels )
+        context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , CWD, "Default", labels=labels )
         context_menu.doModal()
         if context_menu.selection is not None:
             functions[ context_menu.selection ]()
@@ -1069,7 +1069,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         elif controlId == 221:
             listitem = self.getControl( controlId ).getSelectedItem()
             content = "epg"
-        info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , __cwd__, "Default", listitem=listitem, content=content )
+        info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , CWD, "Default", listitem=listitem, content=content )
         info_dialog.doModal()
         if info_dialog.action is not None:
             if info_dialog.action == 'play_programme':
@@ -1127,7 +1127,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         del info_dialog
 
     def _newSearch( self ):
-        keyboard = xbmc.Keyboard( '', __language__(32101), False )
+        keyboard = xbmc.Keyboard( '', LANGUAGE(32101), False )
         keyboard.doModal()
         if ( keyboard.isConfirmed() ):
             self.searchstring = keyboard.getText()

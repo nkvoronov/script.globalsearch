@@ -1,6 +1,7 @@
 v7.0.1
 - remove starrating
 - add support for userrating
+- epg runtime is an int now
 
 v7.0.0
 - remove simplejson support

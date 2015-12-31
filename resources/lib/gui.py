@@ -159,6 +159,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 outline = item['plotoutline']
                 rating = str(round(float(item['rating']),1))
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 runtime = str(int((item['runtime'] / 60.0) + 0.5))
                 studio = " / ".join(item['studio'])
                 tagline = item['tagline']
@@ -256,6 +258,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 premiered = item['premiered']
                 rating = str(round(float(item['rating']),1))
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 studio = " / ".join(item['studio'])
                 thumb = item['thumbnail']
                 banner = item['art'].get('banner', '')
@@ -358,6 +362,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 premiered = item['firstaired']
                 rating = str(round(float(item['rating']),1))
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 seasonnumber = '%.2d' % float(item['season'])
                 playcount = str(item['playcount'])
                 thumb = item['thumbnail']
@@ -450,6 +456,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 plot = item['plot']
                 rating = str(round(float(item['rating']),1))
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 studio = " / ".join(item['studio'])
                 thumb = item['thumbnail']
                 playcount = str(item['playcount'])
@@ -611,6 +619,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 mood = " / ".join(item['mood'])
                 rating = str(item['rating'])
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 style = " / ".join(item['style'])
                 theme = " / ".join(item['theme'])
                 albumtype = item['type']
@@ -678,6 +688,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 playcount = str(item['playcount'])
                 rating = str(item['rating'])
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 year = str(item['year'])
                 listitem = xbmcgui.ListItem(label=song, iconImage='DefaultAlbumCover.png', thumbnailImage=thumb)
                 listitem.setProperty( "icon", thumb )
@@ -727,6 +739,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 outline = item['plotoutline']
                 rating = str(round(float(item['rating']),1))
                 userrating = str(item['userrating'])
+                if userrating == '0':
+                    userrating = ''
                 runtime = str(int((item['runtime'] / 60.0) + 0.5))
                 studio = " / ".join(item['studio'])
                 tagline = item['tagline']

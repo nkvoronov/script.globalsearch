@@ -99,6 +99,7 @@ ListItem.Property(Episode)
 ListItem.Property(Fanart)
 ListItem.Property(TvShowTitle)
 ListItem.Property(Playcount)
+ListItem.Property(UserRating)
 ListItem.Property(Path)
 ListItem.Property(DBID)
 
@@ -280,7 +281,7 @@ IV. Control id's used in script-globalsearch-infodialog.xml
 180 - The script will set this id to visible when the selected item is a song
 200 - The script will set this id to visible when the selected item is a programme
 
-191 - First button (OK), but you can specify a diffrent label for it if you like
+191 - First button (OK), but you can specify a different label for it if you like
 192 - Second button. The script will set the button label and the visible condition.
 193 - Third button. The script will set the button label and the visible condition.
 

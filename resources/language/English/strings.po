@@ -62,7 +62,9 @@ msgctxt "#32101"
 msgid "Enter search string"
 msgstr ""
 
-#empty strings from id 32102 to 32202
+msgctxt "#32102"
+msgid "Items"
+msgstr ""
 
 msgctxt "#32203"
 msgid "Browse album"

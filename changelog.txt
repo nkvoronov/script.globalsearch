@@ -1,3 +1,7 @@
+v7.03
+- new skin
+- remove ok button in info dialog
+
 v7.0.2
 - return empty userrating instead of 0
 

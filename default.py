@@ -28,6 +28,6 @@ if ( __name__ == '__main__' ):
         del params['searchstring']
     if searchstring:
         import gui
-        ui = gui.GUI( 'script-globalsearch-main.xml', CWD, 'Default', searchstring=searchstring, params=params )
+        ui = gui.GUI( 'script-globalsearch-main.xml', CWD, 'default', searchstring=searchstring, params=params )
         ui.doModal()
         del ui

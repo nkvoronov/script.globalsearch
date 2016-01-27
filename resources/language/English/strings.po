@@ -105,5 +105,5 @@ msgstr ""
 #empty strings from id 32212 to 32298
 
 msgctxt "#32299"
-msgid "NEW SEARCH"
+msgid "New search"
 msgstr ""

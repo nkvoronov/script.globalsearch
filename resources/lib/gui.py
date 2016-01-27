@@ -1041,7 +1041,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         elif controlId == 221:
             labels += ( xbmc.getLocalizedString(19047), )
             functions += ( self._showInfo, )
-        context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , CWD, "Default", labels=labels )
+        context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , CWD, "default", labels=labels )
         context_menu.doModal()
         if context_menu.selection is not None:
             functions[ context_menu.selection ]()
@@ -1051,36 +1051,27 @@ class GUI( xbmcgui.WindowXMLDialog ):
         items = []
         controlId = self.getFocusId()
         if controlId == 111:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "movies"
         elif controlId == 121:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "tvshows"
         elif controlId == 131:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "seasons"
         elif controlId == 141:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "episodes"
         elif controlId == 151:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "musicvideos"
         elif controlId == 161:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "artists"
         elif controlId == 171:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "albums"
         elif controlId == 181:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "songs"
         elif controlId == 211:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "actors"
         elif controlId == 221:
-            listitem = self.getControl( controlId ).getSelectedItem()
             content = "epg"
-        info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , CWD, "Default", listitem=listitem, content=content )
+        listitem = self.getControl( controlId ).getSelectedItem()
+        info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , CWD, "default", listitem=listitem, content=content )
         info_dialog.doModal()
         if info_dialog.action is not None:
             if info_dialog.action == 'play_programme':

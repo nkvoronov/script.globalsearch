@@ -281,9 +281,8 @@ IV. Control id's used in script-globalsearch-infodialog.xml
 180 - The script will set this id to visible when the selected item is a song
 200 - The script will set this id to visible when the selected item is a programme
 
-191 - First button (OK), but you can specify a different label for it if you like
-192 - Second button. The script will set the button label and the visible condition.
-193 - Third button. The script will set the button label and the visible condition.
+192 - Button, The script will set the button label and the visible condition.
+193 - Button, The script will set the button label and the visible condition.
 
 
 

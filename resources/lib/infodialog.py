@@ -29,7 +29,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.getControl( 200 ).setVisible( False )
         except:
             pass
-        self.getControl( 191 ).setVisible( False )
         self.getControl( 192 ).setVisible( False )
         self.getControl( 193 ).setVisible( False )
 
@@ -42,71 +41,61 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self.getControl( 200 ).setVisible( True )
             except:
                 pass
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         if self.content == 'movies':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 193 ).setLabel( xbmc.getLocalizedString(20410) )
             self.getControl( 110 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
             if self.listitem.getProperty('trailer'):
                 self.getControl( 193 ).setVisible( True )
         elif self.content == 'tvshows':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(1024) )
             self.getControl( 120 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'seasons':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(1024) )
             self.getControl( 130 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'episodes':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 140 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'musicvideos':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 150 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'artists':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(1024) )
             self.getControl( 160 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'albums':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 193 ).setLabel( xbmc.getLocalizedString(1024) )
             self.getControl( 170 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
             self.getControl( 193 ).setVisible( True )
         elif self.content == 'songs':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 180 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
         elif self.content == 'actors':
             self.getControl( 192 ).setLabel( xbmc.getLocalizedString(208) )
             self.getControl( 193 ).setLabel( xbmc.getLocalizedString(20410) )
             self.getControl( 110 ).setVisible( True )
-            self.getControl( 191 ).setVisible( True )
             self.getControl( 192 ).setVisible( True )
             if self.listitem.getProperty('trailer'):
                 self.getControl( 193 ).setVisible( True )
-        self.setFocus( self.getControl( 191 ) )
+        self.setFocus( self.getControl( 192 ) )
 
     def _close_dialog( self, action=None ):
         self.action = action
         self.close()
+		# workaround to trigger the onfocus animation of the listitem in the main window
+        self.setFocus( self.getControl( 100 ) )
 
     def onClick( self, controlId ):
-        if controlId == 191:
-            self._close_dialog()
-        elif controlId == 192:
+        if controlId == 192:
             if self.content == 'epg':
                 self._close_dialog( 'play_programme' )
             elif self.content == 'movies':

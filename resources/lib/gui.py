@@ -989,10 +989,14 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def _check_focus( self ):
         self.getControl( 190 ).setLabel( '' )
         self.getControl( 191 ).setLabel( '' )
+        self.getControl( 198 ).setVisible( True )
         if self.focusset == 'false':
             self.getControl( 199 ).setVisible( True )
             self.setFocus( self.getControl( 198 ) )
-        self.getControl( 198 ).setVisible( True )
+            dialog = xbmcgui.Dialog()
+            ret = dialog.yesno(xbmc.getLocalizedString(284), LANGUAGE(32298))
+            if ret:
+                self._newSearch()
 
     def _showContextMenu( self ):
         labels = ()

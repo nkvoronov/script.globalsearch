@@ -102,7 +102,11 @@ msgctxt "#32211"
 msgid "Movies starring"
 msgstr ""
 
-#empty strings from id 32212 to 32298
+#empty strings from id 32212 to 32297
+
+msgctxt "#32298"
+msgid "Search again?"
+msgstr ""
 
 msgctxt "#32299"
 msgid "New search"

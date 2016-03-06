@@ -1,4 +1,7 @@
-v7.03
+v7.0.4
+- ask user to search again when no results are found
+
+v7.0.3
 - new skin
 - remove ok button in info dialog
 

@@ -48,7 +48,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
 
     def _fetch_items( self ):
         if self.movies == 'true':
-            self._fetch_movies()
+            self._fetch_movies('title', 342, 111)
         if self.tvshows == 'true':
             self._fetch_tvshows()
         if self.episodes == 'true':
@@ -62,7 +62,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         if self.songs == 'true':
             self._fetch_songs()
         if self.actors == 'true' and self.ACTORSUPPORT:
-            self._fetch_actors()
+            self._fetch_movies('actor', 344, 211)
         if self.epg == 'true' and self.EPGSUPPORT:
             self._fetch_channels()
         self._check_focus()
@@ -136,11 +136,11 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.Player = MyPlayer()
         self.Player.gui = self
 
-    def _fetch_movies( self ):
+    def _fetch_movies( self, query, label, control ):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(342) )
+        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(label) )
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"title","operator":"contains","value":"%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"%s", "operator":"contains","value":"%s"} }, "id": 1}' % (query, self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
@@ -229,13 +229,13 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", movieid )
                 listitems.append(listitem)
-        self.getControl( 111 ).addItems( listitems )
+        self.getControl( control ).addItems( listitems )
         if count > 0:
-            self.getControl( 110 ).setLabel( str(count) )
-            self.getControl( 119 ).setVisible( True )
+            self.getControl( control - 1 ).setLabel( str(count) )
+            self.getControl( control + 8 ).setVisible( True )
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 111 ) )
+                self.setFocus( self.getControl( control ) )
                 self.focusset = 'true'
 
     def _fetch_tvshows( self ):
@@ -718,108 +718,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
             if self.focusset == 'false':
                 xbmc.sleep(100)
                 self.setFocus( self.getControl( 181 ) )
-                self.focusset = 'true'
-
-    def _fetch_actors( self ):
-        listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(344) )
-        count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"actor","operator":"contains","value":"%s"} }, "id": 1}' % self.searchstring)
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
-        json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
-            for item in json_response['result']['movies']:
-                movieid = str(item['movieid'])
-                movie = item['title']
-                count = count + 1
-                director = " / ".join(item['director'])
-                writer = " / ".join(item['writer'])
-                fanart = item['fanart']
-                path = item['file']
-                genre = " / ".join(item['genre'])
-                mpaa = item['mpaa']
-                playcount = str(item['playcount'])
-                plot = item['plot']
-                outline = item['plotoutline']
-                rating = str(round(float(item['rating']),1))
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                runtime = str(int((item['runtime'] / 60.0) + 0.5))
-                studio = " / ".join(item['studio'])
-                tagline = item['tagline']
-                thumb = item['thumbnail']
-                trailer = item['trailer']
-                year = str(item['year'])
-                if item['streamdetails']['audio'] != []:
-                    audiochannels = str(item['streamdetails']['audio'][0]['channels'])
-                    audiocodec = str(item['streamdetails']['audio'][0]['codec'])
-                else:
-                    audiochannels = ''
-                    audiocodec = ''
-                if item['streamdetails']['video'] != []:
-                    videocodec = str(item['streamdetails']['video'][0]['codec'])
-                    videoaspect = float(item['streamdetails']['video'][0]['aspect'])
-                    if videoaspect <= 1.4859:
-                        videoaspect = '1.33'
-                    elif videoaspect <= 1.7190:
-                        videoaspect = '1.66'
-                    elif videoaspect <= 1.8147:
-                        videoaspect = '1.78'
-                    elif videoaspect <= 2.0174:
-                        videoaspect = '1.85'
-                    elif videoaspect <= 2.2738:
-                        videoaspect = '2.20'
-                    else:
-                        videoaspect = '2.35'
-                    videowidth = item['streamdetails']['video'][0]['width']
-                    videoheight = item['streamdetails']['video'][0]['height']
-                    if videowidth <= 720 and videoheight <= 480:
-                        videoresolution = '480'
-                    elif videowidth <= 768 and videoheight <= 576:
-                        videoresolution = '576'
-                    elif videowidth <= 960 and videoheight <= 544:
-                        videoresolution = '540'
-                    elif videowidth <= 1280 and videoheight <= 720:
-                        videoresolution = '720'
-                    else:
-                        videoresolution = '1080'
-                else:
-                    videocodec = ''
-                    videoaspect = ''
-                    videoresolution = ''
-                listitem = xbmcgui.ListItem(label=movie, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "plot", plot )
-                listitem.setProperty( "plotoutline", outline )
-                listitem.setProperty( "duration", runtime )
-                listitem.setProperty( "studio", studio )
-                listitem.setProperty( "tagline", tagline )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "trailer", trailer )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "mpaa", mpaa )
-                listitem.setProperty( "writer", writer )
-                listitem.setProperty( "director", director )
-                listitem.setProperty( "videoresolution", videoresolution )
-                listitem.setProperty( "videocodec", videocodec )
-                listitem.setProperty( "videoaspect", videoaspect )
-                listitem.setProperty( "audiocodec", audiocodec )
-                listitem.setProperty( "audiochannels", audiochannels )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", movieid )
-                listitems.append(listitem)
-        self.getControl( 211 ).addItems( listitems )
-        if count > 0:
-            self.getControl( 210 ).setLabel( str(count) )
-            self.getControl( 219 ).setVisible( True )
-            if self.focusset == 'false':
-                xbmc.sleep(100)
-                self.setFocus( self.getControl( 211 ) )
                 self.focusset = 'true'
 
     def _fetch_channels( self ):

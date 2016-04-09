@@ -56,6 +56,10 @@ msgctxt "#32009"
 msgid "Search EPG"
 msgstr ""
 
+msgctxt "#32010"
+msgid "Search Directors"
+msgstr ""
+
 #empty strings from id 32010 to 32100
 
 msgctxt "#32101"

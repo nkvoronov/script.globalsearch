@@ -1,6 +1,10 @@
+v7.1.0
+- add direcor search support
+
 v7.0.5
 - code refactor
 - add missing skin support for livetv
+- fix infodialog buttons
 
 v7.0.4
 - ask user to search again when no results are found

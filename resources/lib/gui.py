@@ -36,6 +36,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.window_id = xbmcgui.getCurrentWindowDialogId()
             xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
             self.ACTORSUPPORT = True
+            self.DIRECTORSUPPORT = True
             self.EPGSUPPORT = True
             self._hide_controls()
             if not self.nextsearch:
@@ -65,6 +66,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._fetch_movies('actor', 344, 211)
         if self.epg == 'true' and self.EPGSUPPORT:
             self._fetch_channels()
+        if self.directors == 'true' and self.DIRECTORSUPPORT:
+            self._fetch_movies('director', 20348, 231)
         self._check_focus()
 
     def _hide_controls( self ):
@@ -84,6 +87,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.getControl( 229 ).setVisible( False )
         except:
             self.EPGSUPPORT = False
+        try:
+            self.getControl( 239 ).setVisible( False )
+        except:
+            self.DIRECTORSUPPORT = False
         self.getControl( 198 ).setVisible( False )
         self.getControl( 199 ).setVisible( False )
 
@@ -100,6 +107,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.getControl( 211 ).reset()
         if self.EPGSUPPORT:
             self.getControl( 221 ).reset()
+        if self.DIRECTORSUPPORT:
+            self.getControl( 231 ).reset()
 
     def _parse_argv( self ):
         self.movies = self.params.get( "movies", "" )
@@ -110,6 +119,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.albums = self.params.get( "albums", "" )
         self.songs = self.params.get( "songs", "" )
         self.actors = self.params.get( "actors", "" )
+        self.directors = self.params.get( "directors", "" )
         self.epg = self.params.get( "epg", "" )
 
     def _load_settings( self ):
@@ -121,6 +131,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.albums = ADDON.getSetting( "albums" )
         self.songs = ADDON.getSetting( "songs" )
         self.actors = ADDON.getSetting( "actors" )
+        self.directors = ADDON.getSetting( "directors" )
         self.epg = ADDON.getSetting( "epg" )
 
     def _reset_variables( self ):
@@ -943,6 +954,14 @@ class GUI( xbmcgui.WindowXMLDialog ):
         elif controlId == 221:
             labels += ( xbmc.getLocalizedString(19047), )
             functions += ( self._showInfo, )
+        elif controlId == 231:
+            labels += ( xbmc.getLocalizedString(13346), )
+            functions += ( self._showInfo, )
+            listitem = self.getControl( 231 ).getSelectedItem()
+            self.trailer = listitem.getProperty('trailer')
+            if self.trailer:
+                labels += ( LANGUAGE(32205), )
+                functions += ( self._play_trailer, )
         context_menu = contextmenu.GUI( "script-globalsearch-contextmenu.xml" , CWD, "default", labels=labels )
         context_menu.doModal()
         if context_menu.selection is not None:
@@ -972,6 +991,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
             content = "actors"
         elif controlId == 221:
             content = "epg"
+        elif controlId == 231:
+            content = "directors"
         listitem = self.getControl( controlId ).getSelectedItem()
         info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , CWD, "default", listitem=listitem, content=content )
         info_dialog.doModal()
@@ -1028,6 +1049,15 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem = self.getControl( 211 ).getSelectedItem()
                 self.trailer = listitem.getProperty('trailer')
                 self._play_trailer()
+            elif info_dialog.action == 'play_movie_directors':
+                listitem = self.getControl( 231 ).getSelectedItem()
+                path = listitem.getProperty('path')
+                self._play_video(path)
+                self._play_audio(path, listitem)
+            elif info_dialog.action == 'play_trailer_directors':
+                listitem = self.getControl( 231 ).getSelectedItem()
+                self.trailer = listitem.getProperty('trailer')
+                self._play_trailer()
         del info_dialog
 
     def _newSearch( self ):
@@ -1077,6 +1107,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._play_video(path)
         elif controlId == 221:
             listitem = self.getControl( 221 ).getSelectedItem()
+            path = listitem.getProperty('path')
+            self._play_video(path)
+        elif controlId == 231:
+            listitem = self.getControl( 231 ).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 198:

@@ -911,9 +911,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
         labels = ()
         functions = ()
         controlId = self.getFocusId()
-        x, y = self.getControl( controlId ).getPosition()
-        w = self.getControl( controlId ).getWidth()
-        h = self.getControl( controlId ).getHeight()
         if controlId == 111:
             labels += ( xbmc.getLocalizedString(13346), )
             functions += ( self._showInfo, )

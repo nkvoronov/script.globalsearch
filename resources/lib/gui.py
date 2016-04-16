@@ -959,9 +959,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             if self.trailer:
                 labels += ( LANGUAGE(32205), )
                 functions += ( self._play_trailer, )
-        selection = xbmcgui.Dialog().contextmenu(labels)
-        if selection >= 0:
-            functions[ selection ]()
+        if labels:
+            selection = xbmcgui.Dialog().contextmenu(labels)
+            if selection >= 0:
+                functions[ selection ]()
 
 
     def _showInfo( self ):

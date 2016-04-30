@@ -151,9 +151,14 @@ class GUI( xbmcgui.WindowXMLDialog ):
         listitems = []
         self.getControl( 191 ).setLabel( xbmc.getLocalizedString(label) )
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer"], "sort": { "method": "label" }, "filter": {"field":"%s", "operator":"contains","value":"%s"} }, "id": 1}' % (query, self.searchstring))
+        if query == 'movies':
+            rule = '{"or": [{"field": "title", "operator": "contains", "value": "%s"}, {"field": "originaltitle", "operator": "contains", "value": "%s"}]}' % (self.searchstring, self.searchstring) 
+        else:
+            rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
+        print json_response
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
                 movieid = str(item['movieid'])
@@ -177,6 +182,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 tagline = item['tagline']
                 thumb = item['thumbnail']
                 trailer = item['trailer']
+                originaltitle = item['originaltitle']
                 year = str(item['year'])
                 if item['streamdetails']['audio'] != []:
                     audiochannels = str(item['streamdetails']['audio'][0]['channels'])
@@ -218,6 +224,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem = xbmcgui.ListItem(label=movie, iconImage='DefaultVideo.png', thumbnailImage=thumb)
                 listitem.setProperty( "icon", thumb )
                 listitem.setProperty( "fanart", fanart )
+                listitem.setProperty( "originaltitle", originaltitle )
                 listitem.setProperty( "genre", genre )
                 listitem.setProperty( "plot", plot )
                 listitem.setProperty( "plotoutline", outline )

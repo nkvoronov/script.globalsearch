@@ -1,3 +1,6 @@
+v7.2.4
+- add originaltitle support
+
 v7.2.3
 - cosmetics radiobuttons
 - don't show empty contextmenu

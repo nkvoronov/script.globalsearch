@@ -158,7 +158,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        print json_response
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
                 movieid = str(item['movieid'])

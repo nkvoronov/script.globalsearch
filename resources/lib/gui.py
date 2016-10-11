@@ -74,7 +74,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self._fetch_movies('tag', 342, 111)
             if self.tvshows == 'true':
                 self._fetch_tvshows('tag', 20343, 121)
-                # self._fetch_tvshows('tag', 20349, 510)
+                # self._fetch_tvshows('tag', 20349, 510)#todo with ronie's approval
         if self.directors == 'true' and self.DIRECTORSUPPORT:
             self._fetch_movies('director', 20348, 231)
         self._check_focus()
@@ -160,20 +160,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.Player = MyPlayer()
         self.Player.gui = self
 
-    # def _fetch_plugins( self, query, label, control ):
+    # def _fetch_plugins( self, query, label, control ): #todo with ronie's approval
         # listitems = []
-        # self.getControl( 191 ).setLabel( xbmc.getLocalizedString(label) )
-        # count = 0
-        # if query == 'movies':
-            # rule = '{"or": [{"field": "title", "operator": "contains", "value": "%s"}, {"field": "originaltitle", "operator": "contains", "value": "%s"}]}' % (self.searchstring, self.searchstring) 
-        # else:
-            # rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
-        # json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
-        # json_query = unicode(json_query, 'utf-8', errors='ignore')
-        # json_response = json.loads(json_query)
-        # if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
-            # for item in json_response['result']['movies']:
-            
+
     def _fetch_movies( self, query, label, control ):
         listitems = []
         self.getControl( 191 ).setLabel( xbmc.getLocalizedString(label) )

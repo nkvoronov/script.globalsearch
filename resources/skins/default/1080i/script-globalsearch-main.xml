@@ -450,7 +450,7 @@
 							<item id="12">
 								<label>$LOCALIZE[20349]</label>
 								<label2>$LOCALIZE[283]$INFO[Control.GetLabel(510),: ]</label2>
-								<thumb>globalsearch-icon-tvshows.png</thumb>
+								<thumb>globalsearch-icon-tags.png</thumb>
 								<onclick>noop</onclick>
 								<visible>Control.IsVisible(519)</visible>
 							</item>

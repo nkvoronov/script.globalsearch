@@ -199,10 +199,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 trailer = item['trailer']
                 originaltitle = item['originaltitle']
                 year = str(item['year'])
-                # if item['resume'] != []:
                 resume = str(item['resume']['position'])
-                # else:
-                    # resume = 0
                 if item['streamdetails']['audio'] != []:
                     audiochannels = str(item['streamdetails']['audio'][0]['channels'])
                     audiocodec = str(item['streamdetails']['audio'][0]['codec'])

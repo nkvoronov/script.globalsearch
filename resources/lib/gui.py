@@ -261,7 +261,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", movieid )
-                listitem.setProperty( "query", query )
+                listitem.setProperty( "query", query )#can be used with visible StringCompare to flag artwork
                 listitems.append(listitem)
         self.getControl( control ).addItems( listitems )
         if count > 0:
@@ -324,7 +324,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "playcount", playcount )
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", tvshowid )
-                listitem.setProperty( "%s" %query, query )
+                listitem.setProperty( "query", query )#can be used with visible StringCompare to flag artwork
                 listitems.append(listitem)
         self.getControl( control ).addItems( listitems )
         if count > 0:

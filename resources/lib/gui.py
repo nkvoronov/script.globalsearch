@@ -21,14 +21,29 @@ def log(txt):
         txt = txt.decode("utf-8")
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
-
+#todo player monitor? 
+# class MyPlayer( xbmc.Player ):
+    # def __init__( self ):
+        # xbmc.Player.__init__( self , xbmc.Player() )
+        
+    # def onPlayBackStarted( self ):
+        # print '_play_video onPlayBackStarted'
+        # try:
+            # if GUI.resume_position > 0:
+                # self.seekTime( float( GUI.resume_position * 1000 ) )
+            # GUI._close()
+        # except:
+            # pass
+        
 class GUI( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         # some sanitize work for search string: strip the input and replace some chars
         self.searchstring = kwargs[ "searchstring" ].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
         self.params = kwargs[ "params" ]
         log('script version %s started' % ADDONVERSION)
+        self.Player = MyPlayer()
         self.nextsearch = False
+        self.resume_position = 0
 
     def onInit( self ):
         if self.searchstring == '':
@@ -171,7 +186,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             rule = '{"or": [{"field": "title", "operator": "contains", "value": "%s"}, {"field": "originaltitle", "operator": "contains", "value": "%s"}]}' % (self.searchstring, self.searchstring) 
         else:
             rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle", "tag"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle", "tag", "resume"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
@@ -199,6 +214,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 trailer = item['trailer']
                 originaltitle = item['originaltitle']
                 year = str(item['year'])
+                # if item['resume'] != []:
+                resume = str(item['resume']['position'])
+                # else:
+                    # resume = 0
                 if item['streamdetails']['audio'] != []:
                     audiochannels = str(item['streamdetails']['audio'][0]['channels'])
                     audiocodec = str(item['streamdetails']['audio'][0]['codec'])
@@ -261,6 +280,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", movieid )
+                listitem.setProperty( "resume", resume )
+                listitem.setProperty( "title", movie )
                 listitem.setProperty( "query", query )#can be used with visible StringCompare to flag artwork
                 listitems.append(listitem)
         self.getControl( control ).addItems( listitems )
@@ -892,10 +913,23 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_songalbum = 'false'
 
-    def _play_video( self, path ):
-        self._close()
+    def _play_video( self, path , title='' , resume=0 ):
+        print '_play_video',resume
+        if resume > 0:
+            minutes, seconds = divmod(resume, 60) ; hours, minutes = divmod(minutes, 60)
+            yes = xbmcgui.Dialog().yesno( title , '' , '' , '%s %02d:%02d:%02d' % (LANGUAGE(32212), hours, minutes, seconds) , LANGUAGE(32213) , LANGUAGE(32214) )
+            if yes == True:
+                resume = 0
+        else:
+            resume = 0 
+        print '_play_video',resume
+        self.resume_position = resume
         xbmc.Player().play( path )
-
+        if resume > 0:
+            xbmc.sleep(250)
+            xbmc.Player().seekTime( float( resume ) )
+        self._close()
+        
     def _play_audio( self, path, listitem ):
         self._close()
         xbmc.Player().play( path, listitem )
@@ -1033,7 +1067,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
             elif info_dialog.action == 'play_movie':
                 listitem = self.getControl( 111 ).getSelectedItem()
                 path = listitem.getProperty('path')
-                self._play_video(path)
+                title = listitem.getProperty('title')
+                resume = int(listitem.getProperty('resume'))
+                self._play_video(path, title, resume)
             elif info_dialog.action == 'play_trailer':
                 listitem = self.getControl( 111 ).getSelectedItem()
                 self.trailer = listitem.getProperty('trailer')
@@ -1101,7 +1137,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         if controlId == 111:
             listitem = self.getControl( 111 ).getSelectedItem()
             path = listitem.getProperty('path')
-            self._play_video(path)
+            title = listitem.getProperty('title')
+            resume = int(listitem.getProperty('resume'))
+            self._play_video(path, title, resume)
         elif controlId == 121:
             listitem = self.getControl( 121 ).getSelectedItem()
             path = listitem.getProperty('path')

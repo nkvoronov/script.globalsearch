@@ -21,29 +21,14 @@ def log(txt):
         txt = txt.decode("utf-8")
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
-#todo player monitor? 
-# class MyPlayer( xbmc.Player ):
-    # def __init__( self ):
-        # xbmc.Player.__init__( self , xbmc.Player() )
-        
-    # def onPlayBackStarted( self ):
-        # print '_play_video onPlayBackStarted'
-        # try:
-            # if GUI.resume_position > 0:
-                # self.seekTime( float( GUI.resume_position * 1000 ) )
-            # GUI._close()
-        # except:
-            # pass
-        
+
 class GUI( xbmcgui.WindowXMLDialog ):
     def __init__( self, *args, **kwargs ):
         # some sanitize work for search string: strip the input and replace some chars
         self.searchstring = kwargs[ "searchstring" ].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
         self.params = kwargs[ "params" ]
         log('script version %s started' % ADDONVERSION)
-        self.Player = MyPlayer()
         self.nextsearch = False
-        self.resume_position = 0
 
     def onInit( self ):
         if self.searchstring == '':
@@ -914,7 +899,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.fetch_songalbum = 'false'
 
     def _play_video( self, path , title='' , resume=0 ):
-        print '_play_video',resume
         if resume > 0:
             minutes, seconds = divmod(resume, 60) ; hours, minutes = divmod(minutes, 60)
             yes = xbmcgui.Dialog().yesno( title , '' , '' , '%s %02d:%02d:%02d' % (LANGUAGE(32212), hours, minutes, seconds) , LANGUAGE(32213) , LANGUAGE(32214) )
@@ -922,8 +906,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 resume = 0
         else:
             resume = 0 
-        print '_play_video',resume
-        self.resume_position = resume
         xbmc.Player().play( path )
         if resume > 0:
             xbmc.sleep(250)

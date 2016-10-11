@@ -11,5 +11,7 @@
        <setting id="artists" type="bool" label="32005" default="true"/>
        <setting id="albums" type="bool" label="32006" default="true"/>
        <setting id="songs" type="bool" label="32007" default="true"/>
+       <setting id="tag" type="bool" label="32012" default="false"/>
+       <setting id="plugins" type="bool" visible="false" label="32011" default="false"/>
     </category>
 </settings>

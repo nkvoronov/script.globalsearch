@@ -29,7 +29,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.params = kwargs[ "params" ]
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
+        self.selectaction = self._getSelect_Action()
         
+
     def onInit( self ):
         if self.searchstring == '':
             self._close()
@@ -898,15 +900,29 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_songalbum = 'false'
 
+    def _getSelect_Action( self ):
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"myvideos.selectaction"}, "id": 1}')
+        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_response = json.loads(json_query)
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
+            return {0: 'choose', 1: 'play', 2: 'resume',3: 'info'}[json_response['result']['value']]
+   
     def _play_video( self, path , title='' , resume=0 ):
         if resume > 0:
-            minutes, seconds = divmod(resume, 60) ; hours, minutes = divmod(minutes, 60)
-            yes = xbmcgui.Dialog().yesno( title , '' , '' , '%s %02d:%02d:%02d' % (LANGUAGE(32212), hours, minutes, seconds) , LANGUAGE(32213) , LANGUAGE(32214) )
-            if yes == True:
+            if self.selectaction == 'choose':
+                minutes, seconds = divmod(resume, 60) ; hours, minutes = divmod( minutes , 60 )
+                if xbmcgui.Dialog().yesno( title , '' , '' , '%s %02d:%02d:%02d' % ( LANGUAGE(32212), hours, minutes, seconds ) , LANGUAGE(32213) , LANGUAGE(32214) ) == True:
+                    resume = 0
+            elif self.selectaction == 'play':
                 resume = 0
+            elif self.selectaction == 'info':
+                return
         self.Player.resume = resume
+
+
         xbmc.Player().play( path )
         
+
     def _play_audio( self, path, listitem ):
         self._close()
         xbmc.Player().play( path, listitem )
@@ -1197,6 +1213,6 @@ class MyPlayer(xbmc.Player):
     def onPlayBackStopped( self ):
         self.gui._trailerstopped()
 
-    def onPlayBackStarted(self):   
+    def onPlayBackStarted( self ):   
         self.seekTime( float( self.resume ) )
         self.gui._close()

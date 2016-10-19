@@ -60,14 +60,6 @@ msgctxt "#32010"
 msgid "Search Directors"
 msgstr ""
 
-msgctxt "#32011"
-msgid "Search Plugins"
-msgstr ""
-
-msgctxt "#32012"
-msgid "Search Tags"
-msgstr ""
-
 #empty strings from id 32010 to 32100
 
 msgctxt "#32101"
@@ -114,6 +106,16 @@ msgctxt "#32211"
 msgid "Movies starring"
 msgstr ""
 
+#empty strings from id 32212 to 32297
+
+msgctxt "#32298"
+msgid "Search again?"
+msgstr ""
+
+msgctxt "#32299"
+msgid "New search"
+msgstr ""
+
 msgctxt "#32212"
 msgid "Resume from"
 msgstr "Resume from"
@@ -125,13 +127,3 @@ msgstr "Resume"
 msgctxt "#32214"
 msgid "Start from beginning"
 msgstr "Start from beginning"
-
-#empty strings from id 32212 to 32297
-
-msgctxt "#32298"
-msgid "Search again?"
-msgstr ""
-
-msgctxt "#32299"
-msgid "New search"
-msgstr ""

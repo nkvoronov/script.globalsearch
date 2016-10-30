@@ -13,11 +13,11 @@ ADDONVERSION = sys.modules['__main__'].ADDONVERSION
 LANGUAGE     = sys.modules['__main__'].LANGUAGE
 CWD          = sys.modules['__main__'].CWD
 
-ACTION_CANCEL_DIALOG =(9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
-ACTION_CONTEXT_MENU =(117,)
-ACTION_OSD =(107, 163,)
-ACTION_SHOW_GUI =(18,)
-ACTION_SHOW_INFO =(11,)
+ACTION_CANCEL_DIALOG = (9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
+ACTION_CONTEXT_MENU = (117,)
+ACTION_OSD = (107, 163,)
+ACTION_SHOW_GUI = (18,)
+ACTION_SHOW_INFO = (11,)
 
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
 #               "plotoutline", "title", "originaltitle", "sorttitle", "duration", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
@@ -29,7 +29,7 @@ MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrat
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
-    message = u'%s: %s' %(ADDONID, txt)
+    message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
 
 class GUI(xbmcgui.WindowXMLDialog):
@@ -163,10 +163,10 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(191).setLabel(xbmc.getLocalizedString(label))
         count = 0
         if query == 'movies':
-            rule = '{"or": [{"field":"title", "operator":"contains", "value":"%s"}, {"field":"originaltitle", "operator":"contains", "value":"%s"}]}' %(self.searchstring, self.searchstring)
+            rule = '{"or": [{"field":"title", "operator":"contains", "value":"%s"}, {"field":"originaltitle", "operator":"contains", "value":"%s"}]}' % (self.searchstring, self.searchstring)
         else:
-            rule = '{"field":"%s", "operator":"contains", "value":"%s"}' %(query, self.searchstring)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetMovies", "params":{"properties":%s, "sort":{"method":"label"}, "filter": %s}, "id": 1}' %(json.dumps(MOVIELABELS), rule))
+            rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetMovies", "params":{"properties":%s, "sort":{"method":"label"}, "filter": %s}, "id": 1}' % (json.dumps(MOVIELABELS), rule))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('movies'):
@@ -863,57 +863,57 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self._newSearch()
 
     def _showContextMenu(self):
-        labels =()
-        functions =()
+        labels = ()
+        functions = ()
         controlId = self.getFocusId()
         if controlId == 111:
-            labels +=(xbmc.getLocalizedString(13346),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(13346),)
+            functions += (self._showInfo,)
             listitem = self.getControl(111).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels +=(LANGUAGE(32205),)
-                functions +=(self._play_trailer,)
+                labels += (LANGUAGE(32205),)
+                functions += (self._play_trailer,)
         elif controlId == 121:
-            labels +=(xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
-            functions +=(self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes,)
+            labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
+            functions += (self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes,)
         elif controlId == 131:
-            labels +=(LANGUAGE(32204),)
-            functions +=(self._showInfo,)
+            labels += (LANGUAGE(32204),)
+            functions += (self._showInfo,)
         elif controlId == 141:
-            labels +=(xbmc.getLocalizedString(20352),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(20352),)
+            functions += (self._showInfo,)
         elif controlId == 151:
-            labels +=(xbmc.getLocalizedString(20393),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(20393),)
+            functions += (self._showInfo,)
         elif controlId == 161:
-            labels +=(xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210),)
-            functions +=(self._showInfo, self._getArtist_Albums, self._getArtist_Songs,)
+            labels += (xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210),)
+            functions += (self._showInfo, self._getArtist_Albums, self._getArtist_Songs,)
         elif controlId == 171:
-            labels +=(xbmc.getLocalizedString(13351), LANGUAGE(32203),)
-            functions +=(self._showInfo, self._browse_album,)
+            labels += (xbmc.getLocalizedString(13351), LANGUAGE(32203),)
+            functions += (self._showInfo, self._browse_album,)
         elif controlId == 181:
-            labels +=(xbmc.getLocalizedString(658), LANGUAGE(32206),)
-            functions +=(self._showInfo, self._getSong_Album,)
+            labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
+            functions += (self._showInfo, self._getSong_Album,)
         elif controlId == 211:
-            labels +=(xbmc.getLocalizedString(13346),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(13346),)
+            functions += (self._showInfo,)
             listitem = self.getControl(211).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels +=(LANGUAGE(32205),)
-                functions +=(self._play_trailer,)
+                labels += (LANGUAGE(32205),)
+                functions += (self._play_trailer,)
         elif controlId == 221:
-            labels +=(xbmc.getLocalizedString(19047),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(19047),)
+            functions += (self._showInfo,)
         elif controlId == 231:
-            labels +=(xbmc.getLocalizedString(13346),)
-            functions +=(self._showInfo,)
+            labels += (xbmc.getLocalizedString(13346),)
+            functions += (self._showInfo,)
             listitem = self.getControl(231).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels +=(LANGUAGE(32205),)
-                functions +=(self._play_trailer,)
+                labels += (LANGUAGE(32205),)
+                functions += (self._play_trailer,)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:

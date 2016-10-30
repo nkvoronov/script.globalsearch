@@ -1,5 +1,8 @@
-import sys, datetime, re
-import xbmc, xbmcgui
+import sys
+import datetime
+import re
+import xbmc
+import xbmcgui
 import infodialog
 import json
 import operator
@@ -10,11 +13,11 @@ ADDONVERSION = sys.modules[ "__main__" ].ADDONVERSION
 LANGUAGE     = sys.modules[ "__main__" ].LANGUAGE
 CWD          = sys.modules[ "__main__" ].CWD
 
-ACTION_CANCEL_DIALOG = ( 9, 10, 92, 216, 247, 257, 275, 61467, 61448, )
-ACTION_CONTEXT_MENU = ( 117, )
-ACTION_OSD = ( 107, 163, )
-ACTION_SHOW_GUI = ( 18, )
-ACTION_SHOW_INFO = ( 11, )
+ACTION_CANCEL_DIALOG =(9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
+ACTION_CONTEXT_MENU =(117,)
+ACTION_OSD =(107, 163,)
+ACTION_SHOW_GUI =(18,)
+ACTION_SHOW_INFO =(11,)
 
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
 #               "plotoutline", "title", "originaltitle", "sorttitle", "duration", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
@@ -24,20 +27,20 @@ MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrat
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
 def log(txt):
-    if isinstance (txt,str):
+    if isinstance(txt,str):
         txt = txt.decode("utf-8")
-    message = u'%s: %s' % (ADDONID, txt)
+    message = u'%s: %s' %(ADDONID, txt)
     xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
 
-class GUI( xbmcgui.WindowXMLDialog ):
-    def __init__( self, *args, **kwargs ):
+class GUI(xbmcgui.WindowXMLDialog):
+    def __init__(self, *args, **kwargs):
         # some sanitize work for search string: strip the input and replace some chars
         self.searchstring = kwargs[ "searchstring" ].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
         self.params = kwargs[ "params" ]
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
 
-    def onInit( self ):
+    def onInit(self):
         if self.searchstring == '':
             self._close()
         else:
@@ -55,7 +58,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._init_variables()
             self._fetch_items()
 
-    def _fetch_items( self ):
+    def _fetch_items(self):
         if self.movies == 'true':
             self._fetch_movies('title', 342, 111)
         if self.tvshows == 'true':
@@ -78,80 +81,80 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self._fetch_movies('director', 20348, 231)
         self._check_focus()
 
-    def _hide_controls( self ):
-        self.getControl( 119 ).setVisible( False )
-        self.getControl( 129 ).setVisible( False )
-        self.getControl( 139 ).setVisible( False )
-        self.getControl( 149 ).setVisible( False )
-        self.getControl( 159 ).setVisible( False )
-        self.getControl( 169 ).setVisible( False )
-        self.getControl( 179 ).setVisible( False )
-        self.getControl( 189 ).setVisible( False )
+    def _hide_controls(self):
+        self.getControl(119).setVisible(False)
+        self.getControl(129).setVisible(False)
+        self.getControl(139).setVisible(False)
+        self.getControl(149).setVisible(False)
+        self.getControl(159).setVisible(False)
+        self.getControl(169).setVisible(False)
+        self.getControl(179).setVisible(False)
+        self.getControl(189).setVisible(False)
         try:
-            self.getControl( 219 ).setVisible( False )
+            self.getControl(219).setVisible(False)
         except:
             self.ACTORSUPPORT = False
         try:
-            self.getControl( 229 ).setVisible( False )
+            self.getControl(229).setVisible(False)
         except:
             self.EPGSUPPORT = False
         try:
-            self.getControl( 239 ).setVisible( False )
+            self.getControl(239).setVisible(False)
         except:
             self.DIRECTORSUPPORT = False
-        self.getControl( 198 ).setVisible( False )
-        self.getControl( 199 ).setVisible( False )
+        self.getControl(198).setVisible(False)
+        self.getControl(199).setVisible(False)
 
-    def _reset_controls( self ):
-        self.getControl( 111 ).reset()
-        self.getControl( 121 ).reset()
-        self.getControl( 131 ).reset()
-        self.getControl( 141 ).reset()
-        self.getControl( 151 ).reset()
-        self.getControl( 161 ).reset()
-        self.getControl( 171 ).reset()
-        self.getControl( 181 ).reset()
+    def _reset_controls(self):
+        self.getControl(111).reset()
+        self.getControl(121).reset()
+        self.getControl(131).reset()
+        self.getControl(141).reset()
+        self.getControl(151).reset()
+        self.getControl(161).reset()
+        self.getControl(171).reset()
+        self.getControl(181).reset()
         if self.ACTORSUPPORT:
-            self.getControl( 211 ).reset()
+            self.getControl(211).reset()
         if self.EPGSUPPORT:
-            self.getControl( 221 ).reset()
+            self.getControl(221).reset()
         if self.DIRECTORSUPPORT:
-            self.getControl( 231 ).reset()
+            self.getControl(231).reset()
 
-    def _parse_argv( self ):
-        self.movies = self.params.get( "movies", "" )
-        self.tvshows = self.params.get( "tvshows", "" )
-        self.episodes = self.params.get( "episodes", "" )
-        self.musicvideos = self.params.get( "musicvideos", "" )
-        self.artists = self.params.get( "artists", "" )
-        self.albums = self.params.get( "albums", "" )
-        self.songs = self.params.get( "songs", "" )
-        self.actors = self.params.get( "actors", "" )
-        self.directors = self.params.get( "directors", "" )
-        self.epg = self.params.get( "epg", "" )
+    def _parse_argv(self):
+        self.movies = self.params.get("movies", "")
+        self.tvshows = self.params.get("tvshows", "")
+        self.episodes = self.params.get("episodes", "")
+        self.musicvideos = self.params.get("musicvideos", "")
+        self.artists = self.params.get("artists", "")
+        self.albums = self.params.get("albums", "")
+        self.songs = self.params.get("songs", "")
+        self.actors = self.params.get("actors", "")
+        self.directors = self.params.get("directors", "")
+        self.epg = self.params.get("epg", "")
 
-    def _load_settings( self ):
-        self.movies = ADDON.getSetting( "movies" )
-        self.tvshows = ADDON.getSetting( "tvshows" )
-        self.episodes = ADDON.getSetting( "episodes" )
-        self.musicvideos = ADDON.getSetting( "musicvideos" )
-        self.artists = ADDON.getSetting( "artists" )
-        self.albums = ADDON.getSetting( "albums" )
-        self.songs = ADDON.getSetting( "songs" )
-        self.actors = ADDON.getSetting( "actors" )
-        self.directors = ADDON.getSetting( "directors" )
-        self.epg = ADDON.getSetting( "epg" )
+    def _load_settings(self):
+        self.movies = ADDON.getSetting("movies")
+        self.tvshows = ADDON.getSetting("tvshows")
+        self.episodes = ADDON.getSetting("episodes")
+        self.musicvideos = ADDON.getSetting("musicvideos")
+        self.artists = ADDON.getSetting("artists")
+        self.albums = ADDON.getSetting("albums")
+        self.songs = ADDON.getSetting("songs")
+        self.actors = ADDON.getSetting("actors")
+        self.directors = ADDON.getSetting("directors")
+        self.epg = ADDON.getSetting("epg")
 
-    def _reset_variables( self ):
+    def _reset_variables(self):
         self.focusset= 'false'
-        self.getControl( 190 ).setLabel( xbmc.getLocalizedString(194) )
+        self.getControl(190).setLabel(xbmc.getLocalizedString(194))
 
-    def _init_variables( self ):
+    def _init_variables(self):
         self.fetch_seasonepisodes = 'false'
         self.fetch_albumssongs = 'false'
         self.fetch_songalbum = 'false'
         self.playingtrailer = 'false'
-        self.getControl( 198 ).setLabel( LANGUAGE(32299) )
+        self.getControl(198).setLabel(LANGUAGE(32299))
         self.Player = MyPlayer()
         self.Player.gui = self
 
@@ -160,13 +163,13 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.getControl(191).setLabel(xbmc.getLocalizedString(label))
         count = 0
         if query == 'movies':
-            rule = '{"or": [{"field":"title", "operator":"contains", "value":"%s"}, {"field":"originaltitle", "operator":"contains", "value":"%s"}]}' % (self.searchstring, self.searchstring)
+            rule = '{"or": [{"field":"title", "operator":"contains", "value":"%s"}, {"field":"originaltitle", "operator":"contains", "value":"%s"}]}' %(self.searchstring, self.searchstring)
         else:
-            rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetMovies", "params":{"properties":%s, "sort":{"method":"label"}, "filter": %s}, "id": 1}' % (json.dumps(MOVIELABELS), rule))
+            rule = '{"field":"%s", "operator":"contains", "value":"%s"}' %(query, self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetMovies", "params":{"properties":%s, "sort":{"method":"label"}, "filter": %s}, "id": 1}' %(json.dumps(MOVIELABELS), rule))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
                 count += 1
                 listitem = xbmcgui.ListItem(item['title'])
@@ -188,14 +191,14 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 self.setFocus(self.getControl(control))
                 self.focusset = 'true'
 
-    def _fetch_tvshows( self ):
+    def _fetch_tvshows(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20343) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(20343))
         count = 0
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": ["title", "genre", "studio", "premiered", "plot", "fanart", "thumbnail", "playcount", "year", "mpaa", "episode", "rating", "userrating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('tvshows'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('tvshows'):
             for item in json_response['result']['tvshows']:
                 tvshow = item['title']
                 count = count + 1
@@ -218,40 +221,40 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 path = path = 'videodb://tvshows/titles/' + tvshowid + '/'
                 year = str(item['year'])
                 listitem = xbmcgui.ListItem(label=tvshow, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "art(banner)", banner )
-                listitem.setProperty( "art(poster)", poster )
-                listitem.setProperty( "episode", episode )
-                listitem.setProperty( "mpaa", mpaa )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "plot", plot )
-                listitem.setProperty( "premiered", premiered )
-                listitem.setProperty( "studio", studio )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", tvshowid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("art(banner)", banner)
+                listitem.setProperty("art(poster)", poster)
+                listitem.setProperty("episode", episode)
+                listitem.setProperty("mpaa", mpaa)
+                listitem.setProperty("year", year)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("genre", genre)
+                listitem.setProperty("plot", plot)
+                listitem.setProperty("premiered", premiered)
+                listitem.setProperty("studio", studio)
+                listitem.setProperty("rating", rating)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("playcount", playcount)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", tvshowid)
                 listitems.append(listitem)
-        self.getControl( 121 ).addItems( listitems )
+        self.getControl(121).addItems(listitems)
         if count > 0:
-            self.getControl( 120 ).setLabel( str(count) )
-            self.getControl( 129 ).setVisible( True )
+            self.getControl(120).setLabel(str(count))
+            self.getControl(129).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 121 ) )
+                self.setFocus(self.getControl(121))
                 self.focusset = 'true'
 
-    def _fetch_seasons( self ):
+    def _fetch_seasons(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20343) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(20343))
         count = 0
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetSeasons", "params": {"properties": ["showtitle", "season", "fanart", "thumbnail", "playcount", "episode", "userrating"], "sort": { "method": "label" }, "tvshowid":%s }, "id": 1}' % self.tvshowid)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('seasons'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('seasons'):
             for item in json_response['result']['seasons']:
                 tvshow = item['showtitle']
                 count = count + 1
@@ -265,28 +268,28 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     userrating = ''
                 thumb = item['thumbnail']
                 listitem = xbmcgui.ListItem(label=season, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "episode", episode )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "tvshowtitle", tvshow )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", str(self.tvshowid) )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("episode", episode)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("tvshowtitle", tvshow)
+                listitem.setProperty("playcount", playcount)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", str(self.tvshowid))
                 listitems.append(listitem)
-        self.getControl( 131 ).addItems( listitems )
+        self.getControl(131).addItems(listitems)
         if count > 0:
             self.foundseasons= 'true'
-            self.getControl( 130 ).setLabel( str(count) )
-            self.getControl( 139 ).setVisible( True )
+            self.getControl(130).setLabel(str(count))
+            self.getControl(139).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 131 ) )
+                self.setFocus(self.getControl(131))
                 self.focusset = 'true'
 
-    def _fetch_episodes( self ):
+    def _fetch_episodes(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20360) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(20360))
         count = 0
         if self.fetch_seasonepisodes == 'true':
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": ["title", "streamdetails", "plot", "firstaired", "runtime", "season", "episode", "showtitle", "thumbnail", "fanart", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "title" }, "tvshowid":%s }, "id": 1}' % self.tvshowid)
@@ -294,7 +297,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": ["title", "streamdetails", "plot", "firstaired", "runtime", "season", "episode", "showtitle", "thumbnail", "fanart", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('episodes'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('episodes'):
             for item in json_response['result']['episodes']:
                 if self.fetch_seasonepisodes == 'true':
                     episode = item['showtitle']
@@ -360,43 +363,43 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     videoaspect = ''
                     videoresolution = ''
                 listitem = xbmcgui.ListItem(label=episode, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "episode", episodenumber )
-                listitem.setProperty( "plot", plot )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "director", director )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "season", seasonnumber )
-                listitem.setProperty( "duration", runtime )
-                listitem.setProperty( "tvshowtitle", tvshowname )
-                listitem.setProperty( "premiered", premiered )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "videoresolution", videoresolution )
-                listitem.setProperty( "videocodec", videocodec )
-                listitem.setProperty( "videoaspect", videoaspect )
-                listitem.setProperty( "audiocodec", audiocodec )
-                listitem.setProperty( "audiochannels", audiochannels )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", episodeid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("episode", episodenumber)
+                listitem.setProperty("plot", plot)
+                listitem.setProperty("rating", rating)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("director", director)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("season", seasonnumber)
+                listitem.setProperty("duration", runtime)
+                listitem.setProperty("tvshowtitle", tvshowname)
+                listitem.setProperty("premiered", premiered)
+                listitem.setProperty("playcount", playcount)
+                listitem.setProperty("videoresolution", videoresolution)
+                listitem.setProperty("videocodec", videocodec)
+                listitem.setProperty("videoaspect", videoaspect)
+                listitem.setProperty("audiocodec", audiocodec)
+                listitem.setProperty("audiochannels", audiochannels)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", episodeid)
                 listitems.append(listitem)
-        self.getControl( 141 ).addItems( listitems )
+        self.getControl(141).addItems(listitems)
         if count > 0:
-            self.getControl( 140 ).setLabel( str(count) )
-            self.getControl( 149 ).setVisible( True )
+            self.getControl(140).setLabel(str(count))
+            self.getControl(149).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 141 ) )
+                self.setFocus(self.getControl(141))
                 self.focusset = 'true'
 
-    def _fetch_musicvideos( self ):
+    def _fetch_musicvideos(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20389) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(20389))
         count = 0
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": ["title", "streamdetails", "runtime", "genre", "studio", "artist", "album", "year", "plot", "fanart", "thumbnail", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
             for item in json_response['result']['musicvideos']:
                 musicvideoid = str(item['musicvideoid'])
                 musicvideo = item['title']
@@ -460,44 +463,44 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     videoresolution = ''
                     duration = ''
                 listitem = xbmcgui.ListItem(label=musicvideo, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "album", album )
-                listitem.setProperty( "artist", artist )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "director", director )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "plot", plot )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "duration", duration )
-                listitem.setProperty( "studio", studio )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "videoresolution", videoresolution )
-                listitem.setProperty( "videocodec", videocodec )
-                listitem.setProperty( "videoaspect", videoaspect )
-                listitem.setProperty( "audiocodec", audiocodec )
-                listitem.setProperty( "audiochannels", audiochannels )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", musicvideoid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("album", album)
+                listitem.setProperty("artist", artist)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("director", director)
+                listitem.setProperty("genre", genre)
+                listitem.setProperty("plot", plot)
+                listitem.setProperty("rating", rating)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("duration", duration)
+                listitem.setProperty("studio", studio)
+                listitem.setProperty("year", year)
+                listitem.setProperty("playcount", playcount)
+                listitem.setProperty("videoresolution", videoresolution)
+                listitem.setProperty("videocodec", videocodec)
+                listitem.setProperty("videoaspect", videoaspect)
+                listitem.setProperty("audiocodec", audiocodec)
+                listitem.setProperty("audiochannels", audiochannels)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", musicvideoid)
                 listitems.append(listitem)
-        self.getControl( 151 ).addItems( listitems )
+        self.getControl(151).addItems(listitems)
         if count > 0:
-            self.getControl( 150 ).setLabel( str(count) )
-            self.getControl( 159 ).setVisible( True )
+            self.getControl(150).setLabel(str(count))
+            self.getControl(159).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 151 ) )
+                self.setFocus(self.getControl(151))
                 self.focusset = 'true'
 
-    def _fetch_artists( self ):
+    def _fetch_artists(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(133) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(133))
         count = 0
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists", "params": {"properties": ["genre", "description", "fanart", "thumbnail", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style"], "sort": { "method": "label" }, "filter": {"field": "artist", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('artists'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('artists'):
             for item in json_response['result']['artists']:
                 artist = item['label']
                 count = count + 1
@@ -515,32 +518,32 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 thumb = item['thumbnail']
                 yearsactive = " / ".join(item['yearsactive'])
                 listitem = xbmcgui.ListItem(label=artist, iconImage='DefaultArtist.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "artist_born", born )
-                listitem.setProperty( "artist_died", died )
-                listitem.setProperty( "artist_formed", formed )
-                listitem.setProperty( "artist_disbanded", disbanded )
-                listitem.setProperty( "artist_yearsactive", yearsactive )
-                listitem.setProperty( "artist_mood", mood )
-                listitem.setProperty( "artist_style", style )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "artist_genre", genre )
-                listitem.setProperty( "artist_description", description )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", artistid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("artist_born", born)
+                listitem.setProperty("artist_died", died)
+                listitem.setProperty("artist_formed", formed)
+                listitem.setProperty("artist_disbanded", disbanded)
+                listitem.setProperty("artist_yearsactive", yearsactive)
+                listitem.setProperty("artist_mood", mood)
+                listitem.setProperty("artist_style", style)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("artist_genre", genre)
+                listitem.setProperty("artist_description", description)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", artistid)
                 listitems.append(listitem)
-        self.getControl( 161 ).addItems( listitems )
+        self.getControl(161).addItems(listitems)
         if count > 0:
-            self.getControl( 160 ).setLabel( str(count) )
-            self.getControl( 169 ).setVisible( True )
+            self.getControl(160).setLabel(str(count))
+            self.getControl(169).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 161 ) )
+                self.setFocus(self.getControl(161))
                 self.focusset = 'true'
 
-    def _fetch_albums( self ):
+    def _fetch_albums(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(132) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(132))
         count = 0
         if self.fetch_albumssongs == 'true':
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"artistid": %s} }, "id": 1}' % self.artistid)
@@ -548,7 +551,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"field": "album", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('albums'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('albums'):
             for item in json_response['result']['albums']:
                 if self.fetch_albumssongs == 'true':
                     album = " / ".join(item['artist'])
@@ -581,34 +584,34 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 thumb = item['thumbnail']
                 year = str(item['year'])
                 listitem = xbmcgui.ListItem(label=album, iconImage='DefaultAlbumCover.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "artist", artist )
-                listitem.setProperty( "album_label", label )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "album_description", description )
-                listitem.setProperty( "album_theme", theme )
-                listitem.setProperty( "album_style", style )
-                listitem.setProperty( "album_rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "album_type", albumtype )
-                listitem.setProperty( "album_mood", mood )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", albumid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("artist", artist)
+                listitem.setProperty("album_label", label)
+                listitem.setProperty("genre", genre)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("album_description", description)
+                listitem.setProperty("album_theme", theme)
+                listitem.setProperty("album_style", style)
+                listitem.setProperty("album_rating", rating)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("album_type", albumtype)
+                listitem.setProperty("album_mood", mood)
+                listitem.setProperty("year", year)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", albumid)
                 listitems.append(listitem)
-        self.getControl( 171 ).addItems( listitems )
+        self.getControl(171).addItems(listitems)
         if count > 0:
-            self.getControl( 170 ).setLabel( str(count) )
-            self.getControl( 179 ).setVisible( True )
+            self.getControl(170).setLabel(str(count))
+            self.getControl(179).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 171 ) )
+                self.setFocus(self.getControl(171))
                 self.focusset = 'true'
 
-    def _fetch_songs( self ):
+    def _fetch_songs(self):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(134) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(134))
         count = 0
         if self.fetch_albumssongs == 'true':
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"], "sort": { "method": "title" }, "filter": {"artistid": %s} }, "id": 1}' % self.artistid)
@@ -616,7 +619,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('songs'):
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('songs'):
             for item in json_response['result']['songs']:
                 if self.fetch_albumssongs == 'true':
                     song = " / ".join(item['artist'])
@@ -646,50 +649,50 @@ class GUI( xbmcgui.WindowXMLDialog ):
                     userrating = ''
                 year = str(item['year'])
                 listitem = xbmcgui.ListItem(label=song, iconImage='DefaultAlbumCover.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "artist", artist )
-                listitem.setProperty( "album", album )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "comment", comment )
-                listitem.setProperty( "track", track )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "duration", duration )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", songid )
+                listitem.setProperty("icon", thumb)
+                listitem.setProperty("artist", artist)
+                listitem.setProperty("album", album)
+                listitem.setProperty("genre", genre)
+                listitem.setProperty("comment", comment)
+                listitem.setProperty("track", track)
+                listitem.setProperty("rating", rating)
+                listitem.setProperty("userrating", userrating)
+                listitem.setProperty("playcount", playcount)
+                listitem.setProperty("duration", duration)
+                listitem.setProperty("fanart", fanart)
+                listitem.setProperty("year", year)
+                listitem.setProperty("path", path)
+                listitem.setProperty("dbid", songid)
                 listitems.append(listitem)
-        self.getControl( 181 ).addItems( listitems )
+        self.getControl(181).addItems(listitems)
         if count > 0:
-            self.getControl( 180 ).setLabel( str(count) )
-            self.getControl( 189 ).setVisible( True )
+            self.getControl(180).setLabel(str(count))
+            self.getControl(189).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 181 ) )
+                self.setFocus(self.getControl(181))
                 self.focusset = 'true'
 
-    def _fetch_channelgroups( self ):
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(19069) )
+    def _fetch_channelgroups(self):
+        self.getControl(191).setLabel(xbmc.getLocalizedString(19069))
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannelGroups", "params": {"channeltype": "tv"}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if (json_response.has_key('result')) and (json_response['result'] != None) and (json_response['result'].has_key('channelgroups')):
+        if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('channelgroups')):
             for item in json_response['result']['channelgroups']:
                 channelgrouplist.append(item['channelgroupid'])
             if channelgrouplist:
                 self._fetch_channels(channelgrouplist)
 
-    def _fetch_channels( self, channelgrouplist ):
+    def _fetch_channels(self, channelgrouplist):
         # get all channel id's
         channellist = []
         for channelgroupid in channelgrouplist:
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannels", "params": {"channelgroupid": %i, "properties": ["channel", "thumbnail"]}, "id": 1}' % channelgroupid)
             json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
-            if (json_response.has_key('result')) and (json_response['result'] != None) and (json_response['result'].has_key('channels')):
+            if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('channels')):
                 for item in json_response['result']['channels']:
                     channellist.append(item)
         if channellist:
@@ -699,7 +702,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             channels.sort(key=operator.itemgetter('channelid'))
             self._fetch_epg(channels)
 
-    def _fetch_epg( self, channels ):
+    def _fetch_epg(self, channels):
         listitems = []
         count = 0
         # get all programs for every channel id
@@ -710,10 +713,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
             json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetBroadcasts", "params": {"channelid": %i, "properties": ["starttime", "endtime", "runtime", "genre", "plot"]}, "id": 1}' % channelid)
             json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
-            if (json_response.has_key('result')) and (json_response['result'] != None) and (json_response['result'].has_key('broadcasts')):
+            if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('broadcasts')):
                 for item in json_response['result']['broadcasts']:
                     broadcastname = item['label']
-                    epgmatch = re.search( '.*' + self.searchstring + '.*', broadcastname, re.I )
+                    epgmatch = re.search('.*' + self.searchstring + '.*', broadcastname, re.I)
                     if epgmatch:
                         count = count + 1
                         broadcastid = item['broadcastid']
@@ -723,22 +726,22 @@ class GUI( xbmcgui.WindowXMLDialog ):
                         starttime = item['starttime']
                         endtime = item['endtime']
                         listitem = xbmcgui.ListItem(label=broadcastname, iconImage='DefaultFolder.png', thumbnailImage=channelthumb)
-                        listitem.setProperty( "icon", channelthumb )
-                        listitem.setProperty( "genre", genre )
-                        listitem.setProperty( "plot", plot )
-                        listitem.setProperty( "starttime", starttime )
-                        listitem.setProperty( "endtime", endtime )
-                        listitem.setProperty( "duration", str(duration) )
-                        listitem.setProperty( "channelname", channelname )
-                        listitem.setProperty( "dbid", str(channelid) )
+                        listitem.setProperty("icon", channelthumb)
+                        listitem.setProperty("genre", genre)
+                        listitem.setProperty("plot", plot)
+                        listitem.setProperty("starttime", starttime)
+                        listitem.setProperty("endtime", endtime)
+                        listitem.setProperty("duration", str(duration))
+                        listitem.setProperty("channelname", channelname)
+                        listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
-        self.getControl( 221 ).addItems( listitems )
+        self.getControl(221).addItems(listitems)
         if count > 0:
-            self.getControl( 220 ).setLabel( str(count) )
-            self.getControl( 229 ).setVisible( True )
+            self.getControl(220).setLabel(str(count))
+            self.getControl(229).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( 221 ) )
+                self.setFocus(self.getControl(221))
                 self.focusset = 'true'
 
     def _get_info(self, labels, item):
@@ -752,9 +755,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         labels['mediatype'] = item
         return labels
 
-    def _getTvshow_Seasons( self ):
+    def _getTvshow_Seasons(self):
         self.fetch_seasonepisodes = 'true'
-        listitem = self.getControl( 121 ).getSelectedItem()
+        listitem = self.getControl(121).getSelectedItem()
         self.tvshowid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
@@ -764,9 +767,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_seasonepisodes = 'false'
 
-    def _getTvshow_Episodes( self ):
+    def _getTvshow_Episodes(self):
         self.fetch_seasonepisodes = 'true'
-        listitem = self.getControl( 121 ).getSelectedItem()
+        listitem = self.getControl(121).getSelectedItem()
         self.tvshowid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
@@ -776,9 +779,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_seasonepisodes = 'false'
 
-    def _getArtist_Albums( self ):
+    def _getArtist_Albums(self):
         self.fetch_albumssongs = 'true'
-        listitem = self.getControl( 161 ).getSelectedItem()
+        listitem = self.getControl(161).getSelectedItem()
         self.artistid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
@@ -788,9 +791,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_albumssongs = 'false'
 
-    def _getArtist_Songs( self ):
+    def _getArtist_Songs(self):
         self.fetch_albumssongs = 'true'
-        listitem = self.getControl( 161 ).getSelectedItem()
+        listitem = self.getControl(161).getSelectedItem()
         self.artistid = listitem.getProperty('dbid')
         self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
@@ -800,9 +803,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_albumssongs = 'false'
 
-    def _getSong_Album( self ):
+    def _getSong_Album(self):
         self.fetch_songalbum = 'true'
-        listitem = self.getControl( 181 ).getSelectedItem()
+        listitem = self.getControl(181).getSelectedItem()
         self.artistname = listitem.getProperty('artist')
         self.searchstring = listitem.getProperty('album').replace('(','[(]').replace(')','[)]').replace('+','[+]')
         self._reset_variables()
@@ -812,112 +815,112 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self._check_focus()
         self.fetch_songalbum = 'false'
 
-    def _play_video( self, path ):
+    def _play_video(self, path):
         self._close()
-        xbmc.Player().play( path )
+        xbmc.Player().play(path)
 
-    def _play_audio( self, path, listitem ):
+    def _play_audio(self, path, listitem):
         self._close()
-        xbmc.Player().play( path, listitem )
+        xbmc.Player().play(path, listitem)
 
-    def _play_trailer( self ):
+    def _play_trailer(self):
         self.playingtrailer = 'true'
-        self.getControl( 100 ).setVisible( False )
-        self.Player.play( self.trailer )
+        self.getControl(100).setVisible(False)
+        self.Player.play(self.trailer)
 
-    def _trailerstopped( self ):
-        self.getControl( 100 ).setVisible( True )
+    def _trailerstopped(self):
+        self.getControl(100).setVisible(True)
         self.playingtrailer = 'false'
 
-    def _play_album( self ):
+    def _play_album(self):
         self._close()
         xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "albumid": %d } }, "id": 1 }' % int(self.albumid))
 
-    def _browse_video( self, path ):
+    def _browse_video(self, path):
         self._close()
         xbmc.executebuiltin('ActivateWindow(Videos,' + path + ',return)')
 
-    def _browse_audio( self, path ):
+    def _browse_audio(self, path):
         self._close()
         xbmc.executebuiltin('ActivateWindow(MusicLibrary,' + path + ',return)')
 
-    def _browse_album( self ):
-        listitem = self.getControl( 171 ).getSelectedItem()
+    def _browse_album(self):
+        listitem = self.getControl(171).getSelectedItem()
         path = listitem.getProperty('path')
         self._close()
         xbmc.executebuiltin('ActivateWindow(MusicLibrary,' + path + ',return)')
 
-    def _check_focus( self ):
-        self.getControl( 190 ).setLabel( '' )
-        self.getControl( 191 ).setLabel( '' )
-        self.getControl( 198 ).setVisible( True )
+    def _check_focus(self):
+        self.getControl(190).setLabel('')
+        self.getControl(191).setLabel('')
+        self.getControl(198).setVisible(True)
         if self.focusset == 'false':
-            self.getControl( 199 ).setVisible( True )
-            self.setFocus( self.getControl( 198 ) )
+            self.getControl(199).setVisible(True)
+            self.setFocus(self.getControl(198))
             dialog = xbmcgui.Dialog()
             ret = dialog.yesno(xbmc.getLocalizedString(284), LANGUAGE(32298))
             if ret:
                 self._newSearch()
 
-    def _showContextMenu( self ):
-        labels = ()
-        functions = ()
+    def _showContextMenu(self):
+        labels =()
+        functions =()
         controlId = self.getFocusId()
         if controlId == 111:
-            labels += ( xbmc.getLocalizedString(13346), )
-            functions += ( self._showInfo, )
-            listitem = self.getControl( 111 ).getSelectedItem()
+            labels +=(xbmc.getLocalizedString(13346),)
+            functions +=(self._showInfo,)
+            listitem = self.getControl(111).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels += ( LANGUAGE(32205), )
-                functions += ( self._play_trailer, )
+                labels +=(LANGUAGE(32205),)
+                functions +=(self._play_trailer,)
         elif controlId == 121:
-            labels += ( xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208), )
-            functions += ( self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes, )
+            labels +=(xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
+            functions +=(self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes,)
         elif controlId == 131:
-            labels += ( LANGUAGE(32204), )
-            functions += ( self._showInfo, )
+            labels +=(LANGUAGE(32204),)
+            functions +=(self._showInfo,)
         elif controlId == 141:
-            labels += ( xbmc.getLocalizedString(20352), )
-            functions += ( self._showInfo, )
+            labels +=(xbmc.getLocalizedString(20352),)
+            functions +=(self._showInfo,)
         elif controlId == 151:
-            labels += ( xbmc.getLocalizedString(20393), )
-            functions += ( self._showInfo, )
+            labels +=(xbmc.getLocalizedString(20393),)
+            functions +=(self._showInfo,)
         elif controlId == 161:
-            labels += ( xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210), )
-            functions += ( self._showInfo, self._getArtist_Albums, self._getArtist_Songs, )
+            labels +=(xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210),)
+            functions +=(self._showInfo, self._getArtist_Albums, self._getArtist_Songs,)
         elif controlId == 171:
-            labels += ( xbmc.getLocalizedString(13351), LANGUAGE(32203), )
-            functions += ( self._showInfo, self._browse_album, )
+            labels +=(xbmc.getLocalizedString(13351), LANGUAGE(32203),)
+            functions +=(self._showInfo, self._browse_album,)
         elif controlId == 181:
-            labels += ( xbmc.getLocalizedString(658), LANGUAGE(32206), )
-            functions += ( self._showInfo, self._getSong_Album, )
+            labels +=(xbmc.getLocalizedString(658), LANGUAGE(32206),)
+            functions +=(self._showInfo, self._getSong_Album,)
         elif controlId == 211:
-            labels += ( xbmc.getLocalizedString(13346), )
-            functions += ( self._showInfo, )
-            listitem = self.getControl( 211 ).getSelectedItem()
+            labels +=(xbmc.getLocalizedString(13346),)
+            functions +=(self._showInfo,)
+            listitem = self.getControl(211).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels += ( LANGUAGE(32205), )
-                functions += ( self._play_trailer, )
+                labels +=(LANGUAGE(32205),)
+                functions +=(self._play_trailer,)
         elif controlId == 221:
-            labels += ( xbmc.getLocalizedString(19047), )
-            functions += ( self._showInfo, )
+            labels +=(xbmc.getLocalizedString(19047),)
+            functions +=(self._showInfo,)
         elif controlId == 231:
-            labels += ( xbmc.getLocalizedString(13346), )
-            functions += ( self._showInfo, )
-            listitem = self.getControl( 231 ).getSelectedItem()
+            labels +=(xbmc.getLocalizedString(13346),)
+            functions +=(self._showInfo,)
+            listitem = self.getControl(231).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
-                labels += ( LANGUAGE(32205), )
-                functions += ( self._play_trailer, )
+                labels +=(LANGUAGE(32205),)
+                functions +=(self._play_trailer,)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
                 functions[ selection ]()
 
 
-    def _showInfo( self ):
+    def _showInfo(self):
         items = []
         controlId = self.getFocusId()
         if controlId == 111:
@@ -942,126 +945,126 @@ class GUI( xbmcgui.WindowXMLDialog ):
             content = "epg"
         elif controlId == 231:
             content = "directors"
-        listitem = self.getControl( controlId ).getSelectedItem()
-        info_dialog = infodialog.GUI( "script-globalsearch-infodialog.xml" , CWD, "default", listitem=listitem, content=content )
+        listitem = self.getControl(controlId).getSelectedItem()
+        info_dialog = infodialog.GUI("script-globalsearch-infodialog.xml" , CWD, "default", listitem=listitem, content=content)
         info_dialog.doModal()
         if info_dialog.action is not None:
             if info_dialog.action == 'play_programme':
-                listitem = self.getControl( 221 ).getSelectedItem()
+                listitem = self.getControl(221).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
             elif info_dialog.action == 'play_movie':
-                listitem = self.getControl( 111 ).getSelectedItem()
+                listitem = self.getControl(111).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
             elif info_dialog.action == 'play_trailer':
-                listitem = self.getControl( 111 ).getSelectedItem()
+                listitem = self.getControl(111).getSelectedItem()
                 self.trailer = listitem.getProperty('trailer')
                 self._play_trailer()
             elif info_dialog.action == 'browse_tvshow':
-                listitem = self.getControl( 121 ).getSelectedItem()
+                listitem = self.getControl(121).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._browse_video(path)
             elif info_dialog.action == 'browse_season':
-                listitem = self.getControl( 131 ).getSelectedItem()
+                listitem = self.getControl(131).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._browse_video(path)
             elif info_dialog.action == 'play_episode':
-                listitem = self.getControl( 141 ).getSelectedItem()
+                listitem = self.getControl(141).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
             elif info_dialog.action == 'play_musicvideo':
-                listitem = self.getControl( 151 ).getSelectedItem()
+                listitem = self.getControl(151).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
             elif info_dialog.action == 'browse_artist':
-                listitem = self.getControl( 161 ).getSelectedItem()
+                listitem = self.getControl(161).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._browse_audio(path)
             elif info_dialog.action == 'play_album':
-                listitem = self.getControl( 171 ).getSelectedItem()
+                listitem = self.getControl(171).getSelectedItem()
                 self.albumid = listitem.getProperty('dbid')
                 self._play_album()
             elif info_dialog.action == 'browse_album':
-                listitem = self.getControl( 171 ).getSelectedItem()
+                listitem = self.getControl(171).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._browse_audio(path)
             elif info_dialog.action == 'play_song':
-                listitem = self.getControl( 181 ).getSelectedItem()
+                listitem = self.getControl(181).getSelectedItem()
                 path = listitem.getProperty('path')
             elif info_dialog.action == 'play_movie_actors':
-                listitem = self.getControl( 211 ).getSelectedItem()
+                listitem = self.getControl(211).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
                 self._play_audio(path, listitem)
             elif info_dialog.action == 'play_trailer_actors':
-                listitem = self.getControl( 211 ).getSelectedItem()
+                listitem = self.getControl(211).getSelectedItem()
                 self.trailer = listitem.getProperty('trailer')
                 self._play_trailer()
             elif info_dialog.action == 'play_movie_directors':
-                listitem = self.getControl( 231 ).getSelectedItem()
+                listitem = self.getControl(231).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
                 self._play_audio(path, listitem)
             elif info_dialog.action == 'play_trailer_directors':
-                listitem = self.getControl( 231 ).getSelectedItem()
+                listitem = self.getControl(231).getSelectedItem()
                 self.trailer = listitem.getProperty('trailer')
                 self._play_trailer()
         del info_dialog
 
-    def _newSearch( self ):
-        keyboard = xbmc.Keyboard( '', LANGUAGE(32101), False )
+    def _newSearch(self):
+        keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
         keyboard.doModal()
-        if ( keyboard.isConfirmed() ):
+        if(keyboard.isConfirmed()):
             self.searchstring = keyboard.getText()
             self._reset_controls()
             self.onInit()
 
-    def onClick( self, controlId ):
+    def onClick(self, controlId):
         if controlId == 111:
-            listitem = self.getControl( 111 ).getSelectedItem()
+            listitem = self.getControl(111).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 121:
-            listitem = self.getControl( 121 ).getSelectedItem()
+            listitem = self.getControl(121).getSelectedItem()
             path = listitem.getProperty('path')
             self._browse_video(path)
         elif controlId == 131:
-            listitem = self.getControl( 131 ).getSelectedItem()
+            listitem = self.getControl(131).getSelectedItem()
             path = listitem.getProperty('path')
             self._browse_video(path)
         elif controlId == 141:
-            listitem = self.getControl( 141 ).getSelectedItem()
+            listitem = self.getControl(141).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 151:
-            listitem = self.getControl( 151 ).getSelectedItem()
+            listitem = self.getControl(151).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 161:
-            listitem = self.getControl( 161 ).getSelectedItem()
+            listitem = self.getControl(161).getSelectedItem()
             path = listitem.getProperty('path')
             self._browse_audio(path)
         elif controlId == 171:
-            listitem = self.getControl( 171 ).getSelectedItem()
+            listitem = self.getControl(171).getSelectedItem()
             self.albumid = listitem.getProperty('dbid')
             self._play_album()
         elif controlId == 181:
-            listitem = self.getControl( 181 ).getSelectedItem()
+            listitem = self.getControl(181).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_audio(path, listitem)
         if controlId == 211:
-            listitem = self.getControl( 211 ).getSelectedItem()
+            listitem = self.getControl(211).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 231:
-            listitem = self.getControl( 231 ).getSelectedItem()
+            listitem = self.getControl(231).getSelectedItem()
             path = listitem.getProperty('path')
             self._play_video(path)
         elif controlId == 198:
             self._newSearch()
 
-    def onAction( self, action ):
+    def onAction(self, action):
         if action.getId() in ACTION_CANCEL_DIALOG:
             if self.playingtrailer == 'false':
                 self._close()
@@ -1083,7 +1086,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             else:
                 self._showInfo()
 
-    def _close( self ):
+    def _close(self):
             log('script stopped')
             self.close()
             xbmc.sleep(300)
@@ -1091,10 +1094,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
 
 class MyPlayer(xbmc.Player):
     def __init__(self):
-        xbmc.Player.__init__( self )
+        xbmc.Player.__init__(self)
 
-    def onPlayBackEnded( self ):
+    def onPlayBackEnded(self):
         self.gui._trailerstopped()
 
-    def onPlayBackStopped( self ):
+    def onPlayBackStopped(self):
         self.gui._trailerstopped()

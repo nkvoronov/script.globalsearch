@@ -1,3 +1,6 @@
+v8.0.0
+- rewrite for Kodi J*
+
 v7.3.1
 - remove test settings
 

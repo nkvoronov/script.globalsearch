@@ -16,6 +16,13 @@ ACTION_OSD = ( 107, 163, )
 ACTION_SHOW_GUI = ( 18, )
 ACTION_SHOW_INFO = ( 11, )
 
+#VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
+#               "plotoutline", "title", "originaltitle", "sorttitle", "duration", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
+#               "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "mediatype", "dbid", "streamdetails", "art"]
+
+MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
+               "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
+
 def log(txt):
     if isinstance (txt,str):
         txt = txt.decode("utf-8")
@@ -148,112 +155,37 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.Player = MyPlayer()
         self.Player.gui = self
 
-    def _fetch_movies( self, query, label, control ):
+    def _fetch_movies(self, query, label, control):
         listitems = []
-        self.getControl( 191 ).setLabel( xbmc.getLocalizedString(label) )
+        self.getControl(191).setLabel(xbmc.getLocalizedString(label))
         count = 0
         if query == 'movies':
-            rule = '{"or": [{"field": "title", "operator": "contains", "value": "%s"}, {"field": "originaltitle", "operator": "contains", "value": "%s"}]}' % (self.searchstring, self.searchstring) 
+            rule = '{"or": [{"field":"title", "operator":"contains", "value":"%s"}, {"field":"originaltitle", "operator":"contains", "value":"%s"}]}' % (self.searchstring, self.searchstring)
         else:
             rule = '{"field":"%s", "operator":"contains", "value":"%s"}' % (query, self.searchstring)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": {"properties": ["title", "streamdetails", "genre", "studio", "year", "tagline", "plot", "plotoutline", "runtime", "fanart", "thumbnail", "file", "trailer", "playcount", "rating", "userrating", "mpaa", "director", "writer", "originaltitle"], "sort": { "method": "label" }, "filter": %s }, "id": 1}' % rule)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetMovies", "params":{"properties":%s, "sort":{"method":"label"}, "filter": %s}, "id": 1}' % (json.dumps(MOVIELABELS), rule))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('movies'):
             for item in json_response['result']['movies']:
-                movieid = str(item['movieid'])
-                movie = item['title']
-                count = count + 1
-                director = " / ".join(item['director'])
-                writer = " / ".join(item['writer'])
-                fanart = item['fanart']
-                path = item['file']
-                genre = " / ".join(item['genre'])
-                mpaa = item['mpaa']
-                playcount = str(item['playcount'])
-                plot = item['plot']
-                outline = item['plotoutline']
-                rating = str(round(float(item['rating']),1))
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                runtime = str(int((item['runtime'] / 60.0) + 0.5))
-                studio = " / ".join(item['studio'])
-                tagline = item['tagline']
-                thumb = item['thumbnail']
-                trailer = item['trailer']
-                originaltitle = item['originaltitle']
-                year = str(item['year'])
-                if item['streamdetails']['audio'] != []:
-                    audiochannels = str(item['streamdetails']['audio'][0]['channels'])
-                    audiocodec = str(item['streamdetails']['audio'][0]['codec'])
-                else:
-                    audiochannels = ''
-                    audiocodec = ''
-                if item['streamdetails']['video'] != []:
-                    videocodec = str(item['streamdetails']['video'][0]['codec'])
-                    videoaspect = float(item['streamdetails']['video'][0]['aspect'])
-                    if videoaspect <= 1.4859:
-                        videoaspect = '1.33'
-                    elif videoaspect <= 1.7190:
-                        videoaspect = '1.66'
-                    elif videoaspect <= 1.8147:
-                        videoaspect = '1.78'
-                    elif videoaspect <= 2.0174:
-                        videoaspect = '1.85'
-                    elif videoaspect <= 2.2738:
-                        videoaspect = '2.20'
-                    else:
-                        videoaspect = '2.35'
-                    videowidth = item['streamdetails']['video'][0]['width']
-                    videoheight = item['streamdetails']['video'][0]['height']
-                    if videowidth <= 720 and videoheight <= 480:
-                        videoresolution = '480'
-                    elif videowidth <= 768 and videoheight <= 576:
-                        videoresolution = '576'
-                    elif videowidth <= 960 and videoheight <= 544:
-                        videoresolution = '540'
-                    elif videowidth <= 1280 and videoheight <= 720:
-                        videoresolution = '720'
-                    else:
-                        videoresolution = '1080'
-                else:
-                    videocodec = ''
-                    videoaspect = ''
-                    videoresolution = ''
-                listitem = xbmcgui.ListItem(label=movie, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty( "icon", thumb )
-                listitem.setProperty( "fanart", fanart )
-                listitem.setProperty( "originaltitle", originaltitle )
-                listitem.setProperty( "genre", genre )
-                listitem.setProperty( "plot", plot )
-                listitem.setProperty( "plotoutline", outline )
-                listitem.setProperty( "duration", runtime )
-                listitem.setProperty( "studio", studio )
-                listitem.setProperty( "tagline", tagline )
-                listitem.setProperty( "year", year )
-                listitem.setProperty( "trailer", trailer )
-                listitem.setProperty( "playcount", playcount )
-                listitem.setProperty( "rating", rating )
-                listitem.setProperty( "userrating", userrating )
-                listitem.setProperty( "mpaa", mpaa )
-                listitem.setProperty( "writer", writer )
-                listitem.setProperty( "director", director )
-                listitem.setProperty( "videoresolution", videoresolution )
-                listitem.setProperty( "videocodec", videocodec )
-                listitem.setProperty( "videoaspect", videoaspect )
-                listitem.setProperty( "audiocodec", audiocodec )
-                listitem.setProperty( "audiochannels", audiochannels )
-                listitem.setProperty( "path", path )
-                listitem.setProperty( "dbid", movieid )
+                count += 1
+                listitem = xbmcgui.ListItem(item['title'])
+                listitem.setArt(item['art'])
+                for stream in item['streamdetails']['video']:
+                    listitem.addStreamInfo('video', stream)
+                for stream in item['streamdetails']['audio']:
+                    listitem.addStreamInfo('audio', stream)
+                for stream in item['streamdetails']['subtitle']:
+                    listitem.addStreamInfo('subtitle', stream)
+                listitem.setInfo('video', self._get_info(item, 'movie'))
                 listitems.append(listitem)
-        self.getControl( control ).addItems( listitems )
+        self.getControl(control).addItems(listitems)
         if count > 0:
-            self.getControl( control - 1 ).setLabel( str(count) )
-            self.getControl( control + 8 ).setVisible( True )
+            self.getControl(control - 1).setLabel(str(count))
+            self.getControl(control + 8).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus( self.getControl( control ) )
+                self.setFocus(self.getControl(control))
                 self.focusset = 'true'
 
     def _fetch_tvshows( self ):
@@ -808,6 +740,17 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 xbmc.sleep(100)
                 self.setFocus( self.getControl( 221 ) )
                 self.focusset = 'true'
+
+    def _get_info(self, labels, item):
+        if item == 'movie':
+            labels['dbid'] = labels['movieid']
+        if item == 'movie' or item == 'episode':
+            labels['duration'] = labels['runtime'] # we does json return runtime instead of duration?
+            del labels['runtime']
+            del labels['streamdetails']
+        del labels['art']
+        labels['mediatype'] = item
+        return labels
 
     def _getTvshow_Seasons( self ):
         self.fetch_seasonepisodes = 'true'

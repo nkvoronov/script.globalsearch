@@ -7,11 +7,11 @@ import infodialog
 import json
 import operator
 
-ADDON        = sys.modules[ "__main__" ].ADDON
-ADDONID      = sys.modules[ "__main__" ].ADDONID
-ADDONVERSION = sys.modules[ "__main__" ].ADDONVERSION
-LANGUAGE     = sys.modules[ "__main__" ].LANGUAGE
-CWD          = sys.modules[ "__main__" ].CWD
+ADDON        = sys.modules['__main__'].ADDON
+ADDONID      = sys.modules['__main__'].ADDONID
+ADDONVERSION = sys.modules['__main__'].ADDONVERSION
+LANGUAGE     = sys.modules['__main__'].LANGUAGE
+CWD          = sys.modules['__main__'].CWD
 
 ACTION_CANCEL_DIALOG =(9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
 ACTION_CONTEXT_MENU =(117,)
@@ -28,15 +28,15 @@ MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrat
 
 def log(txt):
     if isinstance(txt,str):
-        txt = txt.decode("utf-8")
+        txt = txt.decode('utf-8')
     message = u'%s: %s' %(ADDONID, txt)
-    xbmc.log(msg=message.encode("utf-8"), level=xbmc.LOGDEBUG)
+    xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
 
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
         # some sanitize work for search string: strip the input and replace some chars
-        self.searchstring = kwargs[ "searchstring" ].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
-        self.params = kwargs[ "params" ]
+        self.searchstring = kwargs['searchstring'].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
+        self.params = kwargs['params']
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
 
@@ -122,28 +122,28 @@ class GUI(xbmcgui.WindowXMLDialog):
             self.getControl(231).reset()
 
     def _parse_argv(self):
-        self.movies = self.params.get("movies", "")
-        self.tvshows = self.params.get("tvshows", "")
-        self.episodes = self.params.get("episodes", "")
-        self.musicvideos = self.params.get("musicvideos", "")
-        self.artists = self.params.get("artists", "")
-        self.albums = self.params.get("albums", "")
-        self.songs = self.params.get("songs", "")
-        self.actors = self.params.get("actors", "")
-        self.directors = self.params.get("directors", "")
-        self.epg = self.params.get("epg", "")
+        self.movies = self.params.get('movies', '')
+        self.tvshows = self.params.get('tvshows', '')
+        self.episodes = self.params.get('episodes', '')
+        self.musicvideos = self.params.get('musicvideos', '')
+        self.artists = self.params.get('artists', '')
+        self.albums = self.params.get('albums', '')
+        self.songs = self.params.get('songs', '')
+        self.actors = self.params.get('actors', '')
+        self.directors = self.params.get('directors', '')
+        self.epg = self.params.get('epg', '')
 
     def _load_settings(self):
-        self.movies = ADDON.getSetting("movies")
-        self.tvshows = ADDON.getSetting("tvshows")
-        self.episodes = ADDON.getSetting("episodes")
-        self.musicvideos = ADDON.getSetting("musicvideos")
-        self.artists = ADDON.getSetting("artists")
-        self.albums = ADDON.getSetting("albums")
-        self.songs = ADDON.getSetting("songs")
-        self.actors = ADDON.getSetting("actors")
-        self.directors = ADDON.getSetting("directors")
-        self.epg = ADDON.getSetting("epg")
+        self.movies = ADDON.getSetting('movies')
+        self.tvshows = ADDON.getSetting('tvshows')
+        self.episodes = ADDON.getSetting('episodes')
+        self.musicvideos = ADDON.getSetting('musicvideos')
+        self.artists = ADDON.getSetting('artists')
+        self.albums = ADDON.getSetting('albums')
+        self.songs = ADDON.getSetting('songs')
+        self.actors = ADDON.getSetting('actors')
+        self.directors = ADDON.getSetting('directors')
+        self.epg = ADDON.getSetting('epg')
 
     def _reset_variables(self):
         self.focusset= 'false'
@@ -834,7 +834,7 @@ class GUI(xbmcgui.WindowXMLDialog):
 
     def _play_album(self):
         self._close()
-        xbmc.executeJSONRPC('{ "jsonrpc": "2.0", "method": "Player.Open", "params": { "item": { "albumid": %d } }, "id": 1 }' % int(self.albumid))
+        xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"albumid":%d}}, "id":1}' % int(self.albumid))
 
     def _browse_video(self, path):
         self._close()
@@ -924,29 +924,29 @@ class GUI(xbmcgui.WindowXMLDialog):
         items = []
         controlId = self.getFocusId()
         if controlId == 111:
-            content = "movies"
+            content = 'movies'
         elif controlId == 121:
-            content = "tvshows"
+            content = 'tvshows'
         elif controlId == 131:
-            content = "seasons"
+            content = 'seasons'
         elif controlId == 141:
-            content = "episodes"
+            content = 'episodes'
         elif controlId == 151:
-            content = "musicvideos"
+            content = 'musicvideos'
         elif controlId == 161:
-            content = "artists"
+            content = 'artists'
         elif controlId == 171:
-            content = "albums"
+            content = 'albums'
         elif controlId == 181:
-            content = "songs"
+            content = 'songs'
         elif controlId == 211:
-            content = "actors"
+            content = 'actors'
         elif controlId == 221:
-            content = "epg"
+            content = 'epg'
         elif controlId == 231:
-            content = "directors"
+            content = 'directors'
         listitem = self.getControl(controlId).getSelectedItem()
-        info_dialog = infodialog.GUI("script-globalsearch-infodialog.xml" , CWD, "default", listitem=listitem, content=content)
+        info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem, content=content)
         info_dialog.doModal()
         if info_dialog.action is not None:
             if info_dialog.action == 'play_programme':
@@ -1075,14 +1075,14 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._showContextMenu()
         elif action.getId() in ACTION_OSD:
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-                xbmc.executebuiltin("ActivateWindow(12901)")
+                xbmc.executebuiltin('ActivateWindow(12901)')
         elif action.getId() in ACTION_SHOW_GUI:
             if self.playingtrailer == 'true':
                 self.Player.stop()
                 self._trailerstopped()
         elif action.getId() in ACTION_SHOW_INFO:
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-                xbmc.executebuiltin("ActivateWindow(142)")
+                xbmc.executebuiltin('ActivateWindow(142)')
             else:
                 self._showInfo()
 

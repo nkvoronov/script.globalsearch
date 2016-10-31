@@ -776,14 +776,12 @@ class GUI(xbmcgui.WindowXMLDialog):
             if ret:
                 self._newSearch()
 
-    def _showContextMenu(self):
+    def _showContextMenu(self, controlId, listitem):
         labels = ()
         functions = ()
-        controlId = self.getFocusId()
         if controlId == 111:
             labels += (xbmc.getLocalizedString(13346),)
             functions += (self._showInfo,)
-            listitem = self.getControl(111).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
                 labels += (LANGUAGE(32205),)
@@ -812,7 +810,6 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif controlId == 211:
             labels += (xbmc.getLocalizedString(13346),)
             functions += (self._showInfo,)
-            listitem = self.getControl(211).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
                 labels += (LANGUAGE(32205),)
@@ -823,7 +820,6 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif controlId == 231:
             labels += (xbmc.getLocalizedString(13346),)
             functions += (self._showInfo,)
-            listitem = self.getControl(231).getSelectedItem()
             self.trailer = listitem.getProperty('trailer')
             if self.trailer:
                 labels += (LANGUAGE(32205),)
@@ -831,12 +827,12 @@ class GUI(xbmcgui.WindowXMLDialog):
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
-                functions[selection]()
+                if functions[selection] == 'self._showInfo':
+                    functions[selection](controlId, listitem)
+                else:
+                    functions[selection]()
 
-
-    def _showInfo(self):
-        items = []
-        controlId = self.getFocusId()
+    def _showInfo(self, controlId, listitem):
         if controlId == 111:
             content = 'movies'
         elif controlId == 121:
@@ -859,7 +855,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             content = 'epg'
         elif controlId == 231:
             content = 'directors'
-        listitem = self.getControl(controlId).getSelectedItem()
+        items = []
         info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem, content=content)
         info_dialog.doModal()
         if info_dialog.action is not None:
@@ -955,6 +951,11 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._newSearch()
 
     def onAction(self, action):
+        try:
+            controlId = self.getFocusId()
+            listitem = self.getControl(controlId).getSelectedItem()
+        except:
+            pass
         if action.getId() in ACTION_CANCEL_DIALOG:
             if self.playingtrailer == 'false':
                 self._close()
@@ -962,7 +963,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self.Player.stop()
                 self._trailerstopped()
         elif action.getId() in ACTION_CONTEXT_MENU:
-            self._showContextMenu()
+            self._showContextMenu(controlId, listitem)
         elif action.getId() in ACTION_OSD:
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
                 xbmc.executebuiltin('ActivateWindow(12901)')
@@ -974,7 +975,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
                 xbmc.executebuiltin('ActivateWindow(142)')
             else:
-                self._showInfo()
+                self._showInfo(controlId, listitem)
 
     def _close(self):
             log('script stopped')

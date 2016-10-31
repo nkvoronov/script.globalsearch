@@ -78,11 +78,11 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._fetch_albums()
         if self.songs == 'true':
             self._fetch_songs()
-        if self.actors == 'true' and self.ACTORSUPPORT:
+        if self.actors == 'true':
             self._fetch_movies('actor', 344, 211)
-        if self.epg == 'true' and self.EPGSUPPORT:
+        if self.epg == 'true':
             self._fetch_channelgroups()
-        if self.directors == 'true' and self.DIRECTORSUPPORT:
+        if self.directors == 'true':
             self._fetch_movies('director', 20348, 231)
         self._check_focus()
 
@@ -95,18 +95,9 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(169).setVisible(False)
         self.getControl(179).setVisible(False)
         self.getControl(189).setVisible(False)
-        try:
-            self.getControl(219).setVisible(False)
-        except:
-            self.ACTORSUPPORT = False
-        try:
-            self.getControl(229).setVisible(False)
-        except:
-            self.EPGSUPPORT = False
-        try:
-            self.getControl(239).setVisible(False)
-        except:
-            self.DIRECTORSUPPORT = False
+        self.getControl(219).setVisible(False)
+        self.getControl(229).setVisible(False)
+        self.getControl(239).setVisible(False)
         self.getControl(198).setVisible(False)
         self.getControl(199).setVisible(False)
 
@@ -119,12 +110,9 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(161).reset()
         self.getControl(171).reset()
         self.getControl(181).reset()
-        if self.ACTORSUPPORT:
-            self.getControl(211).reset()
-        if self.EPGSUPPORT:
-            self.getControl(221).reset()
-        if self.DIRECTORSUPPORT:
-            self.getControl(231).reset()
+        self.getControl(211).reset()
+        self.getControl(221).reset()
+        self.getControl(231).reset()
 
     def _parse_argv(self):
         self.movies = self.params.get('movies', '')

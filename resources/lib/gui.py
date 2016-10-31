@@ -821,12 +821,8 @@ class GUI(xbmcgui.WindowXMLDialog):
                     functions[selection]()
 
     def _showInfo(self, controlId, listitem):
-        info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem, content=content)
+        info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem)
         info_dialog.doModal()
-        if info_dialog.action is not None:
-            if info_dialog.action == 'play_programme':
-                path = listitem.getProperty('path')
-                self._play_video(path)
         del info_dialog
 
     def _newSearch(self):

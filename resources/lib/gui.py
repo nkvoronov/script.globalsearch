@@ -178,7 +178,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['movies']:
                 count += 1
                 listitem = xbmcgui.ListItem(item['title'])
-                listitem.setArt(item['art'])
+                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png'))
                 for stream in item['streamdetails']['video']:
                     listitem.addStreamInfo('video', stream)
                 for stream in item['streamdetails']['audio']:
@@ -208,7 +208,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['tvshows']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['title'])
-                listitem.setArt(item['art'])
+                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png'))
 #                listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'tvshow'))
                 listitems.append(listitem)
@@ -232,7 +232,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['seasons']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(item['art'])
+                listitem.setArt(self._get_art(item['art'], 'DefaultFolder.png'))
                 listitem.setInfo('video', self._get_info(item, 'season'))
                 listitems.append(listitem)
         self.getControl(131).addItems(listitems)
@@ -712,6 +712,14 @@ class GUI(xbmcgui.WindowXMLDialog):
             del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
+        return labels
+
+    def _get_art(self, labels, icon):
+        labels['icon'] = icon
+        if labels.get('poster'):
+            labels['thumb'] = labels['poster']
+        elif labels.get('banner'):
+            labels['thumb'] = labels['banner']
         return labels
 
     def _getTvshow_Seasons(self):

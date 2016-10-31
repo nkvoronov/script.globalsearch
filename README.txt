@@ -15,7 +15,7 @@ V.   Available window properties
 
 
 0. Running the addon
-------------------
+--------------------
 The addon can be run in two ways:
 - the user executes the addon
 - the addon is executed by another addon/skin: RunScript(script.globalsearch,searchstring=foo)
@@ -45,113 +45,114 @@ ListItem.Property(DBID)
 MOVIES (and movies by actor/director):
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Fanart)
-ListItem.Property(OriginalTitle)
-ListItem.Property(Genre)
-ListItem.Property(Plot)
-ListItem.Property(Plotoutline)
-ListItem.Property(Duration)
-ListItem.Property(Studio)
-ListItem.Property(Tagline)
-ListItem.Property(Year) 
-ListItem.Property(Trailer)
-ListItem.Property(Playcount)
-ListItem.Property(Rating)
-ListItem.Property(UserRating)
-ListItem.Property(Mpaa)
-ListItem.Property(Director)
-ListItem.Property(Writer)
-ListItem.Property(VideoResolution)
-ListItem.Property(VideoCodec)
-ListItem.Property(VideoAspect)
-ListItem.Property(AudioCodec)
-ListItem.Property(AudioChannels)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.OriginalTitle
+ListItem.Genre
+ListItem.Plot
+ListItem.Plotoutline
+ListItem.Duration
+ListItem.Studio
+ListItem.Tagline
+ListItem.Year
+ListItem.Trailer
+ListItem.Playcount
+ListItem.Rating
+ListItem.UserRating
+ListItem.Mpaa
+ListItem.Director
+ListItem.Writer
+ListItem.VideoResolution
+ListItem.VideoCodec
+ListItem.VideoAspect
+ListItem.AudioCodec
+ListItem.AudioChannels
+ListItem.Path
+ListItem.DBID
 
 
 TV SHOWS:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Episode)
-ListItem.Property(Mpaa)
-ListItem.Property(Year)
-ListItem.Property(Art(Banner))
-ListItem.Property(Art(Poster))
-ListItem.Property(Fanart)
-ListItem.Property(Genre)
-ListItem.Property(Plot)
-ListItem.Property(Premiered)
-ListItem.Property(Studio)
-ListItem.Property(Rating)
-ListItem.Property(UserRating)
-ListItem.Property(Playcount)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.Episode
+ListItem.Mpaa
+ListItem.Year
+ListItem.Genre
+ListItem.Plot
+ListItem.Premiered
+ListItem.Studio
+ListItem.Rating
+ListItem.UserRating
+ListItem.Playcount
+ListItem.Path
+ListItem.DBID
 
 
 SEASONS:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Episode)
-ListItem.Property(Fanart)
-ListItem.Property(TvShowTitle)
-ListItem.Property(Playcount)
-ListItem.Property(UserRating)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.Episode
+ListItem.TvShowTitle
+ListItem.Playcount
+ListItem.UserRating
+ListItem.Path
+ListItem.DBID
 
 
 EPISODES:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Episode)
-ListItem.Property(Plot)
-ListItem.Property(Rating)
-ListItem.Property(UserRating)
-ListItem.Property(Director)
-ListItem.Property(Fanart)
-ListItem.Property(Season)
-ListItem.Property(Duration)
-ListItem.Property(TvShowTitle)
-ListItem.Property(Premiered)
-ListItem.Property(Playcount)
-ListItem.Property(VideoResolution)
-ListItem.Property(VideoCodec)
-ListItem.Property(VideoAspect)
-ListItem.Property(AudioCodec)
-ListItem.Property(AudioChannels)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.Episode
+ListItem.Plot
+ListItem.Rating
+ListItem.UserRating
+ListItem.Director
+ListItem.Season
+ListItem.Duration
+ListItem.TvShowTitle
+ListItem.Premiered
+ListItem.Playcount
+ListItem.VideoResolution
+ListItem.VideoCodec
+ListItem.VideoAspect
+ListItem.AudioCodec
+ListItem.AudioChannels
+ListItem.Path
+ListItem.DBID
 
 
 MUSIC VIDEOS:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Album)
-ListItem.Property(Artist)
-ListItem.Property(Fanart)
-ListItem.Property(Director)
-ListItem.Property(Genre)
-ListItem.Property(Plot)
-ListItem.Property(Rating)
-ListItem.Property(UserRating)
-ListItem.Property(Duration)
-ListItem.Property(Studio)
-ListItem.Property(Year)
-ListItem.Property(Playcount)
-ListItem.Property(VideoResolution)
-ListItem.Property(VideoCodec)
-ListItem.Property(VideoAspect)
-ListItem.Property(AudioCodec)
-ListItem.Property(AudioChannels)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.Album
+ListItem.Artist
+ListItem.Director
+ListItem.Genre
+ListItem.Plot
+ListItem.Rating
+ListItem.UserRating
+ListItem.Duration
+ListItem.Studio
+ListItem.Year
+ListItem.Playcount
+ListItem.VideoResolution
+ListItem.VideoCodec
+ListItem.VideoAspect
+ListItem.AudioCodec
+ListItem.AudioChannels
+ListItem.Path
+ListItem.DBID
 
 
 ARTISTS:
 ListItem.Label
 ListItem.Icon
+ListItem.Art()
+ListItem.Path
+ListItem.DBID
 ListItem.Property(Artist_Born)
 ListItem.Property(Artist_Died)
 ListItem.Property(Artist_Formed)
@@ -159,48 +160,45 @@ ListItem.Property(Artist_Disbanded)
 ListItem.Property(Artist_YearsActive)
 ListItem.Property(Artist_Mood)
 ListItem.Property(Artist_Style)
-ListItem.Property(Fanart)
 ListItem.Property(Artist_Genre)
 ListItem.Property(Artist_Description)
-ListItem.Property(Path)
-ListItem.Property(DBID)
 
 
 ALBUMS:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Artist)
-ListItem.Property(Album_label)
-ListItem.Property(Genre)
-ListItem.Property(Fanart)
+ListItem.Art()
+ListItem.Artist
+ListItem.Genre
+ListItem.UserRating
+ListItem.Year
+ListItem.Path
+ListItem.DBID
+ListItem.Property(Album_Label)
 ListItem.Property(Album_Description)
 ListItem.Property(Album_Theme)
 ListItem.Property(Album_Style)
 ListItem.Property(Album_Rating)
-ListItem.Property(UserRating)
 ListItem.Property(Album_Type)
 ListItem.Property(Album_Mood)
-ListItem.Property(Year)
-ListItem.Property(Path)
-ListItem.Property(DBID)
 
 
 SONGS:
 ListItem.Label
 ListItem.Icon
-ListItem.Property(Artist)
-ListItem.Property(Album)
-ListItem.Property(Genre)
-ListItem.Property(Comment)
-ListItem.Property(Track)
-ListItem.Property(Rating)
-ListItem.Property(UserRating)
-ListItem.Property(Playcount)
-ListItem.Property(Duration)
-ListItem.Property(Fanart)
-ListItem.Property(Year)
-ListItem.Property(Path)
-ListItem.Property(DBID)
+ListItem.Art()
+ListItem.Artist
+ListItem.Album
+ListItem.Genre
+ListItem.Comment
+ListItem.Track
+ListItem.Rating
+ListItem.UserRating
+ListItem.Playcount
+ListItem.Duration
+ListItem.Year
+ListItem.Path
+ListItem.DBID
 
 
 

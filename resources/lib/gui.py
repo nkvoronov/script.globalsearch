@@ -208,7 +208,6 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['tvshows']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['title'])
-                print item['art']
                 listitem.setArt(item['art'])
 #                listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'tvshow'))
@@ -233,7 +232,6 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['seasons']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                print item['art']
                 listitem.setArt(item['art'])
                 listitem.setInfo('video', self._get_info(item, 'season'))
                 listitems.append(listitem)

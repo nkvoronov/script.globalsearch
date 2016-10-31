@@ -142,7 +142,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                     listitem.addStreamInfo('audio', stream)
                 for stream in item['streamdetails']['subtitle']:
                     listitem.addStreamInfo('subtitle', stream)
-#                listitem.setCast(item['cast'])
+                listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'movie'))
                 listitems.append(listitem)
         self.getControl(control).addItems(listitems)
@@ -166,7 +166,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['title'])
                 listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png'))
-#                listitem.setCast(item['cast'])
+                listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'tvshow'))
                 listitems.append(listitem)
         self.getControl(121).addItems(listitems)

@@ -19,6 +19,9 @@ ACTION_OSD = (107, 163,)
 ACTION_SHOW_GUI = (18,)
 ACTION_SHOW_INFO = (11,)
 
+CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':'episodes', 'self.musicvideos':'musicvideos', 'self.artists':'artists', 'self.albums':'albums', 
+              'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
+
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
 #               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
 #               "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "mediatype", "streamdetails", "art"]
@@ -40,7 +43,7 @@ def log(txt):
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
         # some sanitize work for search string: strip the input and replace some chars
-        self.searchstring = kwargs['searchstring'].replace('(', '[(]').replace(')', '[)]').replace('+', '[+]').strip()
+        self.searchstring = self._clean_string(kwargs['searchstring']).strip()
         self.params = kwargs['params']
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
@@ -56,87 +59,53 @@ class GUI(xbmcgui.WindowXMLDialog):
             self.EPGSUPPORT = True
             self._hide_controls()
             if not self.nextsearch:
-                self._parse_argv()
+                self.categories = {}
                 if self.params == {}:
                     self._load_settings()
+                else:
+                    self._parse_argv()
             self._reset_variables()
             self._init_variables()
             self._fetch_items()
 
     def _fetch_items(self):
-        if self.movies == 'true':
+        if self.categories['self.movies'] == 'true':
             self._fetch_movies('title', 342, 111)
-        if self.tvshows == 'true':
+        if self.categories['self.tvshows'] == 'true':
             self._fetch_tvshows()
-        if self.episodes == 'true':
+        if self.categories['self.episodes'] == 'true':
             self._fetch_episodes()
-        if self.musicvideos == 'true':
+        if self.categories['self.musicvideos'] == 'true':
             self._fetch_musicvideos()
-        if self.artists == 'true':
+        if self.categories['self.artists'] == 'true':
             self._fetch_artists()
-        if self.albums == 'true':
+        if self.categories['self.albums'] == 'true':
             self._fetch_albums()
-        if self.songs == 'true':
+        if self.categories['self.songs'] == 'true':
             self._fetch_songs()
-        if self.actors == 'true':
+        if self.categories['self.actors'] == 'true':
             self._fetch_movies('actor', 344, 211)
-        if self.epg == 'true':
+        if self.categories['self.epg'] == 'true':
             self._fetch_channelgroups()
-        if self.directors == 'true':
+        if self.categories['self.directors'] == 'true':
             self._fetch_movies('director', 20348, 231)
         self._check_focus()
 
     def _hide_controls(self):
-        self.getControl(119).setVisible(False)
-        self.getControl(129).setVisible(False)
-        self.getControl(139).setVisible(False)
-        self.getControl(149).setVisible(False)
-        self.getControl(159).setVisible(False)
-        self.getControl(169).setVisible(False)
-        self.getControl(179).setVisible(False)
-        self.getControl(189).setVisible(False)
-        self.getControl(219).setVisible(False)
-        self.getControl(229).setVisible(False)
-        self.getControl(239).setVisible(False)
-        self.getControl(198).setVisible(False)
-        self.getControl(199).setVisible(False)
+        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 199]:
+            self.getControl(cid).setVisible(False)
 
     def _reset_controls(self):
-        self.getControl(111).reset()
-        self.getControl(121).reset()
-        self.getControl(131).reset()
-        self.getControl(141).reset()
-        self.getControl(151).reset()
-        self.getControl(161).reset()
-        self.getControl(171).reset()
-        self.getControl(181).reset()
-        self.getControl(211).reset()
-        self.getControl(221).reset()
-        self.getControl(231).reset()
+        for cid in [111, 121, 131, 141, 151, 161, 171, 181, 211, 231]:
+            self.getControl(cid).reset()
 
     def _parse_argv(self):
-        self.movies = self.params.get('movies', '')
-        self.tvshows = self.params.get('tvshows', '')
-        self.episodes = self.params.get('episodes', '')
-        self.musicvideos = self.params.get('musicvideos', '')
-        self.artists = self.params.get('artists', '')
-        self.albums = self.params.get('albums', '')
-        self.songs = self.params.get('songs', '')
-        self.actors = self.params.get('actors', '')
-        self.directors = self.params.get('directors', '')
-        self.epg = self.params.get('epg', '')
+        for key, value in CATEGORIES.iteritems():
+            self.categories[key] = self.params.get(value, '')
 
     def _load_settings(self):
-        self.movies = ADDON.getSetting('movies')
-        self.tvshows = ADDON.getSetting('tvshows')
-        self.episodes = ADDON.getSetting('episodes')
-        self.musicvideos = ADDON.getSetting('musicvideos')
-        self.artists = ADDON.getSetting('artists')
-        self.albums = ADDON.getSetting('albums')
-        self.songs = ADDON.getSetting('songs')
-        self.actors = ADDON.getSetting('actors')
-        self.directors = ADDON.getSetting('directors')
-        self.epg = ADDON.getSetting('epg')
+        for key, value in CATEGORIES.iteritems():
+            self.categories[key] = ADDON.getSetting(value)
 
     def _reset_variables(self):
         self.focusset= 'false'
@@ -710,65 +679,55 @@ class GUI(xbmcgui.WindowXMLDialog):
             labels['thumb'] = labels['banner']
         return labels
 
+    def _clean_string(self, string):
+        return string.replace('(', '[(]').replace(')', '[)]').replace('+', '[+]')
+
     def _getTvshow_Seasons(self):
         self.fetch_seasonepisodes = 'true'
         listitem = self.getControl(121).getSelectedItem()
         self.tvshowid = listitem.getVideoInfoTag().getDbId()
-        self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
-        self._reset_variables()
-        self._hide_controls()
-        self._reset_controls()
-        self._fetch_seasons()
-        self._check_focus()
+        self.searchstring = self._clean_string(listitem.getLabel())
+        self._reset_results(self._fetch_seasons)
         self.fetch_seasonepisodes = 'false'
 
     def _getTvshow_Episodes(self):
         self.fetch_seasonepisodes = 'true'
         listitem = self.getControl(121).getSelectedItem()
         self.tvshowid = listitem.getProperty('dbid')
-        self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
-        self._reset_variables()
-        self._hide_controls()
-        self._reset_controls()
-        self._fetch_episodes()
-        self._check_focus()
+        self.searchstring = self._clean_string(listitem.getLabel())
+        self._reset_results(self._fetch_episodes)
         self.fetch_seasonepisodes = 'false'
 
     def _getArtist_Albums(self):
         self.fetch_albumssongs = 'true'
         listitem = self.getControl(161).getSelectedItem()
         self.artistid = listitem.getProperty('dbid')
-        self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
-        self._reset_variables()
-        self._hide_controls()
-        self._reset_controls()
-        self._fetch_albums()
-        self._check_focus()
+        self.searchstring = self._clean_string(listitem.getLabel())
+        self._reset_results(self._fetch_albums)
         self.fetch_albumssongs = 'false'
 
     def _getArtist_Songs(self):
         self.fetch_albumssongs = 'true'
         listitem = self.getControl(161).getSelectedItem()
         self.artistid = listitem.getProperty('dbid')
-        self.searchstring = listitem.getLabel().replace('(','[(]').replace(')','[)]').replace('+','[+]')
-        self._reset_variables()
-        self._hide_controls()
-        self._reset_controls()
-        self._fetch_songs()
-        self._check_focus()
+        self.searchstring = self._clean_string(listitem.getLabel())
+        self._reset_results(self._fetch_songs)
         self.fetch_albumssongs = 'false'
 
     def _getSong_Album(self):
         self.fetch_songalbum = 'true'
         listitem = self.getControl(181).getSelectedItem()
         self.artistname = listitem.getProperty('artist')
-        self.searchstring = listitem.getProperty('album').replace('(','[(]').replace(')','[)]').replace('+','[+]')
+        self.searchstring = self._clean_string(listitem.getProperty('album'))
+        self._reset_results(self._fetch_albums)
+        self.fetch_songalbum = 'false'
+
+    def _reset_results(self, action):
         self._reset_variables()
         self._hide_controls()
         self._reset_controls()
-        self._fetch_albums()
+        action()
         self._check_focus()
-        self.fetch_songalbum = 'false'
 
     def _play_video(self, path):
         self._close()

@@ -20,11 +20,14 @@ ACTION_SHOW_GUI = (18,)
 ACTION_SHOW_INFO = (11,)
 
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
-#               "plotoutline", "title", "originaltitle", "sorttitle", "duration", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
-#               "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "mediatype", "dbid", "streamdetails", "art"]
+#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
+#               "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "mediatype", "streamdetails", "art"]
 
-MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
+MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
+
+TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "cast", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
+                "imdbnumber", "lastplayed", "votes", "dateadded", "art"]
 
 def log(txt):
     if isinstance(txt,str):
@@ -180,6 +183,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                     listitem.addStreamInfo('audio', stream)
                 for stream in item['streamdetails']['subtitle']:
                     listitem.addStreamInfo('subtitle', stream)
+#                listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'movie'))
                 listitems.append(listitem)
         self.getControl(control).addItems(listitems)
@@ -195,48 +199,17 @@ class GUI(xbmcgui.WindowXMLDialog):
         listitems = []
         self.getControl(191).setLabel(xbmc.getLocalizedString(20343))
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": ["title", "genre", "studio", "premiered", "plot", "fanart", "thumbnail", "playcount", "year", "mpaa", "episode", "rating", "userrating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetTVShows", "params":{"properties":%s, "sort":{"method":"label"}, "filter":{"field": "title", "operator": "contains", "value":"%s"}}, "id":1}' % (json.dumps(TVSHOWLABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('tvshows'):
             for item in json_response['result']['tvshows']:
-                tvshow = item['title']
                 count = count + 1
-                episode = str(item['episode'])
-                fanart = item['fanart']
-                genre = " / ".join(item['genre'])
-                mpaa = item['mpaa']
-                playcount = str(item['playcount'])
-                plot = item['plot']
-                premiered = item['premiered']
-                rating = str(round(float(item['rating']),1))
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                studio = " / ".join(item['studio'])
-                thumb = item['thumbnail']
-                banner = item['art'].get('banner', '')
-                poster = item['art'].get('poster', '')
-                tvshowid = str(item['tvshowid'])
-                path = path = 'videodb://tvshows/titles/' + tvshowid + '/'
-                year = str(item['year'])
-                listitem = xbmcgui.ListItem(label=tvshow, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("art(banner)", banner)
-                listitem.setProperty("art(poster)", poster)
-                listitem.setProperty("episode", episode)
-                listitem.setProperty("mpaa", mpaa)
-                listitem.setProperty("year", year)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("genre", genre)
-                listitem.setProperty("plot", plot)
-                listitem.setProperty("premiered", premiered)
-                listitem.setProperty("studio", studio)
-                listitem.setProperty("rating", rating)
-                listitem.setProperty("userrating", userrating)
-                listitem.setProperty("playcount", playcount)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", tvshowid)
+                listitem = xbmcgui.ListItem(item['title'])
+                print item['art']
+                listitem.setArt(item['art'])
+#                listitem.setCast(item['cast'])
+                listitem.setInfo('video', self._get_info(item, 'tvshow'))
                 listitems.append(listitem)
         self.getControl(121).addItems(listitems)
         if count > 0:
@@ -279,7 +252,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 listitems.append(listitem)
         self.getControl(131).addItems(listitems)
         if count > 0:
-            self.foundseasons= 'true'
+            self.foundseasons = 'true'
             self.getControl(130).setLabel(str(count))
             self.getControl(139).setVisible(True)
             if self.focusset == 'false':
@@ -745,14 +718,15 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self.focusset = 'true'
 
     def _get_info(self, labels, item):
-        if item == 'movie':
-            labels['dbid'] = labels['movieid']
-        if item == 'movie' or item == 'episode':
+        labels['mediatype'] = item
+        labels['dbid'] = labels['%sid' % item]
+        del labels['art']
+        if item == 'movie' or item == 'tvshow' or item == 'episode':
             labels['duration'] = labels['runtime'] # we does json return runtime instead of duration?
             del labels['runtime']
-            del labels['streamdetails']
-        del labels['art']
-        labels['mediatype'] = item
+            del labels['cast']
+            if item != 'tvshow':
+                del labels['streamdetails']
         return labels
 
     def _getTvshow_Seasons(self):

@@ -22,9 +22,9 @@ ACTION_SHOW_INFO = (11,)
 CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':'episodes', 'self.musicvideos':'musicvideos', 'self.artists':'artists', 'self.albums':'albums', 
               'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
 
-#VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "castandrole", "director", "mpaa", "plot", 
-#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", "code", "aired", 
-#               "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "mediatype", "streamdetails", "art"]
+#VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
+#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", 
+#               "code", "aired", "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
@@ -831,7 +831,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
-                functions[ selection ]()
+                functions[selection]()
 
 
     def _showInfo(self):
@@ -935,47 +935,23 @@ class GUI(xbmcgui.WindowXMLDialog):
             self.onInit()
 
     def onClick(self, controlId):
-        if controlId == 111:
-            listitem = self.getControl(111).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_video(path)
-        elif controlId == 121:
-            listitem = self.getControl(121).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._browse_video(path)
-        elif controlId == 131:
-            listitem = self.getControl(131).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._browse_video(path)
-        elif controlId == 141:
-            listitem = self.getControl(141).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_video(path)
-        elif controlId == 151:
-            listitem = self.getControl(151).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_video(path)
-        elif controlId == 161:
-            listitem = self.getControl(161).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._browse_audio(path)
-        elif controlId == 171:
-            listitem = self.getControl(171).getSelectedItem()
-            self.albumid = listitem.getProperty('dbid')
-            self._play_album()
-        elif controlId == 181:
-            listitem = self.getControl(181).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_audio(path, listitem)
-        if controlId == 211:
-            listitem = self.getControl(211).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_video(path)
-        elif controlId == 231:
-            listitem = self.getControl(231).getSelectedItem()
-            path = listitem.getProperty('path')
-            self._play_video(path)
-        elif controlId == 198:
+        if controlId != 198:
+            listitem = self.getControl(controlId).getSelectedItem()
+            if controlId != 171:
+                path = listitem.getProperty('path')
+            else:
+                self.albumid = listitem.getProperty('dbid')
+            if controlId == 121 or controlId == 131:
+                self._browse_video(path)
+            elif controlId == 161:
+                self._browse_audio(path)
+            elif controlId == 171:
+                self._play_album()
+            elif controlId == 181:
+                self._play_audio(path, listitem)
+            else:
+                self._play_video(path)
+        else:
             self._newSearch()
 
     def onAction(self, action):

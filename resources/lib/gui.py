@@ -779,147 +779,54 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _showContextMenu(self, controlId, listitem):
         labels = ()
         functions = ()
-        if controlId == 111:
+        if controlId == 111 or controlId == 211 or controlId == 231:
             labels += (xbmc.getLocalizedString(13346),)
-            functions += (self._showInfo,)
-            self.trailer = listitem.getProperty('trailer')
-            if self.trailer:
-                labels += (LANGUAGE(32205),)
-                functions += (self._play_trailer,)
+            functions += ('info',)
+#            self.trailer = listitem.getVideoInfoTag().getTrailer()
+#            if self.trailer:
+#                labels += (LANGUAGE(32205),)
+#                functions += (self._play_trailer,)
         elif controlId == 121:
             labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
-            functions += (self._showInfo, self._getTvshow_Seasons, self._getTvshow_Episodes,)
+            functions += ('info', self._getTvshow_Seasons, self._getTvshow_Episodes,)
         elif controlId == 131:
             labels += (LANGUAGE(32204),)
-            functions += (self._showInfo,)
+            functions += ('info',)
         elif controlId == 141:
             labels += (xbmc.getLocalizedString(20352),)
-            functions += (self._showInfo,)
+            functions += ('info',)
         elif controlId == 151:
             labels += (xbmc.getLocalizedString(20393),)
-            functions += (self._showInfo,)
+            functions += ('info',)
         elif controlId == 161:
             labels += (xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210),)
-            functions += (self._showInfo, self._getArtist_Albums, self._getArtist_Songs,)
+            functions += ('info', self._getArtist_Albums, self._getArtist_Songs,)
         elif controlId == 171:
             labels += (xbmc.getLocalizedString(13351), LANGUAGE(32203),)
-            functions += (self._showInfo, self._browse_album,)
+            functions += ('info', self._browse_album,)
         elif controlId == 181:
             labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
-            functions += (self._showInfo, self._getSong_Album,)
-        elif controlId == 211:
-            labels += (xbmc.getLocalizedString(13346),)
-            functions += (self._showInfo,)
-            self.trailer = listitem.getProperty('trailer')
-            if self.trailer:
-                labels += (LANGUAGE(32205),)
-                functions += (self._play_trailer,)
+            functions += ('info', self._getSong_Album,)
         elif controlId == 221:
             labels += (xbmc.getLocalizedString(19047),)
-            functions += (self._showInfo,)
-        elif controlId == 231:
-            labels += (xbmc.getLocalizedString(13346),)
-            functions += (self._showInfo,)
-            self.trailer = listitem.getProperty('trailer')
-            if self.trailer:
-                labels += (LANGUAGE(32205),)
-                functions += (self._play_trailer,)
+            functions += ('info',)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
-                if functions[selection] == 'self._showInfo':
+                if functions[selection] == 'info':
+                    xbmcgui.Dialog().info(listitem)
+                elif functions[selection] == 'self._showInfo':
                     functions[selection](controlId, listitem)
                 else:
                     functions[selection]()
 
     def _showInfo(self, controlId, listitem):
-        if controlId == 111:
-            content = 'movies'
-        elif controlId == 121:
-            content = 'tvshows'
-        elif controlId == 131:
-            content = 'seasons'
-        elif controlId == 141:
-            content = 'episodes'
-        elif controlId == 151:
-            content = 'musicvideos'
-        elif controlId == 161:
-            content = 'artists'
-        elif controlId == 171:
-            content = 'albums'
-        elif controlId == 181:
-            content = 'songs'
-        elif controlId == 211:
-            content = 'actors'
-        elif controlId == 221:
-            content = 'epg'
-        elif controlId == 231:
-            content = 'directors'
-        items = []
         info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem, content=content)
         info_dialog.doModal()
         if info_dialog.action is not None:
             if info_dialog.action == 'play_programme':
-                listitem = self.getControl(221).getSelectedItem()
                 path = listitem.getProperty('path')
                 self._play_video(path)
-            elif info_dialog.action == 'play_movie':
-                listitem = self.getControl(111).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._play_video(path)
-            elif info_dialog.action == 'play_trailer':
-                listitem = self.getControl(111).getSelectedItem()
-                self.trailer = listitem.getProperty('trailer')
-                self._play_trailer()
-            elif info_dialog.action == 'browse_tvshow':
-                listitem = self.getControl(121).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._browse_video(path)
-            elif info_dialog.action == 'browse_season':
-                listitem = self.getControl(131).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._browse_video(path)
-            elif info_dialog.action == 'play_episode':
-                listitem = self.getControl(141).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._play_video(path)
-            elif info_dialog.action == 'play_musicvideo':
-                listitem = self.getControl(151).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._play_video(path)
-            elif info_dialog.action == 'browse_artist':
-                listitem = self.getControl(161).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._browse_audio(path)
-            elif info_dialog.action == 'play_album':
-                listitem = self.getControl(171).getSelectedItem()
-                self.albumid = listitem.getProperty('dbid')
-                self._play_album()
-            elif info_dialog.action == 'browse_album':
-                listitem = self.getControl(171).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._browse_audio(path)
-            elif info_dialog.action == 'play_song':
-                listitem = self.getControl(181).getSelectedItem()
-                path = listitem.getProperty('path')
-            elif info_dialog.action == 'play_movie_actors':
-                listitem = self.getControl(211).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._play_video(path)
-                self._play_audio(path, listitem)
-            elif info_dialog.action == 'play_trailer_actors':
-                listitem = self.getControl(211).getSelectedItem()
-                self.trailer = listitem.getProperty('trailer')
-                self._play_trailer()
-            elif info_dialog.action == 'play_movie_directors':
-                listitem = self.getControl(231).getSelectedItem()
-                path = listitem.getProperty('path')
-                self._play_video(path)
-                self._play_audio(path, listitem)
-            elif info_dialog.action == 'play_trailer_directors':
-                listitem = self.getControl(231).getSelectedItem()
-                self.trailer = listitem.getProperty('trailer')
-                self._play_trailer()
         del info_dialog
 
     def _newSearch(self):
@@ -975,7 +882,10 @@ class GUI(xbmcgui.WindowXMLDialog):
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
                 xbmc.executebuiltin('ActivateWindow(142)')
             else:
-                self._showInfo(controlId, listitem)
+                if controlId != "221":
+                    xbmcgui.Dialog().info(listitem)
+                else:
+                    self._showInfo(controlId, listitem)
 
     def _close(self):
             log('script stopped')

@@ -951,6 +951,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 return
         self.Player.resume = resume
         xbmc.Player().play( path )
+        self.close()
 
     def _play_audio( self, path, listitem ):
         self._close()
@@ -1245,4 +1246,3 @@ class MyPlayer(xbmc.Player):
 
     def onPlayBackStarted( self ):   
         self.seekTime( float( self.resume ) )
-        self.gui._close()

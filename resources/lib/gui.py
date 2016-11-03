@@ -737,6 +737,10 @@ class GUI(xbmcgui.WindowXMLDialog):
         self._close()
         xbmc.Player().play(path, listitem)
 
+    def _play_album(self):
+        self._close()
+        xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"albumid":%d}}, "id":1}' % int(self.albumid))
+
     def _play_trailer(self):
         self.playingtrailer = 'true'
         self.getControl(100).setVisible(False)
@@ -745,10 +749,6 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _trailerstopped(self):
         self.getControl(100).setVisible(True)
         self.playingtrailer = 'false'
-
-    def _play_album(self):
-        self._close()
-        xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"albumid":%d}}, "id":1}' % int(self.albumid))
 
     def _browse_video(self, path):
         self._close()
@@ -782,10 +782,10 @@ class GUI(xbmcgui.WindowXMLDialog):
         if controlId == 111 or controlId == 211 or controlId == 231:
             labels += (xbmc.getLocalizedString(13346),)
             functions += ('info',)
-#            self.trailer = listitem.getVideoInfoTag().getTrailer()
-#            if self.trailer:
-#                labels += (LANGUAGE(32205),)
-#                functions += (self._play_trailer,)
+            self.trailer = listitem.getVideoInfoTag().getTrailer()
+            if self.trailer:
+                labels += (LANGUAGE(32205),)
+                functions += (self._play_trailer,)
         elif controlId == 121:
             labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
             functions += ('info', self._getTvshow_Seasons, self._getTvshow_Episodes,)

@@ -674,19 +674,9 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(100).setVisible(True)
         self.playingtrailer = 'false'
 
-    def _browse_video(self, path):
+    def _browse_item(self, path, window):
         self._close()
-        xbmc.executebuiltin('ActivateWindow(Videos,' + path + ',return)')
-
-    def _browse_audio(self, path):
-        self._close()
-        xbmc.executebuiltin('ActivateWindow(MusicLibrary,' + path + ',return)')
-
-    def _browse_album(self):
-        listitem = self.getControl(171).getSelectedItem()
-        path = listitem.getProperty('path')
-        self._close()
-        xbmc.executebuiltin('ActivateWindow(MusicLibrary,' + path + ',return)')
+        xbmc.executebuiltin('ActivateWindow(' + window + ',' + path + ',return)')
 
     def _check_focus(self):
         self.getControl(190).setLabel('')
@@ -727,7 +717,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             functions += ('info', self._getArtist_Albums, self._getArtist_Songs,)
         elif controlId == 171:
             labels += (xbmc.getLocalizedString(13351), LANGUAGE(32203),)
-            functions += ('info', self._browse_album,)
+            functions += ('info', self._browse_item,)
         elif controlId == 181:
             labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
             functions += ('info', self._getSong_Album,)
@@ -741,6 +731,8 @@ class GUI(xbmcgui.WindowXMLDialog):
                     xbmcgui.Dialog().info(listitem)
                 elif functions[selection] == 'self._showInfo':
                     functions[selection](controlId, listitem)
+                elif functions[selection] == 'self._browse_item':
+                    functions[selection](listitem.getMusicInfoTag().getPath(), 'MusicLibrary')
                 else:
                     functions[selection]()
 
@@ -765,9 +757,9 @@ class GUI(xbmcgui.WindowXMLDialog):
             else:
                 self.albumid = listitem.getProperty('dbid')
             if controlId == 121 or controlId == 131:
-                self._browse_video(path)
+                self._browse_item(path, 'Videos')
             elif controlId == 161:
-                self._browse_audio(path)
+                self._browse_audio(path, 'MusicLibrary')
             elif controlId == 171:
                 self._play_album()
             elif controlId == 181:

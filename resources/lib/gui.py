@@ -37,6 +37,10 @@ SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "wat
 EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
                  "votes", "dateadded", "streamdetails", "art"]
 
+MUSICVIDEOLABELS = ["genre", "country", "year", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
+                    "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "premiered", "imdbnumber", 
+                    "credits",  "lastplayed", "album", "artist", "votes", "dateadded", "streamdetails", "art"]
+
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
@@ -800,10 +804,10 @@ class GUI(xbmcgui.WindowXMLDialog):
                     self._showInfo(controlId, listitem)
 
     def _close(self):
-            log('script stopped')
-            self.close()
-            xbmc.sleep(300)
-            xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
+        log('script stopped')
+        self.close()
+        xbmc.sleep(300)
+        xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
 
 class MyPlayer(xbmc.Player):
     def __init__(self):

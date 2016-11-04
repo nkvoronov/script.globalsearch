@@ -37,9 +37,8 @@ SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "wat
 EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
                  "votes", "dateadded", "streamdetails", "art"]
 
-MUSICVIDEOLABELS = ["genre", "country", "year", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
-                    "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "premiered", "imdbnumber", 
-                    "credits",  "lastplayed", "album", "artist", "votes", "dateadded", "streamdetails", "art"]
+MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", 
+                    "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", "streamdetails", "art"]
 
 def log(txt):
     if isinstance(txt,str):
@@ -239,93 +238,15 @@ class GUI(xbmcgui.WindowXMLDialog):
         listitems = []
         self.getControl(191).setLabel(xbmc.getLocalizedString(20389))
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": ["title", "streamdetails", "runtime", "genre", "studio", "artist", "album", "year", "plot", "fanart", "thumbnail", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": %s, "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % (json.dumps(MUSICVIDEOLABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
             for item in json_response['result']['musicvideos']:
-                musicvideoid = str(item['musicvideoid'])
-                musicvideo = item['title']
                 count = count + 1
-                album = item['album']
-                artist = " / ".join(item['artist'])
-                director = " / ".join(item['director'])
-                fanart = item['fanart']
-                path = item['file']
-                genre = " / ".join(item['genre'])
-                plot = item['plot']
-                rating = str(round(float(item['rating']),1))
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                studio = " / ".join(item['studio'])
-                thumb = item['thumbnail']
-                playcount = str(item['playcount'])
-                year = str(item['year'])
-                if year == '0':
-                    year = ''
-                if item['streamdetails']['audio'] != []:
-                    audiochannels = str(item['streamdetails']['audio'][0]['channels'])
-                    audiocodec = str(item['streamdetails']['audio'][0]['codec'])
-                else:
-                    audiochannels = ''
-                    audiocodec = ''
-                if item['streamdetails']['video'] != []:
-                    videocodec = str(item['streamdetails']['video'][0]['codec'])
-                    videoaspect = float(item['streamdetails']['video'][0]['aspect'])
-                    if videoaspect <= 1.4859:
-                        videoaspect = '1.33'
-                    elif videoaspect <= 1.7190:
-                        videoaspect = '1.66'
-                    elif videoaspect <= 1.8147:
-                        videoaspect = '1.78'
-                    elif videoaspect <= 2.0174:
-                        videoaspect = '1.85'
-                    elif videoaspect <= 2.2738:
-                        videoaspect = '2.20'
-                    else:
-                        videoaspect = '2.35'
-                    videowidth = item['streamdetails']['video'][0]['width']
-                    videoheight = item['streamdetails']['video'][0]['height']
-                    if videowidth <= 720 and videoheight <= 480:
-                        videoresolution = '480'
-                    elif videowidth <= 768 and videoheight <= 576:
-                        videoresolution = '576'
-                    elif videowidth <= 960 and videoheight <= 544:
-                        videoresolution = '540'
-                    elif videowidth <= 1280 and videoheight <= 720:
-                        videoresolution = '720'
-                    else:
-                        videoresolution = '1080'
-                    duration = str(datetime.timedelta(seconds=int(item['streamdetails']['video'][0]['duration'])))
-                    if duration[0] == '0':
-                        duration = duration[2:]
-                else:
-                    videocodec = ''
-                    videoaspect = ''
-                    videoresolution = ''
-                    duration = ''
-                listitem = xbmcgui.ListItem(label=musicvideo, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("album", album)
-                listitem.setProperty("artist", artist)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("director", director)
-                listitem.setProperty("genre", genre)
-                listitem.setProperty("plot", plot)
-                listitem.setProperty("rating", rating)
-                listitem.setProperty("userrating", userrating)
-                listitem.setProperty("duration", duration)
-                listitem.setProperty("studio", studio)
-                listitem.setProperty("year", year)
-                listitem.setProperty("playcount", playcount)
-                listitem.setProperty("videoresolution", videoresolution)
-                listitem.setProperty("videocodec", videocodec)
-                listitem.setProperty("videoaspect", videoaspect)
-                listitem.setProperty("audiocodec", audiocodec)
-                listitem.setProperty("audiochannels", audiochannels)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", musicvideoid)
+                listitem = xbmcgui.ListItem(item['label'])
+                listitem.setArt(self._get_art(item['art'], 'DefaultVideo.png'))
+                listitem.setInfo('video', self._get_info(item, 'musicvideo'))
                 listitems.append(listitem)
         self.getControl(151).addItems(listitems)
         if count > 0:
@@ -591,10 +512,11 @@ class GUI(xbmcgui.WindowXMLDialog):
         labels['mediatype'] = item
         labels['dbid'] = labels['%sid' % item]
         del labels['art']
-        if item == 'movie' or item == 'tvshow' or item == 'episode':
+        if item == 'movie' or item == 'tvshow' or item == 'episode' or item == 'musicvideo':
             labels['duration'] = labels['runtime'] # we does json return runtime instead of duration?
             del labels['runtime']
-            del labels['cast']
+            if item != 'musicvideo':
+                del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
         return labels

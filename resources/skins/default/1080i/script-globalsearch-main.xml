@@ -1347,7 +1347,7 @@
 									<align>center</align>
 									<aligny>center</aligny>
 									<selectedcolor>white</selectedcolor>
-									<label>[B]$INFO[ListItem.Property(TvShowTitle)][/B]</label>
+									<label>[B]$INFO[ListItem.TvShowTitle][/B]</label>
 								</control>
 								<control type="label">
 									<left>15</left>
@@ -1363,7 +1363,7 @@
 								<control type="group">
 									<left>170</left>
 									<top>20</top>
-									<visible>!IsEmpty(ListItem.Property(UserRating))</visible>
+									<visible>!IsEmpty(ListItem.UserRating)</visible>
 									<control type="image">
 										<left>8</left>
 										<top>2</top>
@@ -1379,7 +1379,7 @@
 										<height>32</height>
 										<textcolor>white</textcolor>
 										<font>font10_title</font>
-										<label>$INFO[ListItem.Property(UserRating)]</label>
+										<label>$INFO[ListItem.UserRating]</label>
 									</control>
 								</control>
 							</itemlayout>
@@ -1413,7 +1413,7 @@
 										<align>center</align>
 										<aligny>center</aligny>
 										<selectedcolor>white</selectedcolor>
-										<label>[B]$INFO[ListItem.Property(TvShowTitle)][/B]</label>
+										<label>[B]$INFO[ListItem.TvShowTitle][/B]</label>
 									</control>
 									<control type="label">
 										<left>15</left>
@@ -1429,7 +1429,7 @@
 									<control type="group">
 										<left>170</left>
 										<top>20</top>
-										<visible>!IsEmpty(ListItem.Property(UserRating))</visible>
+										<visible>!IsEmpty(ListItem.UserRating)</visible>
 										<control type="image">
 											<left>8</left>
 											<top>2</top>
@@ -1445,7 +1445,7 @@
 											<height>32</height>
 											<textcolor>white</textcolor>
 											<font>font10_title</font>
-											<label>$INFO[ListItem.Property(UserRating)]</label>
+											<label>$INFO[ListItem.UserRating]</label>
 										</control>
 									</control>
 									<control type="image">
@@ -1490,7 +1490,7 @@
 											<align>center</align>
 											<font>font_textbox</font>
 											<selectedcolor>white</selectedcolor>
-											<label fallback="-">$INFO[ListItem.Property(Rating)]</label>
+											<label fallback="-">$INFO[ListItem.Rating]</label>
 										</control>
 									</control>
 									<control type="group">
@@ -1512,7 +1512,7 @@
 											<align>center</align>
 											<font>font_textbox</font>
 											<selectedcolor>white</selectedcolor>
-											<label fallback="-">$INFO[ListItem.Property(Season)]</label>
+											<label fallback="-">$INFO[ListItem.Season]</label>
 										</control>
 									</control>
 									<control type="group">
@@ -1523,7 +1523,7 @@
 											<width>48</width>
 											<height>48</height>
 											<texture>globalsearch-list-watched.png</texture>
-											<visible>IntegerGreaterThan(ListItem.Property(Playcount),0)</visible>
+											<visible>IntegerGreaterThan(ListItem.Playcount,0)</visible>
 										</control>
 										<control type="image">
 											<left>11</left>
@@ -1531,7 +1531,7 @@
 											<width>48</width>
 											<height>48</height>
 											<texture>globalsearch-list-unwatched.png</texture>
-											<visible>!IntegerGreaterThan(ListItem.Property(Playcount),0)</visible>
+											<visible>!IntegerGreaterThan(ListItem.Playcount,0)</visible>
 										</control>
 									</control>
 								</control>
@@ -1614,14 +1614,14 @@
 									<height>60</height>
 									<fadetime>200</fadetime>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
-									<texture>$INFO[Container(141).ListItem.Property(AudioChannels),globalsearch-flags/audiochannel/,.png]</texture>
+									<texture>$INFO[Container(141).ListItem.AudioChannels,globalsearch-flags/audiochannel/,.png]</texture>
 								</control>
 								<control type="image">
 									<width>110</width>
 									<height>60</height>
 									<fadetime>200</fadetime>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
-									<texture>$INFO[Container(141).ListItem.Property(AudioCodec),globalsearch-flags/audiocodec/,.png]</texture>
+									<texture>$INFO[Container(141).ListItem.AudioCodec,globalsearch-flags/audiocodec/,.png]</texture>
 								</control>
 							</control>
 							<control type="grouplist">
@@ -1635,14 +1635,14 @@
 									<height>60</height>
 									<fadetime>200</fadetime>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
-									<texture>$INFO[Container(141).ListItem.Property(VideoAspect),globalsearch-flags/aspectratio/,.png]</texture>
+									<texture>$INFO[Container(141).ListItem.VideoAspect,globalsearch-flags/aspectratio/,.png]</texture>
 								</control>
 								<control type="image">
 									<width>110</width>
 									<height>60</height>
 									<fadetime>200</fadetime>
 									<aspectratio align="center" aligny="top">keep</aspectratio>
-									<texture>$INFO[Container(141).ListItem.Property(VideoCodec),globalsearch-flags/videocodec/,.png]</texture>
+									<texture>$INFO[Container(141).ListItem.VideoCodec,globalsearch-flags/videocodec/,.png]</texture>
 								</control>
 							</control>
 						</control>

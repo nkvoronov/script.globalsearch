@@ -23,7 +23,7 @@ CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':
               'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
 
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
-#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "tvshowtitle", "premiered", "status", "set", "imdbnumber", 
+#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "showtitle", "premiered", "status", "set", "imdbnumber", 
 #               "code", "aired", "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
@@ -33,6 +33,9 @@ TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "p
                 "imdbnumber", "lastplayed", "votes", "dateadded", "art"]
 
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
+
+EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
+                 "votes", "dateadded", "streamdetails", "art"]
 
 def log(txt):
     if isinstance(txt,str):
@@ -207,96 +210,17 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(191).setLabel(xbmc.getLocalizedString(20360))
         count = 0
         if self.fetch_seasonepisodes == 'true':
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": ["title", "streamdetails", "plot", "firstaired", "runtime", "season", "episode", "showtitle", "thumbnail", "fanart", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "title" }, "tvshowid":%s }, "id": 1}' % self.tvshowid)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": %s, "sort": { "method": "title" }, "tvshowid":%s }, "id": 1}' % (json.dumps(EPISODELABELS), self.tvshowid))
         else:
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": ["title", "streamdetails", "plot", "firstaired", "runtime", "season", "episode", "showtitle", "thumbnail", "fanart", "file", "playcount", "director", "rating", "userrating"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetEpisodes", "params": { "properties": %s, "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % (json.dumps(EPISODELABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('episodes'):
             for item in json_response['result']['episodes']:
-                if self.fetch_seasonepisodes == 'true':
-                    episode = item['showtitle']
-                else:
-                    episode = item['title']
                 count = count + 1
-                if self.fetch_seasonepisodes == 'true':
-                    tvshowname = episode
-                    episode = item['title']
-                else:
-                    tvshowname = item['showtitle']
-                director = " / ".join(item['director'])
-                fanart = item['fanart']
-                episodeid = str(item['episodeid'])
-                episodenumber = "%.2d" % float(item['episode'])
-                path = item['file']
-                plot = item['plot']
-                runtime = str(int((item['runtime'] / 60.0) + 0.5))
-                premiered = item['firstaired']
-                rating = str(round(float(item['rating']),1))
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                seasonnumber = '%.2d' % float(item['season'])
-                playcount = str(item['playcount'])
-                thumb = item['thumbnail']
-                fanart = item['fanart']
-                if item['streamdetails']['audio'] != []:
-                    audiochannels = str(item['streamdetails']['audio'][0]['channels'])
-                    audiocodec = str(item['streamdetails']['audio'][0]['codec'])
-                else:
-                    audiochannels = ''
-                    audiocodec = ''
-                if item['streamdetails']['video'] != []:
-                    videocodec = str(item['streamdetails']['video'][0]['codec'])
-                    videoaspect = float(item['streamdetails']['video'][0]['aspect'])
-                    if videoaspect <= 1.4859:
-                        videoaspect = '1.33'
-                    elif videoaspect <= 1.7190:
-                        videoaspect = '1.66'
-                    elif videoaspect <= 1.8147:
-                        videoaspect = '1.78'
-                    elif videoaspect <= 2.0174:
-                        videoaspect = '1.85'
-                    elif videoaspect <= 2.2738:
-                        videoaspect = '2.20'
-                    else:
-                        videoaspect = '2.35'
-                    videowidth = item['streamdetails']['video'][0]['width']
-                    videoheight = item['streamdetails']['video'][0]['height']
-                    if videowidth <= 720 and videoheight <= 480:
-                        videoresolution = '480'
-                    elif videowidth <= 768 and videoheight <= 576:
-                        videoresolution = '576'
-                    elif videowidth <= 960 and videoheight <= 544:
-                        videoresolution = '540'
-                    elif videowidth <= 1280 and videoheight <= 720:
-                        videoresolution = '720'
-                    else:
-                        videoresolution = '1080'
-                else:
-                    videocodec = ''
-                    videoaspect = ''
-                    videoresolution = ''
-                listitem = xbmcgui.ListItem(label=episode, iconImage='DefaultVideo.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("episode", episodenumber)
-                listitem.setProperty("plot", plot)
-                listitem.setProperty("rating", rating)
-                listitem.setProperty("userrating", userrating)
-                listitem.setProperty("director", director)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("season", seasonnumber)
-                listitem.setProperty("duration", runtime)
-                listitem.setProperty("tvshowtitle", tvshowname)
-                listitem.setProperty("premiered", premiered)
-                listitem.setProperty("playcount", playcount)
-                listitem.setProperty("videoresolution", videoresolution)
-                listitem.setProperty("videocodec", videocodec)
-                listitem.setProperty("videoaspect", videoaspect)
-                listitem.setProperty("audiocodec", audiocodec)
-                listitem.setProperty("audiochannels", audiochannels)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", episodeid)
+                listitem = xbmcgui.ListItem(item['label'])
+                listitem.setArt(self._get_art(item['art'], 'DefaultVideo.png'))
+                listitem.setInfo('video', self._get_info(item, 'episode'))
                 listitems.append(listitem)
         self.getControl(141).addItems(listitems)
         if count > 0:

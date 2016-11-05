@@ -2563,7 +2563,7 @@
 									<align>center</align>
 									<aligny>center</aligny>
 									<selectedcolor>white</selectedcolor>
-									<label>[B]$INFO[ListItem.Property(Artist)][/B]</label>
+									<label>[B]$INFO[ListItem.Artist][/B]</label>
 								</control>
 								<control type="label">
 									<left>15</left>
@@ -2579,7 +2579,7 @@
 								<control type="group">
 									<left>250</left>
 									<top>20</top>
-									<visible>!IsEmpty(ListItem.Property(UserRating))</visible>
+									<visible>!IsEmpty(ListItem.UserRating)</visible>
 									<control type="image">
 										<left>8</left>
 										<top>2</top>
@@ -2595,7 +2595,7 @@
 										<height>32</height>
 										<textcolor>white</textcolor>
 										<font>font10_title</font>
-										<label>$INFO[ListItem.Property(UserRating)]</label>
+										<label>$INFO[ListItem.UserRating]</label>
 									</control>
 								</control>
 							</itemlayout>
@@ -2629,7 +2629,7 @@
 										<align>center</align>
 										<aligny>center</aligny>
 										<selectedcolor>white</selectedcolor>
-										<label>[B]$INFO[ListItem.Property(Artist)][/B]</label>
+										<label>[B]$INFO[ListItem.Artist][/B]</label>
 									</control>
 									<control type="label">
 										<left>15</left>
@@ -2645,7 +2645,7 @@
 									<control type="group">
 										<left>250</left>
 										<top>20</top>
-										<visible>!IsEmpty(ListItem.Property(UserRating))</visible>
+										<visible>!IsEmpty(ListItem.UserRating)</visible>
 										<control type="image">
 											<left>8</left>
 											<top>2</top>
@@ -2661,7 +2661,7 @@
 											<height>32</height>
 											<textcolor>white</textcolor>
 											<font>font10_title</font>
-											<label>$INFO[ListItem.Property(UserRating)]</label>
+											<label>$INFO[ListItem.UserRating]</label>
 										</control>
 									</control>
 									<control type="image">
@@ -2706,7 +2706,7 @@
 											<align>center</align>
 											<font>font_textbox</font>
 											<selectedcolor>white</selectedcolor>
-											<label fallback="-">$INFO[ListItem.Property(Rating)]</label>
+											<label fallback="-">$INFO[ListItem.Rating]</label>
 										</control>
 									</control>
 									<control type="group">
@@ -2728,7 +2728,7 @@
 											<align>center</align>
 											<font>font_textbox</font>
 											<selectedcolor>white</selectedcolor>
-											<label fallback="-">$INFO[ListItem.Property(Year)]</label>
+											<label fallback="-">$INFO[ListItem.Year]</label>
 										</control>
 									</control>
 									<control type="group">
@@ -2739,7 +2739,7 @@
 											<width>48</width>
 											<height>48</height>
 											<texture>globalsearch-list-watched.png</texture>
-											<visible>IntegerGreaterThan(ListItem.Property(Playcount),0)</visible>
+											<visible>IntegerGreaterThan(ListItem.Playcount,0)</visible>
 										</control>
 										<control type="image">
 											<left>11</left>
@@ -2747,7 +2747,7 @@
 											<width>48</width>
 											<height>48</height>
 											<texture>globalsearch-list-unwatched.png</texture>
-											<visible>!IntegerGreaterThan(ListItem.Property(Playcount),0)</visible>
+											<visible>!IntegerGreaterThan(ListItem.Playcount,0)</visible>
 										</control>
 									</control>
 								</control>

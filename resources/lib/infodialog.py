@@ -8,6 +8,7 @@ LANGUAGE = sys.modules["__main__"].LANGUAGE
 CANCEL_DIALOG = (9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
 ACTION_SHOW_INFO = (11,)
 
+
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
         xbmcgui.WindowXMLDialog.__init__(self)

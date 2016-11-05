@@ -7,11 +7,11 @@ import infodialog
 import json
 import operator
 
-ADDON        = sys.modules['__main__'].ADDON
-ADDONID      = sys.modules['__main__'].ADDONID
+ADDON = sys.modules['__main__'].ADDON
+ADDONID = sys.modules['__main__'].ADDONID
 ADDONVERSION = sys.modules['__main__'].ADDONVERSION
-LANGUAGE     = sys.modules['__main__'].LANGUAGE
-CWD          = sys.modules['__main__'].CWD
+LANGUAGE = sys.modules['__main__'].LANGUAGE
+CWD = sys.modules['__main__'].CWD
 
 ACTION_CANCEL_DIALOG = (9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
 ACTION_CONTEXT_MENU = (117,)
@@ -22,13 +22,7 @@ ACTION_SHOW_INFO = (11,)
 CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':'episodes', 'self.musicvideos':'musicvideos', 'self.artists':'artists', 'self.albums':'albums', 
               'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
 
-
 #TODO use label or title?
-
-
-#VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
-#               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "showtitle", "premiered", "status", "set", "imdbnumber", 
-#               "code", "aired", "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
@@ -41,18 +35,22 @@ SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "wat
 EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
                  "votes", "dateadded", "streamdetails", "art"]
 
-MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", 
-                    "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", "streamdetails", "art"]
+MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", 
+                    "streamdetails", "art"]
 
 ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
 
 ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"]
+
+SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"]
+
 
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
+
 
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
@@ -149,7 +147,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['movies']:
                 count += 1
                 listitem = xbmcgui.ListItem(item['title'])
-                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png'))
+                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png', 'video'))
                 for stream in item['streamdetails']['video']:
                     listitem.addStreamInfo('video', stream)
                 for stream in item['streamdetails']['audio']:
@@ -179,7 +177,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['tvshows']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['title'])
-                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png'))
+                listitem.setArt(self._get_art(item['art'], 'DefaultMovie.png', 'video'))
                 listitem.setCast(item['cast'])
                 listitem.setInfo('video', self._get_info(item, 'tvshow'))
                 listitems.append(listitem)
@@ -203,7 +201,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['seasons']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(self._get_art(item['art'], 'DefaultFolder.png'))
+                listitem.setArt(self._get_art(item['art'], 'DefaultFolder.png', 'video'))
                 listitem.setInfo('video', self._get_info(item, 'season'))
                 listitems.append(listitem)
         self.getControl(131).addItems(listitems)
@@ -230,7 +228,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['episodes']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(self._get_art(item['art'], 'DefaultVideo.png'))
+                listitem.setArt(self._get_art(item['art'], 'DefaultVideo.png', 'video'))
                 listitem.setInfo('video', self._get_info(item, 'episode'))
                 listitems.append(listitem)
         self.getControl(141).addItems(listitems)
@@ -276,7 +274,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['artists']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(self._get_musicart(item, 'DefaultArtist.png'))
+                listitem.setArt(self._get_art(item, 'DefaultArtist.png', 'music'))
                 info, props = self._split_labels(item, ARTISTLABELS, 'artist_')
                 for key, value in props.iteritems():
                     listitem.setProperty(key, str(value))
@@ -305,7 +303,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             for item in json_response['result']['albums']:
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(self._get_musicart(item, 'DefaultArtist.png'))
+                listitem.setArt(self._get_art(item, 'DefaultAlbumCover.png', 'music'))
                 info, props = self._split_labels(item, ALBUMLABELS, 'album_')
                 for key, value in props.iteritems():
                     listitem.setProperty(key, str(value))
@@ -325,55 +323,19 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(191).setLabel(xbmc.getLocalizedString(134))
         count = 0
         if self.fetch_albumssongs == 'true':
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"], "sort": { "method": "title" }, "filter": {"artistid": %s} }, "id": 1}' % self.artistid)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": %S, "sort": { "method": "title" }, "filter": {"artistid": %s} }, "id": 1}' % (json.dumps(SONGLABELS), self.artistid))
         else:
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"], "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetSongs", "params": {"properties": %s, "sort": { "method": "title" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % (json.dumps(SONGLABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('songs'):
             for item in json_response['result']['songs']:
-                if self.fetch_albumssongs == 'true':
-                    song = " / ".join(item['artist'])
-                else:
-                    song = item['title']
                 count = count + 1
-                if self.fetch_albumssongs == 'true':
-                    artist = song
-                    song = item['label']
-                else:
-                    artist = " / ".join(item['artist'])
-                songid = str(item['songid'])
-                album = item['album']
-                comment = item['comment']
-                duration = str(datetime.timedelta(seconds=int(item['duration'])))
-                if duration[0] == '0':
-                    duration = duration[2:]
-                fanart = item['fanart']
-                path = item['file']
-                genre = " / ".join(item['genre'])
-                thumb = item['thumbnail']
-                track = str(item['track'])
-                playcount = str(item['playcount'])
-                rating = str(item['rating'])
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                year = str(item['year'])
-                listitem = xbmcgui.ListItem(label=song, iconImage='DefaultAlbumCover.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("artist", artist)
-                listitem.setProperty("album", album)
-                listitem.setProperty("genre", genre)
-                listitem.setProperty("comment", comment)
-                listitem.setProperty("track", track)
-                listitem.setProperty("rating", rating)
-                listitem.setProperty("userrating", userrating)
-                listitem.setProperty("playcount", playcount)
-                listitem.setProperty("duration", duration)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("year", year)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", songid)
+                print '================================================='
+                print item
+                listitem = xbmcgui.ListItem(item['label'])
+                listitem.setArt(self._get_art(item, 'DefaultAudio.png', 'music'))
+                listitem.setInfo('music', self._get_info(item, 'song'))
                 listitems.append(listitem)
         self.getControl(181).addItems(listitems)
         if count > 0:
@@ -455,7 +417,12 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self.setFocus(self.getControl(221))
                 self.focusset = 'true'
 
-    def _get_info(self, labels, item):
+    def _get_info(self, info, item):
+        labels = {}
+        for key, value in info.iteritems():
+           if isinstance(value, list):
+               value = " / ".join(value)
+           labels[key] = value
         labels['mediatype'] = item
         labels['dbid'] = labels['%sid' % item]
         del labels['%sid' % item]
@@ -473,21 +440,25 @@ class GUI(xbmcgui.WindowXMLDialog):
                 del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
+        if item == 'song':
+            labels['tracknumber'] = labels['track']
+            del labels['track']
+            del labels['file']
         return labels
 
-    def _get_art(self, labels, icon):
-        labels['icon'] = icon
-        if labels.get('poster'):
-            labels['thumb'] = labels['poster']
-        elif labels.get('banner'):
-            labels['thumb'] = labels['banner']
-        return labels
-
-    def _get_musicart(self, item, icon):
-        labels = {}
-        labels['icon'] = icon
-        labels['thumb'] = item['fanart']
-        labels['fanart'] = item['fanart']
+    def _get_art(self, labels, icon, media):
+        if media == 'video':
+            labels['icon'] = icon
+            if labels.get('poster'):
+                labels['thumb'] = labels['poster']
+            elif labels.get('banner'):
+                labels['thumb'] = labels['banner']
+        else:
+            art = {}
+            art['icon'] = icon
+            art['thumb'] = labels['fanart']
+            art['fanart'] = labels['fanart']
+            labels = art
         return labels
 
     def _split_labels(self, item, labels, prefix):
@@ -701,6 +672,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.close()
         xbmc.sleep(300)
         xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
+
 
 class MyPlayer(xbmc.Player):
     def __init__(self):

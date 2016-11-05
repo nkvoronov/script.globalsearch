@@ -4,12 +4,12 @@ import urllib
 import xbmc
 import xbmcaddon
 
-ADDON        = xbmcaddon.Addon()
-ADDONID      = ADDON.getAddonInfo('id')
+ADDON = xbmcaddon.Addon()
+ADDONID = ADDON.getAddonInfo('id')
 ADDONVERSION = ADDON.getAddonInfo('version')
-LANGUAGE     = ADDON.getLocalizedString
-CWD          = ADDON.getAddonInfo('path').decode('utf-8')
-RESOURCE     = xbmc.translatePath(os.path.join(CWD, 'resources', 'lib').encode('utf-8')).decode('utf-8')
+LANGUAGE = ADDON.getLocalizedString
+CWD = ADDON.getAddonInfo('path').decode('utf-8')
+RESOURCE = xbmc.translatePath(os.path.join(CWD, 'resources', 'lib').encode('utf-8')).decode('utf-8')
 
 sys.path.append(RESOURCE)
 

@@ -22,6 +22,10 @@ ACTION_SHOW_INFO = (11,)
 CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':'episodes', 'self.musicvideos':'musicvideos', 'self.artists':'artists', 'self.albums':'albums', 
               'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
 
+
+#TODO use label or title?
+
+
 #VIDEOLABELS = ["genre", "country", "year", "episode", "season", "top250", "setid", "tracknumber", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", 
 #               "plotoutline", "title", "originaltitle", "sorttitle", "runtime", "studio", "tagline", "writer", "showtitle", "premiered", "status", "set", "imdbnumber", 
 #               "code", "aired", "credits",  "lastplayed", "album", "artist", "votes", "trailer", "dateadded", "streamdetails", "art"]
@@ -41,6 +45,8 @@ MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "direc
                     "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", "streamdetails", "art"]
 
 ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
+
+ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"]
 
 def log(txt):
     if isinstance(txt,str):
@@ -271,7 +277,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
                 listitem.setArt(self._get_musicart(item, 'DefaultArtist.png'))
-                info, props = self._split_labels(item, ARTISTLABELS)
+                info, props = self._split_labels(item, ARTISTLABELS, 'artist_')
                 for key, value in props.iteritems():
                     listitem.setProperty(key, str(value))
                 listitem.setInfo('music', self._get_info(info, 'artist'))
@@ -290,59 +296,20 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(191).setLabel(xbmc.getLocalizedString(132))
         count = 0
         if self.fetch_albumssongs == 'true':
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"artistid": %s} }, "id": 1}' % self.artistid)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": %s, "sort": { "method": "label" }, "filter": {"artistid": %s} }, "id": 1}' % (json.dumps(ALBUMLABELS), self.artistid))
         else:
-            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"], "sort": { "method": "label" }, "filter": {"field": "album", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetAlbums", "params": {"properties": %s, "sort": { "method": "label" }, "filter": {"field": "album", "operator": "contains", "value": "%s"} }, "id": 1}' % (json.dumps(ALBUMLABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('albums'):
             for item in json_response['result']['albums']:
-                if self.fetch_albumssongs == 'true':
-                    album = " / ".join(item['artist'])
-                else:
-                    album = item['title']
                 count = count + 1
-                if self.fetch_albumssongs == 'true':
-                    artist = album
-                    album = item['title']
-                else:
-                    artist = " / ".join(item['artist'])
-                    if self.fetch_songalbum == 'true':
-                        if not artist == self.artistname:
-                            count = count - 1
-                            return
-                albumid = str(item['albumid'])
-                path = 'musicdb://albums/' + albumid + '/'
-                label = item['albumlabel']
-                description = item['description']
-                fanart = item['fanart']
-                genre = " / ".join(item['genre'])
-                mood = " / ".join(item['mood'])
-                rating = str(item['rating'])
-                userrating = str(item['userrating'])
-                if userrating == '0':
-                    userrating = ''
-                style = " / ".join(item['style'])
-                theme = " / ".join(item['theme'])
-                albumtype = item['type']
-                thumb = item['thumbnail']
-                year = str(item['year'])
-                listitem = xbmcgui.ListItem(label=album, iconImage='DefaultAlbumCover.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("artist", artist)
-                listitem.setProperty("album_label", label)
-                listitem.setProperty("genre", genre)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("album_description", description)
-                listitem.setProperty("album_theme", theme)
-                listitem.setProperty("album_style", style)
-                listitem.setProperty("album_rating", rating)
-                listitem.setProperty("userrating", userrating)
-                listitem.setProperty("album_type", albumtype)
-                listitem.setProperty("album_mood", mood)
-                listitem.setProperty("year", year)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", albumid)
+                listitem = xbmcgui.ListItem(item['label'])
+                listitem.setArt(self._get_musicart(item, 'DefaultArtist.png'))
+                info, props = self._split_labels(item, ALBUMLABELS, 'album_')
+                for key, value in props.iteritems():
+                    listitem.setProperty(key, str(value))
+                listitem.setInfo('music', self._get_info(info, 'album'))
                 listitems.append(listitem)
         self.getControl(171).addItems(listitems)
         if count > 0:
@@ -523,12 +490,13 @@ class GUI(xbmcgui.WindowXMLDialog):
         labels['fanart'] = item['fanart']
         return labels
 
-    def _split_labels(self, item, labels):
+    def _split_labels(self, item, labels, prefix):
         props = {}
         for label in labels:
-            if label != 'thumbnail' and label != 'fanart':
-                props['artist_' + label] = item[label]
-                del item[label]
+            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or (prefix == 'album_' and (label == 'genre' or label == 'year')):
+                continue
+            props[prefix + label] = item[label]
+            del item[label]
         return item, props
 
     def _clean_string(self, string):

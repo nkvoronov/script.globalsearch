@@ -1,12 +1,4 @@
-import sys
-import re
-import xbmc
-import xbmcgui
-
-LANGUAGE = sys.modules["__main__"].LANGUAGE
-
-CANCEL_DIALOG = (9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
-ACTION_SHOW_INFO = (11,)
+from utils import *
 
 
 class GUI(xbmcgui.WindowXMLDialog):

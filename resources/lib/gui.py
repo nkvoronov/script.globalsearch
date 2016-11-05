@@ -517,22 +517,14 @@ class GUI(xbmcgui.WindowXMLDialog):
         action()
         self._check_focus()
 
-    def _play_video(self, path):
-        self._close()
-        xbmc.Player().play(path)
-
-    def _play_audio(self, path, listitem):
-        self._close()
-        xbmc.Player().play(path, listitem)
-
-    def _play_album(self):
-        self._close()
-        xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"albumid":%d}}, "id":1}' % int(self.albumid))
-
-    def _play_trailer(self, trailer):
-        self.playingtrailer = 'true'
-        self.getControl(100).setVisible(False)
-        self.Player.play(trailer)
+    def _play_item(self, key, value):
+        if key == 'path':
+            self.playingtrailer = 'true'
+            self.getControl(100).setVisible(False)
+            xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":"%s"}}, "id":1}' % (key, value))
+        else:
+            self._close()
+            xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":%d}}, "id":1}' % (key, int(value)))
 
     def _trailerstopped(self):
         self.getControl(100).setVisible(True)
@@ -598,7 +590,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 elif functions[selection] == 'self._browse_item':
                     functions[selection](listitem.getMusicInfoTag().getPath(), 'MusicLibrary')
                 elif functions[selection] == 'self._play_trailer':
-                    functions[selection](trailer)
+                    functions[selection]('trailer', trailer)
                 else:
                     functions[selection]()
 
@@ -625,14 +617,20 @@ class GUI(xbmcgui.WindowXMLDialog):
                 path = 'musicdb://artists/' + artistid + '/'
                 self._browse_item(path, 'MusicLibrary')
             elif controlId == 171:
-                self.albumid = listitem.getMusicInfoTag().getDbid()
-                self._play_album()
+                albumid = listitem.getMusicInfoTag().getDbid()
+                self._play_item('albumid', albumid)
             elif controlId == 181:
-                path = listitem.getMusicInfoTag().getPath()
-                self._play_audio(path, listitem)
-            else:
-                path = listitem.getVideoInfoTag().getPath()
-                self._play_video(path)
+                songid = listitem.getMusicInfoTag().getDbid()
+                 self._play_item('songid', songid)
+            elif controlId == 111 or controlId == 211 or controlId == 231:
+                movieid = listitem.getVideoInfoTag().getDbid()
+                self._play_item('movieid', movieid)
+            elif controlId == 141:
+                episodeid = listitem.getVideoInfoTag().getDbid()
+                self._play_item('episodeid', episodeid)
+            elif controlId == 151:
+                musicvideoid = listitem.getVideoInfoTag().getDbid()
+                self._play_item('musicvideoid', episodeid)
         else:
             self._newSearch()
 

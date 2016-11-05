@@ -331,8 +331,6 @@ class GUI(xbmcgui.WindowXMLDialog):
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('songs'):
             for item in json_response['result']['songs']:
                 count = count + 1
-                print '================================================='
-                print item
                 listitem = xbmcgui.ListItem(item['label'])
                 listitem.setArt(self._get_art(item, 'DefaultAudio.png', 'music'))
                 listitem.setInfo('music', self._get_info(item, 'song'))

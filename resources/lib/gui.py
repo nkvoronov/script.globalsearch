@@ -40,6 +40,8 @@ EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", 
                     "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", "streamdetails", "art"]
 
+ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
+
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
@@ -261,40 +263,18 @@ class GUI(xbmcgui.WindowXMLDialog):
         listitems = []
         self.getControl(191).setLabel(xbmc.getLocalizedString(133))
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists", "params": {"properties": ["genre", "description", "fanart", "thumbnail", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style"], "sort": { "method": "label" }, "filter": {"field": "artist", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "AudioLibrary.GetArtists", "params": {"properties": %s, "sort": { "method": "label" }, "filter": {"field": "artist", "operator": "contains", "value": "%s"} }, "id": 1}' % (json.dumps(ARTISTLABELS), self.searchstring))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('artists'):
             for item in json_response['result']['artists']:
-                artist = item['label']
                 count = count + 1
-                artistid = str(item['artistid'])
-                path = 'musicdb://artists/' + artistid + '/'
-                born = item['born']
-                description = item['description']
-                died = item['died']
-                disbanded = item['disbanded']
-                fanart = item['fanart']
-                formed = item['formed']
-                genre = " / ".join(item['genre'])
-                mood = " / ".join(item['mood'])
-                style = " / ".join(item['style'])
-                thumb = item['thumbnail']
-                yearsactive = " / ".join(item['yearsactive'])
-                listitem = xbmcgui.ListItem(label=artist, iconImage='DefaultArtist.png', thumbnailImage=thumb)
-                listitem.setProperty("icon", thumb)
-                listitem.setProperty("artist_born", born)
-                listitem.setProperty("artist_died", died)
-                listitem.setProperty("artist_formed", formed)
-                listitem.setProperty("artist_disbanded", disbanded)
-                listitem.setProperty("artist_yearsactive", yearsactive)
-                listitem.setProperty("artist_mood", mood)
-                listitem.setProperty("artist_style", style)
-                listitem.setProperty("fanart", fanart)
-                listitem.setProperty("artist_genre", genre)
-                listitem.setProperty("artist_description", description)
-                listitem.setProperty("path", path)
-                listitem.setProperty("dbid", artistid)
+                listitem = xbmcgui.ListItem(item['label'])
+                listitem.setArt(self._get_musicart(item, 'DefaultArtist.png'))
+                info, props = self._split_labels(item, ARTISTLABELS)
+                for key, value in props.iteritems():
+                    listitem.setProperty(key, str(value))
+                listitem.setInfo('music', self._get_info(info, 'artist'))
                 listitems.append(listitem)
         self.getControl(161).addItems(listitems)
         if count > 0:
@@ -511,7 +491,14 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _get_info(self, labels, item):
         labels['mediatype'] = item
         labels['dbid'] = labels['%sid' % item]
-        del labels['art']
+        del labels['%sid' % item]
+        labels['title'] = labels['label']
+        del labels['label']
+        if item != 'artist' and item != 'album' and item != 'song' and item != 'epg':
+            del labels['art']
+        else:
+            del labels['thumbnail']
+            del labels['fanart']
         if item == 'movie' or item == 'tvshow' or item == 'episode' or item == 'musicvideo':
             labels['duration'] = labels['runtime'] # we does json return runtime instead of duration?
             del labels['runtime']
@@ -528,6 +515,21 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif labels.get('banner'):
             labels['thumb'] = labels['banner']
         return labels
+
+    def _get_musicart(self, item, icon):
+        labels = {}
+        labels['icon'] = icon
+        labels['thumb'] = item['fanart']
+        labels['fanart'] = item['fanart']
+        return labels
+
+    def _split_labels(self, item, labels):
+        props = {}
+        for label in labels:
+            if label != 'thumbnail' and label != 'fanart':
+                props['artist_' + label] = item[label]
+                del item[label]
+        return item, props
 
     def _clean_string(self, string):
         return string.replace('(', '[(]').replace(')', '[)]').replace('+', '[+]')
@@ -678,19 +680,20 @@ class GUI(xbmcgui.WindowXMLDialog):
     def onClick(self, controlId):
         if controlId != 198:
             listitem = self.getControl(controlId).getSelectedItem()
-            if controlId != 171:
-                path = listitem.getProperty('path')
-            else:
-                self.albumid = listitem.getProperty('dbid')
             if controlId == 121 or controlId == 131:
+                path = listitem.getVideoInfoTag().getPath()
                 self._browse_item(path, 'Videos')
             elif controlId == 161:
-                self._browse_audio(path, 'MusicLibrary')
+                path = 'musicdb://artists/' + artistid + '/'
+                self._browse_item(path, 'MusicLibrary')
             elif controlId == 171:
+                self.albumid = listitem.getMusicInfoTag().getDbid()
                 self._play_album()
             elif controlId == 181:
+                path = listitem.getMusicInfoTag().getPath()
                 self._play_audio(path, listitem)
             else:
+                path = listitem.getVideoInfoTag().getPath()
                 self._play_video(path)
         else:
             self._newSearch()

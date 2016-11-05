@@ -77,7 +77,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 else:
                     self._parse_argv()
             self._reset_variables()
-            self._init_variables()
+            self._init_items()
             self._fetch_items()
 
     def _fetch_items(self):
@@ -123,14 +123,13 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.focusset= 'false'
         self.getControl(190).setLabel(xbmc.getLocalizedString(194))
 
-    def _init_variables(self):
+    def _init_items(self):
         self.fetch_seasonepisodes = 'false'
         self.fetch_albumssongs = 'false'
         self.fetch_songalbum = 'false'
         self.playingtrailer = 'false'
         self.getControl(198).setLabel(LANGUAGE(32299))
-        self.Player = MyPlayer()
-        self.Player.gui = self
+        self.Player = MyPlayer(function=self._trailerstopped)
 
     def _fetch_movies(self, query, label, control):
         listitems = []
@@ -530,10 +529,10 @@ class GUI(xbmcgui.WindowXMLDialog):
         self._close()
         xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"albumid":%d}}, "id":1}' % int(self.albumid))
 
-    def _play_trailer(self):
+    def _play_trailer(self, trailer):
         self.playingtrailer = 'true'
         self.getControl(100).setVisible(False)
-        self.Player.play(self.trailer)
+        self.Player.play(trailer)
 
     def _trailerstopped(self):
         self.getControl(100).setVisible(True)
@@ -561,8 +560,8 @@ class GUI(xbmcgui.WindowXMLDialog):
         if controlId == 111 or controlId == 211 or controlId == 231:
             labels += (xbmc.getLocalizedString(13346),)
             functions += ('info',)
-            self.trailer = listitem.getVideoInfoTag().getTrailer()
-            if self.trailer:
+            trailer = listitem.getVideoInfoTag().getTrailer()
+            if trailer:
                 labels += (LANGUAGE(32205),)
                 functions += (self._play_trailer,)
         elif controlId == 121:
@@ -588,7 +587,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             functions += ('info', self._getSong_Album,)
         elif controlId == 221:
             labels += (xbmc.getLocalizedString(19047),)
-            functions += ('info',)
+            functions += (self._browse_item,)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
@@ -598,6 +597,8 @@ class GUI(xbmcgui.WindowXMLDialog):
                     functions[selection](controlId, listitem)
                 elif functions[selection] == 'self._browse_item':
                     functions[selection](listitem.getMusicInfoTag().getPath(), 'MusicLibrary')
+                elif functions[selection] == 'self._play_trailer':
+                    functions[selection](trailer)
                 else:
                     functions[selection]()
 
@@ -673,11 +674,12 @@ class GUI(xbmcgui.WindowXMLDialog):
 
 
 class MyPlayer(xbmc.Player):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         xbmc.Player.__init__(self)
+        self.function = kwargs["function"]
 
     def onPlayBackEnded(self):
-        self.gui._trailerstopped()
+        self.function()
 
     def onPlayBackStopped(self):
-        self.gui._trailerstopped()
+        self.function()

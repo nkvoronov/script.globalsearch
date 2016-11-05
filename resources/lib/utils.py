@@ -15,9 +15,6 @@ ACTION_OSD = (107, 163,)
 ACTION_SHOW_GUI = (18,)
 ACTION_SHOW_INFO = (11,)
 
-CATEGORIES = {'self.movies':'movies', 'self.tvshows':'tvshows', 'self.episodes':'episodes', 'self.musicvideos':'musicvideos', 'self.artists':'artists', 'self.albums':'albums', 
-              'self.songs':'songs', 'self.actors':'actors', 'self.directors':'directors', 'self.epg':'epg'}
-
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
@@ -38,6 +35,152 @@ ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", 
 
 SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"]
 
+CATEGORIES = {
+              'movies':{
+                       'enabled':False, 
+                       'type':'movies', 
+                       'method':'VideoLibrary.GetMovies', 
+                       'properties':MOVIELABELS, 
+                       'sort':'title', 
+                       'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                       'cast':True, 
+                       'streamdetails':True, 
+                       'label':342, 
+                       'icon':'DefaultVideo.png', 
+                       'media':'video', 
+                       'control':110
+                       }, 
+              'tvshows':{
+                         'enabled':False, 
+                         'type':'tvshows', 
+                         'method':'VideoLibrary.GetTVShows', 
+                         'properties':TVSHOWLABELS, 
+                         'sort':'label', 
+                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                         'cast':True, 
+                         'streamdetails':False, 
+                         'label':20343, 
+                         'icon':'DefaultVideo.png', 
+                         'media':'video', 
+                         'control':120
+                        }, 
+              'seasons':{
+                         'enabled':False, 
+                         'type':'seasons', 
+                         'method':'VideoLibrary.GetSeasons', 
+                         'properties':SEASONLABELS, 
+                         'sort':'label', 
+                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                         'cast':False, 
+                         'streamdetails':False, 
+                         'label':20373, 
+                         'icon':'DefaultVideo.png', 
+                         'media':'video', 
+                         'control':130
+                        }, 
+              'episodes':{
+                         'enabled':False, 
+                         'type':'episodes', 
+                         'method':'VideoLibrary.GetEpisodes', 
+                         'properties':EPISODELABELS, 
+                         'sort':'title', 
+                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                         'cast':True, 
+                         'streamdetails':True, 
+                         'label':20360, 
+                         'icon':'DefaultVideo.png', 
+                         'media':'video', 
+                         'control':140
+                         }, 
+              'musicvideos':{
+                         'enabled':False, 
+                         'type':'musicvideos', 
+                         'method':'VideoLibrary.GetMusicVideos', 
+                         'properties':MUSICVIDEOLABELS, 
+                         'sort':'label', 
+                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                         'cast':False, 
+                         'streamdetails':True, 
+                         'label':20389, 
+                         'icon':'DefaultVideo.png', 
+                         'media':'video', 
+                         'control':150
+                            }, 
+              'artists':{
+                       'enabled':False, 
+                       'type':'artists', 
+                       'method':'AudioLibrary.GetArtists', 
+                       'properties':ARTISTLABELS, 
+                       'sort':'label', 
+                       'rule':'{"field": "artist", "operator": "contains", "value": "%s"}',
+                       'cast':False, 
+                       'streamdetails':False, 
+                       'label':133, 
+                       'icon':'DefaultArtist.png', 
+                       'media':'music', 
+                       'control':160
+                        }, 
+              'albums':{
+                       'enabled':False, 
+                       'type':'albums', 
+                       'method':'AudioLibrary.GetAlbums', 
+                       'properties':ALBUMLABELS, 
+                       'sort':'label', 
+                       'rule':'{"field": "album", "operator": "contains", "value": "%s"}',
+                       'cast':False, 
+                       'streamdetails':False, 
+                       'label':132, 
+                       'icon':'DefaultAlbumCover.png', 
+                       'media':'music', 
+                       'control':170
+                       }, 
+              'songs':{
+                       'enabled':False, 
+                       'type':'songs', 
+                       'method':'AudioLibrary.GetSongs', 
+                       'properties':SONGLABELS, 
+                       'sort':'title', 
+                       'rule':'{"field": "title", "operator": "contains", "value": "%s"}',
+                       'cast':False, 
+                       'streamdetails':False, 
+                       'label':134, 
+                       'icon':'DefaultAudio.png', 
+                       'media':'music', 
+                       'control':180
+                      }, 
+              'actors':{
+                        'enabled':False, 
+                        'type':'actors', 
+                        'method':'VideoLibrary.GetMovies', 
+                        'properties':MOVIELABELS, 
+                        'sort':'title', 
+                        'rule':'{"field":"actor", "operator":"contains", "value":"%s"}',
+                        'cast':True, 
+                        'streamdetails':True, 
+                        'label':344, 
+                        'icon':'DefaultMovie.png', 
+                        'media':'video', 
+                        'control':210
+                       }, 
+              'directors':{
+                           'enabled':False, 
+                           'type':'directors', 
+                           'method':'VideoLibrary.GetMovies', 
+                           'properties':MOVIELABELS, 
+                           'sort':'title', 
+                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
+                           'cast':True, 
+                           'streamdetails':True, 
+                           'label':20348, 
+                           'icon':'DefaultMovie.png', 
+                           'media':'video', 
+                           'control':230
+                          }, 
+              'epg':{
+                     'enabled':False
+                     'type':'epg', 
+                    }
+             }
 
 def log(txt):
     if isinstance(txt,str):

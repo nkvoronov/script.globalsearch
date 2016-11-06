@@ -32,7 +32,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._fetch_items()
 
     def _hide_controls(self):
-        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 198, 199]:
+        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 998, 999]:
             self.getControl(cid).setVisible(False)
 
     def _reset_controls(self):
@@ -49,11 +49,11 @@ class GUI(xbmcgui.WindowXMLDialog):
 
     def _reset_variables(self):
         self.focusset= 'false'
-        self.getControl(190).setLabel(xbmc.getLocalizedString(194))
+        self.getControl(990).setLabel(xbmc.getLocalizedString(194))
 
     def _init_items(self):
         self.playingtrailer = 'false'
-        self.getControl(198).setLabel(LANGUAGE(32299))
+        self.getControl(998).setLabel(LANGUAGE(32299))
         self.Player = MyPlayer(function=self._trailerstopped)
 
     def _fetch_items(self):
@@ -66,7 +66,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         if cat['type'] == 'epg':
             self._fetch_channelgroups()
             return
-        self.getControl(191).setLabel(xbmc.getLocalizedString(cat['label']))
+        self.getControl(991).setLabel(xbmc.getLocalizedString(cat['label']))
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, "filter":%s}, "id": 1}'
                                          % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
@@ -105,7 +105,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self.focusset = 'true'
 
     def _fetch_channelgroups(self):
-        self.getControl(191).setLabel(xbmc.getLocalizedString(19069))
+        self.getControl(991).setLabel(xbmc.getLocalizedString(19069))
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "PVR.GetChannelGroups", "params": {"channeltype": "tv"}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
@@ -268,12 +268,12 @@ class GUI(xbmcgui.WindowXMLDialog):
         xbmc.executebuiltin('ActivateWindow(' + window + ',' + path + ',return)')
 
     def _check_focus(self):
-        self.getControl(190).setLabel('')
-        self.getControl(191).setLabel('')
-        self.getControl(198).setVisible(True)
+        self.getControl(990).setLabel('')
+        self.getControl(991).setLabel('')
+        self.getControl(998).setVisible(True)
         if self.focusset == 'false':
-            self.getControl(199).setVisible(True)
-            self.setFocus(self.getControl(198))
+            self.getControl(999).setVisible(True)
+            self.setFocus(self.getControl(998))
             dialog = xbmcgui.Dialog()
             ret = dialog.yesno(xbmc.getLocalizedString(284), LANGUAGE(32298))
             if ret:
@@ -341,7 +341,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             self.onInit()
 
     def onClick(self, controlId):
-        if controlId != 198:
+        if controlId != 998:
             listitem = self.getControl(controlId).getSelectedItem()
             if controlId == 121 or controlId == 131:
                 path = listitem.getVideoInfoTag().getPath()

@@ -189,9 +189,9 @@
 					<textureradioonnofocus>globalsearch-search.png</textureradioonnofocus>
 					<textureradioofffocus>globalsearch-search.png</textureradioofffocus>
 					<textureradiooffnofocus>globalsearch-search.png</textureradiooffnofocus>
-					<visible>!Control.IsVisible(198)</visible>
+					<visible>!Control.IsVisible(998)</visible>
 				</control>
-				<control type="label" id="190">
+				<control type="label" id="990">
 					<left>77</left>
 					<top>23</top>
 					<width>380</width>
@@ -200,7 +200,7 @@
 					<font>font13</font>
 					<label>-</label>
 				</control>
-				<control type="label" id="191">
+				<control type="label" id="991">
 					<left>77</left>
 					<top>53</top>
 					<width>380</width>
@@ -209,7 +209,7 @@
 					<font>font13</font>
 					<label>-</label>
 				</control>
-				<control type="radiobutton" id="198">
+				<control type="radiobutton" id="998">
 					<left>37</left>
 					<top>14</top>
 					<width>420</width>
@@ -250,8 +250,8 @@
 						<height>671</height>
 						<onleft>101</onleft>
 						<onright>101</onright>
-						<onup>198</onup>
-						<ondown>198</ondown>
+						<onup>998</onup>
+						<ondown>998</ondown>
 						<scrolltime tween="cubic" easing="out">500</scrolltime>
 						<itemlayout height="74">
 							<control type="image">
@@ -295,7 +295,7 @@
 									<width>390</width>
 									<height>73</height>
 									<texture>globalsearch-focus.png</texture>
-									<animation effect="fade" start="100" end="0" time="0" condition="!Control.HasFocus(9000) + !Control.HasFocus(198)">Conditional</animation>
+									<animation effect="fade" start="100" end="0" time="0" condition="!Control.HasFocus(9000) + !Control.HasFocus(998)">Conditional</animation>
 								</control>
 								<control type="image">
 									<left>-3</left>
@@ -311,7 +311,7 @@
 									<width>68</width>
 									<height>74</height>
 									<texture colordiffuse="51FFFFFF">globalsearch-black.png</texture>
-									<animation effect="fade" start="100" end="0" time="0" condition="!Control.HasFocus(9000) + !Control.HasFocus(198)">Conditional</animation>
+									<animation effect="fade" start="100" end="0" time="0" condition="!Control.HasFocus(9000) + !Control.HasFocus(998)">Conditional</animation>
 								</control>
 							</control>
 							<control type="image">
@@ -328,7 +328,7 @@
 								<height>70</height>
 								<texture colordiffuse="FF12B2E7">$INFO[ListItem.Art(thumb)]</texture>
 								<animation effect="fade" start="0" end="100" time="300" delay="0" reversible="false">Focus</animation>
-								<visible>!Control.HasFocus(9000) + !Control.HasFocus(198)</visible>
+								<visible>!Control.HasFocus(9000) + !Control.HasFocus(998)</visible>
 							</control>
 							<control type="label">
 								<left>74</left>
@@ -352,7 +352,7 @@
 								<label>$INFO[ListItem.Label2]</label>
 								<shadowcolor>22000000</shadowcolor>
 								<visible>Control.HasFocus(9000)</visible>
-								<animation effect="fade" time="300" condition="Control.HasFocus(9000) | Control.HasFocus(198) | ControlGroup(101).HasFocus">VisibleChange</animation>
+								<animation effect="fade" time="300" condition="Control.HasFocus(9000) | Control.HasFocus(998) | ControlGroup(101).HasFocus">VisibleChange</animation>
 								<animation effect="fade" start="0" end="100" time="150" delay="500">Focus</animation>
 								<animation effect="fade" start="100" end="0" time="300">UnFocus</animation>
 							</control>
@@ -3636,7 +3636,7 @@
 						</control>
 					</control>
 				</control>
-				<control type="label" id="199">
+				<control type="label" id="999">
 					<left>436</left>
 					<top>0</top>
 					<width>1484</width>

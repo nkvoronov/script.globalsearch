@@ -15,6 +15,23 @@ ACTION_OSD = (107, 163,)
 ACTION_SHOW_GUI = (18,)
 ACTION_SHOW_INFO = (11,)
 
+ALL = 100
+MOVIES = 110
+TVSHOWS = 120
+SEASONS = 130
+EPISODES = 140
+MUSICVIDEOS = 150
+ARTISTS = 160
+ALBUMS = 170
+SONGS = 180
+EPG = 190
+ACTORS = 200
+DIRECTORS = 210
+SEARCHING = 990
+CATEGORY = 991
+NEWSEARCH = 998
+NORESULTS = 999
+
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
 
@@ -49,7 +66,7 @@ CATEGORIES = {
                         'label':342, 
                         'icon':'DefaultVideo.png', 
                         'media':'video', 
-                        'control':110
+                        'control':MOVIES
                        }, 
               'tvshows':{
                          'order':2, 
@@ -64,7 +81,7 @@ CATEGORIES = {
                          'label':20343, 
                          'icon':'DefaultVideo.png', 
                          'media':'video', 
-                         'control':120
+                         'control':TVSHOWS
                         }, 
               'episodes':{
                           'order':3, 
@@ -79,7 +96,7 @@ CATEGORIES = {
                           'label':20360, 
                           'icon':'DefaultVideo.png', 
                           'media':'video', 
-                          'control':140
+                          'control':EPISODES
                          }, 
               'musicvideos':{
                              'order':4, 
@@ -94,7 +111,7 @@ CATEGORIES = {
                              'label':20389, 
                              'icon':'DefaultVideo.png', 
                              'media':'video', 
-                             'control':150
+                             'control':MUSICVIDEOS
                             }, 
               'artists':{
                          'order':5, 
@@ -109,7 +126,7 @@ CATEGORIES = {
                          'label':133, 
                          'icon':'DefaultArtist.png', 
                          'media':'music', 
-                         'control':160
+                         'control':ARTISTS
                         }, 
               'albums':{
                         'order':6, 
@@ -124,7 +141,7 @@ CATEGORIES = {
                         'label':132, 
                         'icon':'DefaultAlbumCover.png', 
                         'media':'music', 
-                        'control':170
+                        'control':ALBUMS
                        }, 
               'songs':{
                        'order':7, 
@@ -139,7 +156,7 @@ CATEGORIES = {
                        'label':134, 
                        'icon':'DefaultAudio.png', 
                        'media':'music', 
-                       'control':180
+                       'control':SONGS
                       }, 
               'epg':{
                      'order':9, 
@@ -159,7 +176,7 @@ CATEGORIES = {
                         'label':344, 
                         'icon':'DefaultVideo.png', 
                         'media':'video', 
-                        'control':200
+                        'control':ACTORS
                        },
               'directors':{
                            'order':11, 
@@ -174,7 +191,7 @@ CATEGORIES = {
                            'label':20348, 
                            'icon':'DefaultVideo.png', 
                            'media':'video', 
-                           'control':210
+                           'control':DIRECTORS
                           }, 
               'tvshowseasons':{
                                'order':11, 
@@ -189,7 +206,7 @@ CATEGORIES = {
                                'label':20373, 
                                'icon':'DefaultVideo.png', 
                                'media':'video', 
-                               'control':130
+                               'control':SEASONS
                               },
               'tvshowepisodes':{
                                 'order':12, 
@@ -204,7 +221,7 @@ CATEGORIES = {
                                 'label':20360, 
                                 'icon':'DefaultVideo.png', 
                                 'media':'video', 
-                                'control':140
+                                'control':EPISODES
                                },
               'artistalbums':{
                               'order':13, 
@@ -219,7 +236,7 @@ CATEGORIES = {
                               'label':132, 
                               'icon':'DefaultAlbumCover.png', 
                               'media':'music', 
-                              'control':170
+                              'control':ALBUMS
                              },
               'artistsongs':{
                              'order':14, 
@@ -234,7 +251,7 @@ CATEGORIES = {
                              'label':134, 
                              'icon':'DefaultAudio.png', 
                              'media':'music', 
-                             'control':180
+                             'control':SONG
                             }, 
               'songalbum':{
                            'order':15, 
@@ -249,7 +266,7 @@ CATEGORIES = {
                            'label':132, 
                            'icon':'DefaultAlbumCover.png', 
                            'media':'music', 
-                           'control':170
+                           'control':ALBUMS
                           }
              }
 

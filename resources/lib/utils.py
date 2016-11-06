@@ -33,7 +33,7 @@ ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsact
 
 ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"]
 
-SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount"]
+SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount", "albumid"]
 
 CATEGORIES = {
               'movies':{
@@ -66,23 +66,8 @@ CATEGORIES = {
                          'media':'video', 
                          'control':120
                         }, 
-              'seasons':{
-                         'order':3, 
-                         'enabled':False, 
-                         'type':'seasons', 
-                         'method':'VideoLibrary.GetSeasons', 
-                         'properties':SEASONLABELS, 
-                         'sort':'label', 
-                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
-                         'cast':False, 
-                         'streamdetails':False, 
-                         'label':20373, 
-                         'icon':'DefaultVideo.png', 
-                         'media':'video', 
-                         'control':130
-                        }, 
               'episodes':{
-                          'order':4, 
+                          'order':3, 
                           'enabled':False, 
                           'type':'episodes', 
                           'method':'VideoLibrary.GetEpisodes', 
@@ -97,7 +82,7 @@ CATEGORIES = {
                           'control':140
                          }, 
               'musicvideos':{
-                             'order':5, 
+                             'order':4, 
                              'enabled':False, 
                              'type':'musicvideos', 
                              'method':'VideoLibrary.GetMusicVideos', 
@@ -112,7 +97,7 @@ CATEGORIES = {
                              'control':150
                             }, 
               'artists':{
-                         'order':6, 
+                         'order':5, 
                          'enabled':False, 
                          'type':'artists', 
                          'method':'AudioLibrary.GetArtists', 
@@ -127,7 +112,7 @@ CATEGORIES = {
                          'control':160
                         }, 
               'albums':{
-                        'order':7, 
+                        'order':6, 
                         'enabled':False, 
                         'type':'albums', 
                         'method':'AudioLibrary.GetAlbums', 
@@ -142,7 +127,7 @@ CATEGORIES = {
                         'control':170
                        }, 
               'songs':{
-                       'order':8, 
+                       'order':7, 
                        'enabled':False, 
                        'type':'songs', 
                        'method':'AudioLibrary.GetSongs', 
@@ -157,7 +142,7 @@ CATEGORIES = {
                        'control':180
                       }, 
               'actors':{
-                        'order':9, 
+                        'order':8, 
                         'enabled':False, 
                         'type':'movies', 
                         'method':'VideoLibrary.GetMovies', 
@@ -172,7 +157,7 @@ CATEGORIES = {
                         'control':210
                        }, 
               'directors':{
-                           'order':10, 
+                           'order':9, 
                            'enabled':False, 
                            'type':'movies', 
                            'method':'VideoLibrary.GetMovies', 
@@ -187,10 +172,85 @@ CATEGORIES = {
                            'control':230
                           }, 
               'epg':{
-                     'order':11, 
+                     'order':10, 
                      'enabled':False, 
                      'type':'epg'
-                    }
+                    },
+              'tvshowseasons':{
+                               'order':11, 
+                               'enabled':False, 
+                               'type':'seasons', 
+                               'method':'VideoLibrary.GetSeasons', 
+                               'properties':SEASONLABELS, 
+                               'sort':'label', 
+                               'rule':'{"tvshowid":%s}',
+                               'cast':False, 
+                               'streamdetails':False, 
+                               'label':20373, 
+                               'icon':'DefaultVideo.png', 
+                               'media':'video', 
+                               'control':130
+                              },
+              'tvshowepisodes':{
+                                'order':12, 
+                                'enabled':False, 
+                                'type':'episodes', 
+                                'method':'VideoLibrary.GetEpisodes', 
+                                'properties':EPISODELABELS, 
+                                'sort':'title', 
+                                'rule':'{"tvshowid":%s}',
+                                'cast':True, 
+                                'streamdetails':True, 
+                                'label':20360, 
+                                'icon':'DefaultVideo.png', 
+                                'media':'video', 
+                                'control':140
+                               },
+              'artistalbums':{
+                              'order':13, 
+                              'enabled':False, 
+                              'type':'albums', 
+                              'method':'AudioLibrary.GetAlbums', 
+                              'properties':ALBUMLABELS, 
+                              'sort':'label', 
+                              'rule':'{"artistid": %s}',
+                              'cast':False, 
+                              'streamdetails':False, 
+                              'label':132, 
+                              'icon':'DefaultAlbumCover.png', 
+                              'media':'music', 
+                              'control':170
+                             },
+              'artistsongs':{
+                             'order':14, 
+                             'enabled':False, 
+                             'type':'songs', 
+                             'method':'AudioLibrary.GetSongs', 
+                             'properties':SONGLABELS, 
+                             'sort':'title', 
+                             'rule':'{"artistid": %s}',
+                             'cast':False, 
+                             'streamdetails':False, 
+                             'label':134, 
+                             'icon':'DefaultAudio.png', 
+                             'media':'music', 
+                             'control':180
+                            }, 
+              'songalbum':{
+                           'order':15, 
+                           'enabled':False, 
+                           'type':'albums', 
+                           'method':'AudioLibrary.GetAlbums', 
+                           'properties':ALBUMLABELS, 
+                           'sort':'label', 
+                           'rule':'{"albumid": %s}',
+                           'cast':False, 
+                           'streamdetails':False, 
+                           'label':132, 
+                           'icon':'DefaultAlbumCover.png', 
+                           'media':'music', 
+                           'control':170
+                          }
              }
 
 def log(txt):

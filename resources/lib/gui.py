@@ -52,6 +52,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(190).setLabel(xbmc.getLocalizedString(194))
 
     def _init_items(self):
+        self.playingtrailer = 'false'
         self.getControl(198).setLabel(LANGUAGE(32299))
         self.Player = MyPlayer(function=self._trailerstopped)
 
@@ -91,7 +92,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
                 if cat['type'] == 'songs':
-                    listitem.setProperty('albumid', item['albumid'])
+                    listitem.setProperty('albumid', str(item['albumid']))
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
         self.getControl(cat['control'] + 1).addItems(listitems)

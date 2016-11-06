@@ -422,16 +422,16 @@
 								<visible>Control.IsVisible(199)</visible>
 							</item>
 							<item id="10">
-								<label>$LOCALIZE[20348]</label>
+								<label>$LOCALIZE[344]</label>
 								<label2>$LOCALIZE[283]$INFO[Control.GetLabel(200),: ]</label2>
-								<thumb>globalsearch-icon-directors.png</thumb>
+								<thumb>globalsearch-icon-actors.png</thumb>
 								<onclick>noop</onclick>
 								<visible>Control.IsVisible(209)</visible>
 							</item>
 							<item id="11">
-								<label>$LOCALIZE[344]</label>
+								<label>$LOCALIZE[20348]</label>
 								<label2>$LOCALIZE[283]$INFO[Control.GetLabel(210),: ]</label2>
-								<thumb>globalsearch-icon-actors.png</thumb>
+								<thumb>globalsearch-icon-directors.png</thumb>
 								<onclick>noop</onclick>
 								<visible>Control.IsVisible(219)</visible>
 							</item>

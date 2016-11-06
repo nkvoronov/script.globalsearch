@@ -145,24 +145,9 @@ CATEGORIES = {
                      'order':9, 
                      'enabled':False, 
                      'type':'epg'
-                    },
-              'directors':{
-                           'order':10, 
-                           'enabled':False, 
-                           'type':'movies', 
-                           'method':'VideoLibrary.GetMovies', 
-                           'properties':MOVIELABELS, 
-                           'sort':'title', 
-                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
-                           'cast':True, 
-                           'streamdetails':True, 
-                           'label':20348, 
-                           'icon':'DefaultVideo.png', 
-                           'media':'video', 
-                           'control':200
-                          },  
+                    },  
               'actors':{
-                        'order':11, 
+                        'order':10, 
                         'enabled':False, 
                         'type':'movies', 
                         'method':'VideoLibrary.GetMovies', 
@@ -174,8 +159,23 @@ CATEGORIES = {
                         'label':344, 
                         'icon':'DefaultVideo.png', 
                         'media':'video', 
-                        'control':210
+                        'control':200
                        },
+              'directors':{
+                           'order':11, 
+                           'enabled':False, 
+                           'type':'movies', 
+                           'method':'VideoLibrary.GetMovies', 
+                           'properties':MOVIELABELS, 
+                           'sort':'title', 
+                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
+                           'cast':True, 
+                           'streamdetails':True, 
+                           'label':20348, 
+                           'icon':'DefaultVideo.png', 
+                           'media':'video', 
+                           'control':210
+                          }, 
               'tvshowseasons':{
                                'order':11, 
                                'enabled':False, 

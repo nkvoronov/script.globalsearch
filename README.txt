@@ -252,13 +252,13 @@ III. Control id's used in script-globalsearch-main.xml
 191 - Container for found programmes 
 199 - The script will set this id to visible when programmes are found
 
-200 - Label containing the number of found movies containing the director
-201 - Container for found movies containing the director
-209 - The script will set this id to visible when movies containing the director are found
+200 - Label containing the number of found movies containing the actor
+201 - Container for found movies containing the actor
+209 - The script will set this id to visible when movies containing the actor are found
 
-210 - Label containing the number of found movies containing the actor
-211 - Container for found movies containing the actor
-219 - The script will set this id to visible when movies containing the actor are found
+210 - Label containing the number of found movies containing the director
+211 - Container for found movies containing the director
+219 - The script will set this id to visible when movies containing the director are found
 
 990 - 'Searching...' label, visible when the script is searching
 991 - Search category label, visible when the script is searching

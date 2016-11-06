@@ -214,7 +214,7 @@ Container(100).ListItem.Property(Plot)
 III. Control id's used in script-globalsearch-main.xml
 ------------------------------------------------------
 100 - Main group id. All code should be included in this group. The script will set this id to hidden when playing a trailer.
-
+101 - Content group id. All code, except the background images, can be included in this group. The script will set this id to hidden when an info dialog is visible.
 
 110 - Label containing the number of found movies
 111 - Container for found movies

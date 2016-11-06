@@ -169,8 +169,7 @@
 				<animation effect="fade" time="400">Hidden</animation>
 				<visible>Control.HasFocus(201)</visible>
 			</control>
-			<control type="group">
-				<animation effect="fade" start="100" end="0" time="200" condition="Window.IsVisible(script-globalsearch-infodialog.xml)">Conditional</animation>
+			<control type="group" id="101">
 				<control type="radiobutton">
 					<left>37</left>
 					<top>14</top>
@@ -216,8 +215,8 @@
 					<height>110</height>
 					<onup>9000</onup>
 					<ondown>9000</ondown>
-					<onleft>101</onleft>
-					<onright>101</onright>
+					<onleft>500</onleft>
+					<onright>500</onright>
 					<aligny>center</aligny>
 					<font>font14</font>
 					<label>-</label>
@@ -248,8 +247,8 @@
 						<top>1</top>
 						<width>382</width>
 						<height>671</height>
-						<onleft>101</onleft>
-						<onright>101</onright>
+						<onleft>500</onleft>
+						<onright>500</onright>
 						<onup>998</onup>
 						<ondown>998</ondown>
 						<scrolltime tween="cubic" easing="out">500</scrolltime>
@@ -352,7 +351,7 @@
 								<label>$INFO[ListItem.Label2]</label>
 								<shadowcolor>22000000</shadowcolor>
 								<visible>Control.HasFocus(9000)</visible>
-								<animation effect="fade" time="300" condition="Control.HasFocus(9000) | Control.HasFocus(998) | ControlGroup(101).HasFocus">VisibleChange</animation>
+								<animation effect="fade" time="300" condition="Control.HasFocus(9000) | Control.HasFocus(998) | ControlGroup(500).HasFocus">VisibleChange</animation>
 								<animation effect="fade" start="0" end="100" time="150" delay="500">Focus</animation>
 								<animation effect="fade" start="100" end="0" time="300">UnFocus</animation>
 							</control>
@@ -438,7 +437,7 @@
 						</content>
 					</control>
 				</control>
-				<control type="group" id="101">
+				<control type="group" id="500">
 					<left>500</left>
 					<top>92</top>
 					<control type="group" id="119">

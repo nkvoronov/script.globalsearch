@@ -324,7 +324,9 @@ class GUI(xbmcgui.WindowXMLDialog):
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
                 if functions[selection] == 'info':
+                    self.getControl(CONTENT).setVisible(False)
                     xbmcgui.Dialog().info(listitem)
+                    self.getControl(CONTENT).setVisible(True)
                 elif functions[selection] == 'self._showInfo':
                     functions[selection](controlId, listitem)
                 elif functions[selection] == 'self._browse_item':
@@ -336,7 +338,9 @@ class GUI(xbmcgui.WindowXMLDialog):
 
     def _showInfo(self, controlId, listitem):
         info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem)
+        self.getControl(CONTENT).setVisible(False)
         info_dialog.doModal()
+        self.getControl(CONTENT).setVisible(True)
         del info_dialog
 
     def _newSearch(self):
@@ -400,7 +404,9 @@ class GUI(xbmcgui.WindowXMLDialog):
                 xbmc.executebuiltin('ActivateWindow(142)')
             else:
                 if controlId != EPG+1:
+                    self.getControl(CONTENT).setVisible(False)
                     xbmcgui.Dialog().info(listitem)
+                    self.getControl(CONTENT).setVisible(True)
                 else:
                     self._showInfo(controlId, listitem)
 

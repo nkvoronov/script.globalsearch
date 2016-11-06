@@ -2,7 +2,7 @@ import datetime
 import infodialog
 import json
 import operator
-from utils import *
+from defs import *
 
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):

@@ -1,4 +1,4 @@
-from utils import *
+from defs import *
 
 
 class GUI(xbmcgui.WindowXMLDialog):

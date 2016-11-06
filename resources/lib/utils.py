@@ -140,9 +140,24 @@ CATEGORIES = {
                        'icon':'DefaultAudio.png', 
                        'media':'music', 
                        'control':180
-                      }, 
+                      },
+              'directors':{
+                           'order':8, 
+                           'enabled':False, 
+                           'type':'movies', 
+                           'method':'VideoLibrary.GetMovies', 
+                           'properties':MOVIELABELS, 
+                           'sort':'title', 
+                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
+                           'cast':True, 
+                           'streamdetails':True, 
+                           'label':20348, 
+                           'icon':'DefaultVideo.png', 
+                           'media':'video', 
+                           'control':200
+                          },  
               'actors':{
-                        'order':8, 
+                        'order':9, 
                         'enabled':False, 
                         'type':'movies', 
                         'method':'VideoLibrary.GetMovies', 
@@ -156,21 +171,6 @@ CATEGORIES = {
                         'media':'video', 
                         'control':210
                        }, 
-              'directors':{
-                           'order':9, 
-                           'enabled':False, 
-                           'type':'movies', 
-                           'method':'VideoLibrary.GetMovies', 
-                           'properties':MOVIELABELS, 
-                           'sort':'title', 
-                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
-                           'cast':True, 
-                           'streamdetails':True, 
-                           'label':20348, 
-                           'icon':'DefaultVideo.png', 
-                           'media':'video', 
-                           'control':230
-                          }, 
               'epg':{
                      'order':10, 
                      'enabled':False, 

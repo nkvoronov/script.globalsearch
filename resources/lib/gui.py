@@ -4,8 +4,6 @@ import json
 import operator
 from utils import *
 
-#TODO use label or title?
-
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
         # some sanitize work for search string: strip the input and replace some chars
@@ -34,13 +32,13 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._fetch_items()
 
     def _fetch_items(self):
-        for key, value in CATEGORIES.iteritems():
+        for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
             if CATEGORIES[key]['enabled']:
                 self._get_items(CATEGORIES[key], self.searchstring)
         self._check_focus()
 
     def _hide_controls(self):
-        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 199]:
+        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 198, 199]:
             self.getControl(cid).setVisible(False)
 
     def _reset_controls(self):
@@ -92,6 +90,10 @@ class GUI(xbmcgui.WindowXMLDialog):
                         listitem.addStreamInfo('subtitle', stream)
                 if cat['cast']:
                     listitem.setCast(item['cast'])
+                if cat['type'] == 'artists' or cat['type'] == 'albums':
+                    info, props = self._split_labels(item, cat['properties'], cat['type'][0:-1] + '_')
+                    for key, value in props.iteritems():
+                        listitem.setProperty(key, value)
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
         self.getControl(cat['control'] + 1).addItems(listitems)
@@ -192,14 +194,20 @@ class GUI(xbmcgui.WindowXMLDialog):
                 del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
+        if item == 'season' or item == 'episode':
+            del labels['showtitle']
+            if item == 'season':
+                del labels['firstaired']
         if item == 'song':
             labels['tracknumber'] = labels['track']
             del labels['track']
             del labels['file']
         for key, value in labels.iteritems():
-           if isinstance(value, list):
-               value = " / ".join(value)
-           labels[key] = value
+            if isinstance(value, list):
+                if key == 'artist' and item == 'musicvideo':
+                    continue
+                value = " / ".join(value)
+            labels[key] = value
         return labels
 
     def _get_art(self, labels, icon, media):
@@ -221,6 +229,8 @@ class GUI(xbmcgui.WindowXMLDialog):
         for label in labels:
             if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or (prefix == 'album_' and (label == 'genre' or label == 'year')):
                 continue
+            if isinstance(item[label], list):
+                item[label] = " / ".join(item[label])
             props[prefix + label] = item[label]
             del item[label]
         return item, props

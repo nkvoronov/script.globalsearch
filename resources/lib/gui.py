@@ -379,36 +379,32 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._newSearch()
 
     def onAction(self, action):
-        try:
-            controlId = self.getFocusId()
-            listitem = self.getControl(controlId).getSelectedItem()
-        except:
-            pass
         if action.getId() in ACTION_CANCEL_DIALOG:
             if self.playingtrailer == 'false':
                 self._close()
             else:
                 self.Player.stop()
                 self._trailerstopped()
-        elif action.getId() in ACTION_CONTEXT_MENU:
-            self._showContextMenu(controlId, listitem)
-        elif action.getId() in ACTION_OSD:
-            if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-                xbmc.executebuiltin('ActivateWindow(TVSHOWS+901)')
-        elif action.getId() in ACTION_SHOW_GUI:
-            if self.playingtrailer == 'true':
-                self.Player.stop()
-                self._trailerstopped()
-        elif action.getId() in ACTION_SHOW_INFO:
-            if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-                xbmc.executebuiltin('ActivateWindow(142)')
-            else:
-                if controlId != EPG+1:
-                    self.getControl(CONTENT).setVisible(False)
-                    xbmcgui.Dialog().info(listitem)
-                    self.getControl(CONTENT).setVisible(True)
-                else:
-                    self._showInfo(controlId, listitem)
+        elif action.getId() in ACTION_OSD and self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
+            xbmc.executebuiltin('ActivateWindow(TVSHOWS+901)')
+        elif action.getId() in ACTION_SHOW_GUI and self.playingtrailer == 'true':
+            self.Player.stop()
+            self._trailerstopped()
+        elif action.getId() in ACTION_SHOW_INFO and self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
+            xbmc.executebuiltin('ActivateWindow(142)')
+        elif action.getId() in ACTION_CONTEXT_MENU or action.getId() in ACTION_SHOW_INFO:
+            controlId = self.getFocusId()
+            if controlId in [MOVIES+1, TVSHOWS+1, SEASONS+1, EPISODES+1, MUSICVIDEOS+1, ARTISTS+1, ALBUMS+1, SONGS+1, EPG+1, ACTORS+1, DIRECTORS+1]:
+                listitem = self.getControl(controlId).getSelectedItem()
+                if action.getId() in ACTION_CONTEXT_MENU:
+                    self._showContextMenu(controlId, listitem)
+                elif action.getId() in ACTION_SHOW_INFO:
+                    if controlId != EPG+1:
+                        self.getControl(CONTENT).setVisible(False)
+                        xbmcgui.Dialog().info(listitem)
+                        self.getControl(CONTENT).setVisible(True)
+                    else:
+                        self._showInfo(controlId, listitem)
 
     def _close(self):
         log('script stopped')

@@ -32,7 +32,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             self._fetch_items()
 
     def _hide_controls(self):
-        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 219, 229, 239, 189, 998, 999]:
+        for cid in [119, 129, 139, 149, 159, 169, 179, 189, 199, 219, 239, 998, 999]:
             self.getControl(cid).setVisible(False)
 
     def _reset_controls(self):
@@ -166,13 +166,13 @@ class GUI(xbmcgui.WindowXMLDialog):
                         listitem.setProperty("channelname", channelname)
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
-        self.getControl(221).addItems(listitems)
+        self.getControl(191).addItems(listitems)
         if count > 0:
-            self.getControl(220).setLabel(str(count))
-            self.getControl(229).setVisible(True)
+            self.getControl(190).setLabel(str(count))
+            self.getControl(199).setVisible(True)
             if self.focusset == 'false':
                 xbmc.sleep(100)
-                self.setFocus(self.getControl(221))
+                self.setFocus(self.getControl(191))
                 self.focusset = 'true'
 
     def _get_info(self, labels, item):
@@ -310,7 +310,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif controlId == 181:
             labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
             functions += ('info', 'songalbum',)
-        elif controlId == 221:
+        elif controlId == 191:
             labels += (xbmc.getLocalizedString(19047),)
             functions += (self._browse_item,)
         if labels:
@@ -392,7 +392,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             if self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
                 xbmc.executebuiltin('ActivateWindow(142)')
             else:
-                if controlId != "221":
+                if controlId != "191":
                     xbmcgui.Dialog().info(listitem)
                 else:
                     self._showInfo(controlId, listitem)

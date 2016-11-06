@@ -251,7 +251,7 @@ CATEGORIES = {
                              'label':134, 
                              'icon':'DefaultAudio.png', 
                              'media':'music', 
-                             'control':SONG
+                             'control':SONGS
                             }, 
               'songalbum':{
                            'order':15, 

@@ -140,9 +140,14 @@ CATEGORIES = {
                        'icon':'DefaultAudio.png', 
                        'media':'music', 
                        'control':180
-                      },
+                      }, 
+              'epg':{
+                     'order':9, 
+                     'enabled':False, 
+                     'type':'epg'
+                    },
               'directors':{
-                           'order':8, 
+                           'order':10, 
                            'enabled':False, 
                            'type':'movies', 
                            'method':'VideoLibrary.GetMovies', 
@@ -157,7 +162,7 @@ CATEGORIES = {
                            'control':200
                           },  
               'actors':{
-                        'order':9, 
+                        'order':11, 
                         'enabled':False, 
                         'type':'movies', 
                         'method':'VideoLibrary.GetMovies', 
@@ -170,12 +175,7 @@ CATEGORIES = {
                         'icon':'DefaultVideo.png', 
                         'media':'video', 
                         'control':210
-                       }, 
-              'epg':{
-                     'order':10, 
-                     'enabled':False, 
-                     'type':'epg'
-                    },
+                       },
               'tvshowseasons':{
                                'order':11, 
                                'enabled':False, 

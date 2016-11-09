@@ -386,7 +386,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self.Player.stop()
                 self._trailerstopped()
         elif action.getId() in ACTION_OSD and self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-            xbmc.executebuiltin('ActivateWindow(TVSHOWS+901)')
+            xbmc.executebuiltin('ActivateWindow(12901)')
         elif action.getId() in ACTION_SHOW_GUI and self.playingtrailer == 'true':
             self.Player.stop()
             self._trailerstopped()

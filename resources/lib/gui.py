@@ -244,7 +244,7 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _clean_string(self, string):
         return string.replace('(', '[(]').replace(')', '[)]').replace('+', '[+]')
 
-    def _get_allitems(self, key):
+    def _get_allitems(self, key, listitem):
         if key == 'tvshowseasons' or key == 'tvshowepisodes':
             search = listitem.getVideoInfoTag().getDbId()
         elif key == 'artistalbums' or key == 'artistsongs':
@@ -295,7 +295,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             trailer = listitem.getVideoInfoTag().getTrailer()
             if trailer:
                 labels += (LANGUAGE(32205),)
-                functions += (self._play_trailer,)
+                functions += (self._play_item,)
         elif controlId == TVSHOWS+1:
             labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
             functions += ('info', 'tvshowseasons', 'tvshowepisodes',)
@@ -319,7 +319,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             functions += ('info', 'songalbum',)
         elif controlId == EPG+1:
             labels += (xbmc.getLocalizedString(19047),)
-            functions += (self._browse_item,)
+            functions += (self._showInfo,)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
@@ -328,15 +328,15 @@ class GUI(xbmcgui.WindowXMLDialog):
                     xbmcgui.Dialog().info(listitem)
                     self.getControl(CONTENT).setVisible(True)
                 elif functions[selection] == 'self._showInfo':
-                    functions[selection](controlId, listitem)
+                    functions[selection](listitem)
                 elif functions[selection] == 'self._browse_item':
-                    functions[selection](listitem.getMusicInfoTag().getPath(), 'MusicLibrary')
-                elif functions[selection] == 'self._play_trailer':
+                    functions[selection]('musicdb://albums/%s/' % str(listitem.getMusicInfoTag().getDbId()), 'Music')
+                elif functions[selection] == 'self._play_item':
                     functions[selection]('trailer', trailer)
                 else:
                     self._get_allitems(functions[selection], listitem)
 
-    def _showInfo(self, controlId, listitem):
+    def _showInfo(self, listitem):
         info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem)
         self.getControl(CONTENT).setVisible(False)
         info_dialog.doModal()
@@ -358,23 +358,25 @@ class GUI(xbmcgui.WindowXMLDialog):
                 path = listitem.getVideoInfoTag().getPath()
                 self._browse_item(path, 'Videos')
             elif controlId == ARTISTS+1:
-                path = 'musicdb://artists/' + artistid + '/'
-                self._browse_item(path, 'MusicLibrary')
+                path = 'musicdb://artists/%s/' % str(listitem.getMusicInfoTag().getDbId())
+                self._browse_item(path, 'Music')
             elif controlId == ALBUMS+1:
-                albumid = listitem.getMusicInfoTag().getDbid()
+                albumid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('albumid', albumid)
             elif controlId == SONGS+1:
-                songid = listitem.getMusicInfoTag().getDbid()
+                songid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('songid', songid)
             elif controlId == MOVIES+1 or controlId == ACTORS+1 or controlId == DIRECTORS+1:
-                movieid = listitem.getVideoInfoTag().getDbid()
+                movieid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('movieid', movieid)
             elif controlId == EPISODES+1:
-                episodeid = listitem.getVideoInfoTag().getDbid()
+                episodeid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('episodeid', episodeid)
             elif controlId == MUSICVIDEOS+1:
-                musicvideoid = listitem.getVideoInfoTag().getDbid()
+                musicvideoid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('musicvideoid', episodeid)
+            elif controlId == EPG+1:
+                self._showInfo(listitem)
         else:
             self._newSearch()
 

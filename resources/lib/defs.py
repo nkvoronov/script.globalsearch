@@ -37,7 +37,7 @@ MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrat
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art", "file"]
 
 TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "cast", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
-                "imdbnumber", "lastplayed", "votes", "dateadded", "art"]
+                "imdbnumber", "lastplayed", "votes", "dateadded", "art", "watchedepisodes", "file"]
 
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
 

@@ -12,6 +12,9 @@ def log(txt):
 
 #TODO info dialog seasons
 #TODO focused item disappears after closing epg info
+#TODO json does not return studio for episodes
+#TODO test missing in music / epg info
+#TODO test speed
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
         # some sanitize work for search string: strip the input and replace some chars
@@ -95,15 +98,18 @@ class GUI(xbmcgui.WindowXMLDialog):
                         listitem.addStreamInfo('subtitle', stream)
                 if cat['cast']:
                     listitem.setCast(item['cast'])
-                if item.get('file', ''):
-                    listitem.setPath(item['file'])
-                if cat['type'] == 'seasons':
+                if cat['type'] == 'tvshows':
+                    listitem.setProperty('TotalSeasons', str(item['season']))
+                    listitem.setProperty('TotalEpisodes', str(item['episode']))
+                    listitem.setProperty('WatchedEpisodes', str(item['watchedepisodes']))
+                    listitem.setProperty('UnWatchedEpisodes', str(item['episode'] - item['watchedepisodes']))
+                elif cat['type'] == 'seasons':
                     listitem.setProperty('tvshowid', str(item['tvshowid']))
-                if cat['type'] == 'artists' or cat['type'] == 'albums':
+                elif cat['type'] == 'artists' or cat['type'] == 'albums':
                     info, props = self._split_labels(item, cat['properties'], cat['type'][0:-1] + '_')
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
-                if cat['type'] == 'songs':
+                elif cat['type'] == 'songs':
                     listitem.setProperty('albumid', str(item['albumid']))
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
@@ -199,24 +205,30 @@ class GUI(xbmcgui.WindowXMLDialog):
             del labels['thumbnail']
             del labels['fanart']
         if item == 'movie' or item == 'tvshow' or item == 'episode' or item == 'musicvideo':
-            labels['duration'] = labels['runtime'] # we does json return runtime instead of duration?
+            labels['duration'] = labels['runtime']
+            labels['path'] = labels['file']
+            del labels['file']
             del labels['runtime']
             if item != 'musicvideo':
                 del labels['cast']
             if item != 'tvshow':
-                labels['path'] = labels['file']
-                del labels['file']
                 del labels['streamdetails']
+            else:
+                del labels['watchedepisodes']
         if item == 'season' or item == 'episode':
             labels['tvshowtitle'] = labels['showtitle']
             del labels['showtitle']
             if item == 'season':
                 del labels['tvshowid']
                 del labels['watchedepisodes']
+            else:
+                labels['aired'] = labels['firstaired']
+                del labels['firstaired']
         if item == 'song':
             labels['tracknumber'] = labels['track']
             del labels['track']
             del labels['file']
+            del labels['albumid']
         for key, value in labels.iteritems():
             if isinstance(value, list):
                 if key == 'artist' and item == 'musicvideo':

@@ -34,7 +34,7 @@ NEWSEARCH = 998
 NORESULTS = 999
 
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
-               "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art"]
+               "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art", "file"]
 
 TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "cast", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
                 "imdbnumber", "lastplayed", "votes", "dateadded", "art"]
@@ -42,10 +42,10 @@ TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "p
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
 
 EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
-                 "votes", "dateadded", "streamdetails", "art"]
+                 "votes", "dateadded", "streamdetails", "art", "file"]
 
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", 
-                    "streamdetails", "art"]
+                    "streamdetails", "art", "file"]
 
 ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
 
@@ -61,7 +61,7 @@ CATEGORIES = {
                         'method':'VideoLibrary.GetMovies', 
                         'properties':MOVIELABELS, 
                         'sort':'title', 
-                        'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                        'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
                         'cast':True, 
                         'streamdetails':True, 
                         'label':342, 
@@ -76,7 +76,7 @@ CATEGORIES = {
                          'method':'VideoLibrary.GetTVShows', 
                          'properties':TVSHOWLABELS, 
                          'sort':'label', 
-                         'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                         'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
                          'cast':True, 
                          'streamdetails':False, 
                          'label':20343, 
@@ -91,7 +91,7 @@ CATEGORIES = {
                           'method':'VideoLibrary.GetEpisodes', 
                           'properties':EPISODELABELS, 
                           'sort':'title', 
-                          'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                          'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
                           'cast':True, 
                           'streamdetails':True, 
                           'label':20360, 
@@ -106,7 +106,7 @@ CATEGORIES = {
                              'method':'VideoLibrary.GetMusicVideos', 
                              'properties':MUSICVIDEOLABELS, 
                              'sort':'label', 
-                             'rule':'{"field":"title", "operator":"contains", "value":"%s"}',
+                             'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
                              'cast':False, 
                              'streamdetails':True, 
                              'label':20389, 
@@ -121,7 +121,7 @@ CATEGORIES = {
                          'method':'AudioLibrary.GetArtists', 
                          'properties':ARTISTLABELS, 
                          'sort':'label', 
-                         'rule':'{"field": "artist", "operator": "contains", "value": "%s"}',
+                         'rule':'"filter":{"field": "artist", "operator": "contains", "value": "%s"}',
                          'cast':False, 
                          'streamdetails':False, 
                          'label':133, 
@@ -136,7 +136,7 @@ CATEGORIES = {
                         'method':'AudioLibrary.GetAlbums', 
                         'properties':ALBUMLABELS, 
                         'sort':'label', 
-                        'rule':'{"field": "album", "operator": "contains", "value": "%s"}',
+                        'rule':'"filter":{"field": "album", "operator": "contains", "value": "%s"}',
                         'cast':False, 
                         'streamdetails':False, 
                         'label':132, 
@@ -151,7 +151,7 @@ CATEGORIES = {
                        'method':'AudioLibrary.GetSongs', 
                        'properties':SONGLABELS, 
                        'sort':'title', 
-                       'rule':'{"field": "title", "operator": "contains", "value": "%s"}',
+                       'rule':'"filter":{"field": "title", "operator": "contains", "value": "%s"}',
                        'cast':False, 
                        'streamdetails':False, 
                        'label':134, 
@@ -171,7 +171,7 @@ CATEGORIES = {
                         'method':'VideoLibrary.GetMovies', 
                         'properties':MOVIELABELS, 
                         'sort':'title', 
-                        'rule':'{"field":"actor", "operator":"contains", "value":"%s"}',
+                        'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
                         'cast':True, 
                         'streamdetails':True, 
                         'label':344, 
@@ -186,7 +186,7 @@ CATEGORIES = {
                            'method':'VideoLibrary.GetMovies', 
                            'properties':MOVIELABELS, 
                            'sort':'title', 
-                           'rule':'{"field":"director", "operator":"contains", "value":"%s"}',
+                           'rule':'"filter":{"field":"director", "operator":"contains", "value":"%s"}',
                            'cast':True, 
                            'streamdetails':True, 
                            'label':20348, 
@@ -201,7 +201,7 @@ CATEGORIES = {
                                'method':'VideoLibrary.GetSeasons', 
                                'properties':SEASONLABELS, 
                                'sort':'label', 
-                               'rule':'{"tvshowid":%s}',
+                               'rule':'"tvshowid":%s',
                                'cast':False, 
                                'streamdetails':False, 
                                'label':20373, 
@@ -216,7 +216,7 @@ CATEGORIES = {
                                 'method':'VideoLibrary.GetEpisodes', 
                                 'properties':EPISODELABELS, 
                                 'sort':'title', 
-                                'rule':'{"tvshowid":%s}',
+                                'rule':'"tvshowid":%s',
                                 'cast':True, 
                                 'streamdetails':True, 
                                 'label':20360, 
@@ -231,7 +231,7 @@ CATEGORIES = {
                               'method':'AudioLibrary.GetAlbums', 
                               'properties':ALBUMLABELS, 
                               'sort':'label', 
-                              'rule':'{"artistid": %s}',
+                              'rule':'"artistid": %s',
                               'cast':False, 
                               'streamdetails':False, 
                               'label':132, 
@@ -246,7 +246,7 @@ CATEGORIES = {
                              'method':'AudioLibrary.GetSongs', 
                              'properties':SONGLABELS, 
                              'sort':'title', 
-                             'rule':'{"artistid": %s}',
+                             'rule':'"artistid": %s',
                              'cast':False, 
                              'streamdetails':False, 
                              'label':134, 
@@ -261,7 +261,7 @@ CATEGORIES = {
                            'method':'AudioLibrary.GetAlbums', 
                            'properties':ALBUMLABELS, 
                            'sort':'label', 
-                           'rule':'{"albumid": %s}',
+                           'rule':'"albumid": %s',
                            'cast':False, 
                            'streamdetails':False, 
                            'label':132, 

@@ -12,8 +12,7 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _show_info(self):
         self.getControl(100).addItem(self.listitem)
 
-    def _close_dialog(self, action=None):
-        self.action = action
+    def _close_dialog(self):
         self.close()
 		# workaround to trigger the onfocus animation of the listitem in the main window
         self.setFocus(self.getControl(100))
@@ -22,5 +21,5 @@ class GUI(xbmcgui.WindowXMLDialog):
         pass
 
     def onAction(self, action):
-        if (action.getId() in CANCEL_DIALOG) or (action.getId() in ACTION_SHOW_INFO):
+        if (action.getId() in ACTION_CANCEL_DIALOG) or (action.getId() in ACTION_SHOW_INFO):
             self._close_dialog()

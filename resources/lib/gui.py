@@ -201,6 +201,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             if item != 'tvshow':
                 del labels['streamdetails']
         if item == 'season' or item == 'episode':
+            labels['tvshowtitle'] = labels['showtitle']
             del labels['showtitle']
             if item == 'season':
                 del labels['firstaired']
@@ -233,7 +234,7 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _split_labels(self, item, labels, prefix):
         props = {}
         for label in labels:
-            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or (prefix == 'album_' and (label == 'genre' or label == 'year')):
+            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
                 continue
             if isinstance(item[label], list):
                 item[label] = " / ".join(item[label])
@@ -254,7 +255,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         self._reset_variables()
         self._hide_controls()
         self._reset_controls()
-        self.fetch_items(CATEGORIES[key], search)
+        self._get_items(CATEGORIES[key], search)
         self._check_focus()
 
     def _play_item(self, key, value):

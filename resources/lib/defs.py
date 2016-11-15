@@ -49,9 +49,9 @@ MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "direc
 
 ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
 
-ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating"]
+ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating", "artistid"]
 
-SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount", "albumid"]
+SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount", "artistid", "albumid"]
 
 CATEGORIES = {
               'movies':{
@@ -231,7 +231,7 @@ CATEGORIES = {
                               'method':'AudioLibrary.GetAlbums', 
                               'properties':ALBUMLABELS, 
                               'sort':'label', 
-                              'rule':'"artistid": %s',
+                              'rule':'"filter":{"artistid":%s}',
                               'cast':False, 
                               'streamdetails':False, 
                               'label':132, 
@@ -246,7 +246,7 @@ CATEGORIES = {
                              'method':'AudioLibrary.GetSongs', 
                              'properties':SONGLABELS, 
                              'sort':'title', 
-                             'rule':'"artistid": %s',
+                             'rule':'"filter":{"artistid":%s}',
                              'cast':False, 
                              'streamdetails':False, 
                              'label':134, 
@@ -261,7 +261,7 @@ CATEGORIES = {
                            'method':'AudioLibrary.GetAlbums', 
                            'properties':ALBUMLABELS, 
                            'sort':'label', 
-                           'rule':'"albumid": %s',
+                           'rule':'"filter":{"artistid":%s}',
                            'cast':False, 
                            'streamdetails':False, 
                            'label':132, 

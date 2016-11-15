@@ -9,30 +9,27 @@ def log(txt):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
-
+#TODO resume
 #TODO info dialog seasons
-#TODO focused item disappears after closing epg info
-#TODO json does not return studio for episodes
-#TODO test missing in music / epg info
+#TODO focused item disappears after closing epg info (would container.refresh help?)
+#TODO fetch cast when opening info?
 #TODO test speed
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
-        # some sanitize work for search string: strip the input and replace some chars
-        self.searchstring = self._clean_string(kwargs['searchstring']).strip()
         self.params = kwargs['params']
-        log('script version %s started' % ADDONVERSION)
-        self.nextsearch = False
+        self.searchstring = kwargs['searchstring']
 
     def onInit(self):
+        self._hide_controls()
+        log('script version %s started' % ADDONVERSION)
+        self.nextsearch = False
+        # some sanitize work for search string: strip the input and replace some chars
+        self.searchstring = self._clean_string(self.searchstring).strip()
         if self.searchstring == '':
             self._close()
         else:
             self.window_id = xbmcgui.getCurrentWindowDialogId()
             xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
-            self.ACTORSUPPORT = True
-            self.DIRECTORSUPPORT = True
-            self.EPGSUPPORT = True
-            self._hide_controls()
             if not self.nextsearch:
                 if self.params == {}:
                     self._load_settings()
@@ -73,19 +70,21 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self._get_items(CATEGORIES[key], self.searchstring)
         self._check_focus()
 
-    def _get_items(self, cat, search):
+    def _get_items(self, cat, search, extrafilter=None):
         if cat['type'] == 'epg':
             self._fetch_channelgroups()
             return
         self.getControl(CATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}'
-                                         % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         listitems = []
         count = 0
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key(cat['type']):
             for item in json_response['result'][cat['type']]:
+                if extrafilter:
+                    if item['albumid'] != int(extrafilter):
+                        continue
                 count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
                 listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
@@ -110,8 +109,10 @@ class GUI(xbmcgui.WindowXMLDialog):
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
                 elif cat['type'] == 'songs':
+                    listitem.setProperty('artistid', str(item['artistid']))
                     listitem.setProperty('albumid', str(item['albumid']))
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
+                listitem.setInfo("music", {"path":"/go/home/file.mp3"})
                 listitems.append(listitem)
         self.getControl(cat['control']+1).addItems(listitems)
         if count > 0:
@@ -159,7 +160,8 @@ class GUI(xbmcgui.WindowXMLDialog):
             channelid = channel['channelid']
             channelname = channel['label']
             channelthumb = channel['thumbnail']
-            json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetBroadcasts", "params":{"channelid":%i, "properties":["starttime", "endtime", "runtime", "genre", "plot"]}, "id":1}' % channelid)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetBroadcasts", "params":{"channelid":%i, "properties":["starttime", "endtime", "runtime", "genre", "plot"]}, "id":1}' 
+% channelid)
             json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
             if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('broadcasts')):
@@ -224,10 +226,14 @@ class GUI(xbmcgui.WindowXMLDialog):
             else:
                 labels['aired'] = labels['firstaired']
                 del labels['firstaired']
+        if item == 'album':
+            del labels['artistid']
         if item == 'song':
             labels['tracknumber'] = labels['track']
+            labels['path'] = labels['file']
             del labels['track']
             del labels['file']
+            del labels['artistid']
             del labels['albumid']
         for key, value in labels.iteritems():
             if isinstance(value, list):
@@ -246,7 +252,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                 art['thumb'] = labels['banner']
         else:
             art = {}
-            art['thumb'] = labels['fanart']
+            art['thumb'] = labels['thumbnail']
             art['fanart'] = labels['fanart']
         art['icon'] = icon
         return art
@@ -254,11 +260,14 @@ class GUI(xbmcgui.WindowXMLDialog):
     def _split_labels(self, item, labels, prefix):
         props = {}
         for label in labels:
-            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or label == 'file' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
+            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or label == 'file' or label == 'artistid' or label == 'albumid' or label == 'songid' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
                 continue
             if isinstance(item[label], list):
                 item[label] = " / ".join(item[label])
-            props[prefix + label] = item[label]
+            if label == 'albumlabel':
+                props[prefix + 'label'] = item['albumlabel']
+            else:
+                props[prefix + label] = item[label]
             del item[label]
         return item, props
 
@@ -266,16 +275,18 @@ class GUI(xbmcgui.WindowXMLDialog):
         return string.replace('(', '[(]').replace(')', '[)]').replace('+', '[+]')
 
     def _get_allitems(self, key, listitem):
+        extrafilter = None
         if key == 'tvshowseasons' or key == 'tvshowepisodes':
             search = listitem.getVideoInfoTag().getDbId()
         elif key == 'artistalbums' or key == 'artistsongs':
             search = listitem.getMusicInfoTag().getDbId()
         else:
-            search = listitem.getProperty('artistid')
+            search = listitem.getProperty('artistid')[1:-1]
+            extrafilter = listitem.getProperty('albumid')
         self._reset_variables()
         self._hide_controls()
         self._reset_controls()
-        self._get_items(CATEGORIES[key], search)
+        self._get_items(CATEGORIES[key], search, extrafilter)
         self._check_focus()
 
     def _play_item(self, key, value):

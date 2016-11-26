@@ -439,7 +439,7 @@
 								<control type="textbox">
 									<left>15</left>
 									<top>275</top>
-									<width>196</width>
+									<width>192</width>
 									<height>65</height>
 									<font>font10</font>
 									<align>center</align>
@@ -764,7 +764,7 @@
 								<control type="textbox">
 									<left>15</left>
 									<top>275</top>
-									<width>196</width>
+									<width>192</width>
 									<height>65</height>
 									<font>font10</font>
 									<align>center</align>
@@ -1041,7 +1041,7 @@
 								<control type="textbox">
 									<left>15</left>
 									<top>275</top>
-									<width>196</width>
+									<width>192</width>
 									<height>65</height>
 									<font>font10</font>
 									<align>center</align>
@@ -3063,7 +3063,7 @@
 								<control type="textbox">
 									<left>15</left>
 									<top>275</top>
-									<width>196</width>
+									<width>192</width>
 									<height>65</height>
 									<font>font10</font>
 									<align>center</align>
@@ -3388,7 +3388,7 @@
 								<control type="textbox">
 									<left>15</left>
 									<top>275</top>
-									<width>196</width>
+									<width>192</width>
 									<height>65</height>
 									<font>font10</font>
 									<align>center</align>

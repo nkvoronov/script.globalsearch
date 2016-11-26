@@ -435,9 +435,9 @@
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>275</top>
+									<top>270</top>
 									<width>192</width>
-									<height>65</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -488,9 +488,9 @@
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>275</top>
+										<top>270</top>
 										<width>192</width>
-										<height>65</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>
@@ -757,9 +757,9 @@
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>275</top>
+									<top>270</top>
 									<width>192</width>
-									<height>65</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -810,9 +810,9 @@
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>275</top>
+										<top>270</top>
 										<width>192</width>
-										<height>65</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>
@@ -1031,9 +1031,9 @@
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>275</top>
+									<top>270</top>
 									<width>192</width>
-									<height>65</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -1084,9 +1084,9 @@
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>275</top>
+										<top>270</top>
 										<width>192</width>
-										<height>65</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>
@@ -1986,18 +1986,18 @@
 								</control>
 								<control type="image">
 									<left>1</left>
-									<top>250</top>
+									<top>235</top>
 									<width>300</width>
-									<height>58</height>
+									<height>75</height>
 									<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 									<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 									<bordersize>5</bordersize>
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>250</top>
+									<top>235</top>
 									<width>270</width>
-									<height>58</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -2043,18 +2043,18 @@
 									</control>
 									<control type="image">
 										<left>1</left>
-										<top>250</top>
+										<top>235</top>
 										<width>300</width>
-										<height>58</height>
+										<height>75</height>
 										<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 										<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 										<bordersize>5</bordersize>
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>250</top>
+										<top>235</top>
 										<width>270</width>
-										<height>58</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>
@@ -2241,9 +2241,9 @@
 								</control>
 								<control type="image">
 									<left>1</left>
-									<top>250</top>
+									<top>235</top>
 									<width>300</width>
-									<height>58</height>
+									<height>75</height>
 									<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 									<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 									<bordersize>5</bordersize>
@@ -2309,9 +2309,9 @@
 									</control>
 									<control type="image">
 										<left>1</left>
-										<top>250</top>
+										<top>235</top>
 										<width>300</width>
-										<height>58</height>
+										<height>75</height>
 										<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 										<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 										<bordersize>5</bordersize>
@@ -2518,9 +2518,9 @@
 								</control>
 								<control type="image">
 									<left>1</left>
-									<top>250</top>
+									<top>235</top>
 									<width>300</width>
-									<height>58</height>
+									<height>75</height>
 									<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 									<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 									<bordersize>5</bordersize>
@@ -2586,9 +2586,9 @@
 									</control>
 									<control type="image">
 										<left>1</left>
-										<top>250</top>
+										<top>235</top>
 										<width>300</width>
-										<height>58</height>
+										<height>75</height>
 										<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 										<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 										<bordersize>5</bordersize>
@@ -2814,9 +2814,9 @@
 								</control>
 								<control type="image">
 									<left>1</left>
-									<top>250</top>
+									<top>235</top>
 									<width>300</width>
-									<height>58</height>
+									<height>75</height>
 									<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 									<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 									<bordersize>5</bordersize>
@@ -2860,9 +2860,9 @@
 									</control>
 									<control type="image">
 										<left>1</left>
-										<top>250</top>
+										<top>235</top>
 										<width>300</width>
-										<height>58</height>
+										<height>75</height>
 										<texture colordiffuse="B0FFFFFF">globalsearch-black.png</texture>
 										<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 										<bordersize>5</bordersize>
@@ -3032,9 +3032,9 @@
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>275</top>
+									<top>270</top>
 									<width>192</width>
-									<height>65</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -3085,9 +3085,9 @@
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>275</top>
+										<top>270</top>
 										<width>192</width>
-										<height>65</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>
@@ -3354,9 +3354,9 @@
 								</control>
 								<control type="textbox">
 									<left>15</left>
-									<top>275</top>
+									<top>270</top>
 									<width>192</width>
-									<height>65</height>
+									<height>70</height>
 									<font>font10</font>
 									<align>center</align>
 									<aligny>center</aligny>
@@ -3407,9 +3407,9 @@
 									</control>
 									<control type="textbox">
 										<left>15</left>
-										<top>275</top>
+										<top>270</top>
 										<width>192</width>
-										<height>65</height>
+										<height>70</height>
 										<font>font10</font>
 										<align>center</align>
 										<aligny>center</aligny>

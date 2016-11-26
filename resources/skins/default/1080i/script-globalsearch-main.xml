@@ -173,17 +173,17 @@
 				<animation effect="fade" time="400">Hidden</animation>
 				<visible>Control.HasFocus(201)</visible>
 			</control>
-			<control type="image">
-				<left>-5</left>
-				<top>-5</top>
-				<width>472</width>
-				<height>1090</height>
-				<texture>globalsearch-panel.png</texture>
-				<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
-				<bordersize>5</bordersize>
-			</control>
 			<control type="group" id="101">
 				<top>100</top>
+				<control type="image">
+					<left>-5</left>
+					<top>-5</top>
+					<width>472</width>
+					<height>1090</height>
+					<texture>globalsearch-panel.png</texture>
+					<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
+					<bordersize>5</bordersize>
+				</control>
 				<control type="image">
 					<left>333</left>
 					<top>1</top>
@@ -3742,7 +3742,7 @@
 				<shadowcolor>22000000</shadowcolor>
 				<headlinecolor>FFC0C0C0</headlinecolor>
 				<textcolor>FFF0F0F0</textcolor>
-				<visible>!System.HasModalDialog</visible>
+				<visible>Control.IsVisible(101)</visible>
 			</control>
 		</control>
 	</controls>

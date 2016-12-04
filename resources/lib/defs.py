@@ -34,7 +34,7 @@ NEWSEARCH = 998
 NORESULTS = 999
 
 MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
-               "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art", "file"]
+               "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art", "file", "resume"]
 
 TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "cast", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
                 "imdbnumber", "lastplayed", "votes", "dateadded", "art", "watchedepisodes", "file"]
@@ -42,10 +42,10 @@ TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "p
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
 
 EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
-                 "votes", "dateadded", "streamdetails", "art", "file"]
+                 "votes", "dateadded", "streamdetails", "art", "file", "resume"]
 
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", 
-                    "streamdetails", "art", "file"]
+                    "streamdetails", "art", "file", "resume"]
 
 ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
 

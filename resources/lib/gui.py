@@ -9,9 +9,7 @@ def log(txt):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
-#TODO resume
-#TODO info dialog seasons
-#TODO focused item disappears after closing epg info (would container.refresh help?)
+#TODO focused item disappears after closing epg info
 #TODO fetch cast when opening info?
 #TODO test speed
 class GUI(xbmcgui.WindowXMLDialog):
@@ -111,8 +109,13 @@ class GUI(xbmcgui.WindowXMLDialog):
                 elif cat['type'] == 'songs':
                     listitem.setProperty('artistid', str(item['artistid']))
                     listitem.setProperty('albumid', str(item['albumid']))
+                elif cat['type'] == 'movies' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos':
+                    listitem.setProperty('resume', str(int(item['resume']['position'])))
+                if cat['type'] == 'movies' or cat['type'] == 'tvshows' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos' or cat['type'] == 'songs':
+                    listitem.setPath(item['file'])
+                    if cat['type'] != 'songs':
+                        listitem.setInfo(cat['media'], {'path':item['file']})
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
-                listitem.setInfo("music", {"path":"/go/home/file.mp3"})
                 listitems.append(listitem)
         self.getControl(cat['control']+1).addItems(listitems)
         if count > 0:
@@ -208,13 +211,13 @@ class GUI(xbmcgui.WindowXMLDialog):
             del labels['fanart']
         if item == 'movie' or item == 'tvshow' or item == 'episode' or item == 'musicvideo':
             labels['duration'] = labels['runtime']
-            labels['path'] = labels['file']
             del labels['file']
             del labels['runtime']
             if item != 'musicvideo':
                 del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
+                del labels['resume']
             else:
                 del labels['watchedepisodes']
         if item == 'season' or item == 'episode':
@@ -230,7 +233,6 @@ class GUI(xbmcgui.WindowXMLDialog):
             del labels['artistid']
         if item == 'song':
             labels['tracknumber'] = labels['track']
-            labels['path'] = labels['file']
             del labels['track']
             del labels['file']
             del labels['artistid']
@@ -289,14 +291,54 @@ class GUI(xbmcgui.WindowXMLDialog):
         self._get_items(CATEGORIES[key], search, extrafilter)
         self._check_focus()
 
-    def _play_item(self, key, value):
+    def _get_selectaction(self):
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"myvideos.selectaction"}, "id": 1}')
+        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_response = json.loads(json_query)
+        action = 1
+        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
+            action = json_response['result']['value'] #{0: 'choose', 1: 'play', 2: 'resume',3: 'info'}
+        return action
+
+    def _play_item(self, key, value, listitem=None):
         if key == 'file':
             self.playingtrailer = 'true'
             self.getControl(ALL).setVisible(False)
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":"%s"}}, "id":1}' % (key, value))
         else:
-            self._close()
-            xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":%d}}, "id":1}' % (key, int(value)))
+            action = self._get_selectaction()
+            resume = int(listitem.getProperty('resume'))
+            if action == 0:
+                labels = ()
+                functions = ()
+                if int(resume) > 0:
+                    m, s = divmod(resume, 60)
+                    h, m = divmod(m, 60)
+                    val = '%d:%02d:%02d' % (h, m, s)
+                    labels += (xbmc.getLocalizedString(12022) % val,)
+                    functions += ('resume',)
+                    labels += (xbmc.getLocalizedString(12021),)
+                    functions += ('play',)
+                else:
+                    labels += (xbmc.getLocalizedString(208),)
+                    functions += ('play',)
+                labels += (xbmc.getLocalizedString(22081),)
+                functions += ('info',)
+                selection = xbmcgui.Dialog().contextmenu(labels)
+                if selection >= 0:
+                    if functions[selection] == 'play':
+                        action = 1
+                    if functions[selection] == 'resume':
+                        action = 2
+                    if functions[selection] == 'info':
+                        action = 3
+            if action == 3:
+                self._infoDialog(listitem)
+            elif action == 1 or action == 2:           
+                self._close()
+                if action == 2:
+                    self.Player.resume = resume
+                xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":%d}}, "id":1}' % (key, int(value)))
 
     def _trailerstopped(self):
         self.getControl(ALL).setVisible(True)
@@ -331,9 +373,6 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif controlId == TVSHOWS+1:
             labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
             functions += ('info', 'tvshowseasons', 'tvshowepisodes',)
-        elif controlId == SEASONS+1:
-            labels += (LANGUAGE(32204),)
-            functions += ('info',)
         elif controlId == EPISODES+1:
             labels += (xbmc.getLocalizedString(20352),)
             functions += ('info',)
@@ -356,9 +395,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
                 if functions[selection] == 'info':
-                    self.getControl(CONTENT).setVisible(False)
-                    xbmcgui.Dialog().info(listitem)
-                    self.getControl(CONTENT).setVisible(True)
+                    self._infoDialog(listitem)
                 elif functions[selection] == 'showinfo':
                     self._showInfo(listitem)
                 elif functions[selection] == 'browse':
@@ -374,6 +411,11 @@ class GUI(xbmcgui.WindowXMLDialog):
         info_dialog.doModal()
         self.getControl(CONTENT).setVisible(True)
         del info_dialog
+
+    def _infoDialog(self, listitem):
+        self.getControl(CONTENT).setVisible(False)
+        xbmcgui.Dialog().info(listitem)
+        self.getControl(CONTENT).setVisible(True)
 
     def _newSearch(self):
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
@@ -403,13 +445,13 @@ class GUI(xbmcgui.WindowXMLDialog):
                 self._play_item('songid', songid)
             elif controlId == MOVIES+1 or controlId == ACTORS+1 or controlId == DIRECTORS+1:
                 movieid = listitem.getVideoInfoTag().getDbId()
-                self._play_item('movieid', movieid)
+                self._play_item('movieid', movieid, listitem)
             elif controlId == EPISODES+1:
                 episodeid = listitem.getVideoInfoTag().getDbId()
-                self._play_item('episodeid', episodeid)
+                self._play_item('episodeid', episodeid, listitem)
             elif controlId == MUSICVIDEOS+1:
                 musicvideoid = listitem.getVideoInfoTag().getDbId()
-                self._play_item('musicvideoid', musicvideoid)
+                self._play_item('musicvideoid', musicvideoid, listitem)
             elif controlId == EPG+1:
                 self._showInfo(listitem)
         else:
@@ -437,9 +479,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                     self._showContextMenu(controlId, listitem)
                 elif action.getId() in ACTION_SHOW_INFO:
                     if controlId != EPG+1:
-                        self.getControl(CONTENT).setVisible(False)
-                        xbmcgui.Dialog().info(listitem)
-                        self.getControl(CONTENT).setVisible(True)
+                        self._infoDialog(listitem)
                     else:
                         self._showInfo(listitem)
 
@@ -454,9 +494,17 @@ class MyPlayer(xbmc.Player):
     def __init__(self, *args, **kwargs):
         xbmc.Player.__init__(self)
         self.function = kwargs["function"]
+        self.resume = 0
 
     def onPlayBackEnded(self):
         self.function()
 
     def onPlayBackStopped(self):
         self.function()
+
+    def onPlayBackStarted(self):
+        for count in range(50):
+            if self.isPlayingVideo():
+                break
+            xbmc.sleep(100)
+        self.seekTime(float(self.resume))

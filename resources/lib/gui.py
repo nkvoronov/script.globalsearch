@@ -9,7 +9,6 @@ def log(txt):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
-#TODO focused item disappears after closing epg info
 #TODO fetch cast when opening info?
 #TODO test speed
 class GUI(xbmcgui.WindowXMLDialog):
@@ -388,29 +387,17 @@ class GUI(xbmcgui.WindowXMLDialog):
         elif controlId == SONGS+1:
             labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
             functions += ('info', 'songalbum',)
-        elif controlId == EPG+1:
-            labels += (xbmc.getLocalizedString(19047),)
-            functions += ('showinfo',)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
                 if functions[selection] == 'info':
                     self._infoDialog(listitem)
-                elif functions[selection] == 'showinfo':
-                    self._showInfo(listitem)
                 elif functions[selection] == 'browse':
                     self._browse_item('musicdb://albums/%s/' % str(listitem.getMusicInfoTag().getDbId()), 'Music')
                 elif functions[selection] == 'play':
                     self._play_item('file', path)
                 else:
                     self._get_allitems(functions[selection], listitem)
-
-    def _showInfo(self, listitem):
-        info_dialog = infodialog.GUI('script-globalsearch-infodialog.xml' , CWD, 'default', listitem=listitem)
-        self.getControl(CONTENT).setVisible(False)
-        info_dialog.doModal()
-        self.getControl(CONTENT).setVisible(True)
-        del info_dialog
 
     def _infoDialog(self, listitem):
         self.getControl(CONTENT).setVisible(False)
@@ -452,8 +439,6 @@ class GUI(xbmcgui.WindowXMLDialog):
             elif controlId == MUSICVIDEOS+1:
                 musicvideoid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('musicvideoid', musicvideoid, listitem)
-            elif controlId == EPG+1:
-                self._showInfo(listitem)
         else:
             self._newSearch()
 
@@ -478,10 +463,8 @@ class GUI(xbmcgui.WindowXMLDialog):
                 if action.getId() in ACTION_CONTEXT_MENU:
                     self._showContextMenu(controlId, listitem)
                 elif action.getId() in ACTION_SHOW_INFO:
-                    if controlId != EPG+1:
+                    if controlId != EPG+1 and controlId != SEASONS+1:
                         self._infoDialog(listitem)
-                    else:
-                        self._showInfo(listitem)
 
     def _close(self):
         log('script stopped')

@@ -7,10 +7,8 @@ INFORMATION FOR SKINNERS
 CONTENTS:
 0.   Running the addon 
 I.   Infolabels available in script-globalsearch-main.xml
-II.  Infolabels available in script-globalsearch-infodialog.xml
-III. Control id's used in script-globalsearch-main.xml
-IV.  Control id's used in script-globalsearch-infodialog.xml
-V.   Available window properties
+II. Control id's used in script-globalsearch-main.xml
+III.   Available window properties
 
 
 
@@ -202,16 +200,7 @@ ListItem.DBID
 
 
 
-II. Infolabels available in script-globalsearch-infodialog.xml
---------------------------------------------------------------
-You can use the same labels as above, only add a 'Container(100).' prefix to them.
-for example:
-Container(100).ListItem.Label
-Container(100).ListItem.Property(Plot)
-
-
-
-III. Control id's used in script-globalsearch-main.xml
+II. Control id's used in script-globalsearch-main.xml
 ------------------------------------------------------
 100 - Main group id. All code should be included in this group. The script will set this id to hidden when playing a trailer.
 101 - Content group id. All code, except the background images, can be included in this group. The script will set this id to hidden when an info dialog is visible.
@@ -267,19 +256,7 @@ III. Control id's used in script-globalsearch-main.xml
 
 
 
-IV. Control id's used in script-globalsearch-infodialog.xml
------------------------------------------------------------
-100 - Hidden list containing the selected ListItem.
-
-
-As always, do not change or remove any of the id's mentioned above!
-If you want to get rid of some of them, just position them outside of the screen.
-
-Any id not mentioned above, but used in the default xml files, can safely be changed or removed.
-
-
-
-VI.  Available window properties
+III.  Available window properties
 --------------------------------
 Window.Property(GlobalSearch.SearchString) - the string the user is searching for
 

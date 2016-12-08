@@ -33,15 +33,15 @@ CATEGORY = 991
 NEWSEARCH = 998
 NORESULTS = 999
 
-MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "cast", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
+MOVIELABELS = ["genre", "country", "year", "top250", "setid", "rating", "userrating", "playcount", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle", "sorttitle", 
                "runtime", "studio", "tagline", "writer", "premiered", "set", "imdbnumber", "lastplayed", "votes", "trailer", "dateadded", "streamdetails", "art", "file", "resume"]
 
-TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "cast", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
+TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "playcount", "mpaa", "plot", "title", "originaltitle", "sorttitle", "runtime", "studio", "premiered", 
                 "imdbnumber", "lastplayed", "votes", "dateadded", "art", "watchedepisodes", "file"]
 
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
 
-EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "cast", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
+EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed", 
                  "votes", "dateadded", "streamdetails", "art", "file", "resume"]
 
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded", 
@@ -62,7 +62,6 @@ CATEGORIES = {
                         'properties':MOVIELABELS, 
                         'sort':'title', 
                         'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
-                        'cast':True, 
                         'streamdetails':True, 
                         'label':342, 
                         'icon':'DefaultVideo.png', 
@@ -77,7 +76,6 @@ CATEGORIES = {
                          'properties':TVSHOWLABELS, 
                          'sort':'label', 
                          'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
-                         'cast':True, 
                          'streamdetails':False, 
                          'label':20343, 
                          'icon':'DefaultVideo.png', 
@@ -92,7 +90,6 @@ CATEGORIES = {
                           'properties':EPISODELABELS, 
                           'sort':'title', 
                           'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
-                          'cast':True, 
                           'streamdetails':True, 
                           'label':20360, 
                           'icon':'DefaultVideo.png', 
@@ -107,7 +104,6 @@ CATEGORIES = {
                              'properties':MUSICVIDEOLABELS, 
                              'sort':'label', 
                              'rule':'"filter":{"field":"title", "operator":"contains", "value":"%s"}',
-                             'cast':False, 
                              'streamdetails':True, 
                              'label':20389, 
                              'icon':'DefaultVideo.png', 
@@ -122,7 +118,6 @@ CATEGORIES = {
                          'properties':ARTISTLABELS, 
                          'sort':'label', 
                          'rule':'"filter":{"field": "artist", "operator": "contains", "value": "%s"}',
-                         'cast':False, 
                          'streamdetails':False, 
                          'label':133, 
                          'icon':'DefaultArtist.png', 
@@ -137,7 +132,6 @@ CATEGORIES = {
                         'properties':ALBUMLABELS, 
                         'sort':'label', 
                         'rule':'"filter":{"field": "album", "operator": "contains", "value": "%s"}',
-                        'cast':False, 
                         'streamdetails':False, 
                         'label':132, 
                         'icon':'DefaultAlbumCover.png', 
@@ -152,7 +146,6 @@ CATEGORIES = {
                        'properties':SONGLABELS, 
                        'sort':'title', 
                        'rule':'"filter":{"field": "title", "operator": "contains", "value": "%s"}',
-                       'cast':False, 
                        'streamdetails':False, 
                        'label':134, 
                        'icon':'DefaultAudio.png', 
@@ -172,7 +165,6 @@ CATEGORIES = {
                         'properties':MOVIELABELS, 
                         'sort':'title', 
                         'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
-                        'cast':True, 
                         'streamdetails':True, 
                         'label':344, 
                         'icon':'DefaultVideo.png', 
@@ -187,7 +179,6 @@ CATEGORIES = {
                            'properties':MOVIELABELS, 
                            'sort':'title', 
                            'rule':'"filter":{"field":"director", "operator":"contains", "value":"%s"}',
-                           'cast':True, 
                            'streamdetails':True, 
                            'label':20348, 
                            'icon':'DefaultVideo.png', 
@@ -202,7 +193,6 @@ CATEGORIES = {
                                'properties':SEASONLABELS, 
                                'sort':'label', 
                                'rule':'"tvshowid":%s',
-                               'cast':False, 
                                'streamdetails':False, 
                                'label':20373, 
                                'icon':'DefaultVideo.png', 
@@ -217,7 +207,6 @@ CATEGORIES = {
                                 'properties':EPISODELABELS, 
                                 'sort':'title', 
                                 'rule':'"tvshowid":%s',
-                                'cast':True, 
                                 'streamdetails':True, 
                                 'label':20360, 
                                 'icon':'DefaultVideo.png', 
@@ -232,7 +221,6 @@ CATEGORIES = {
                               'properties':ALBUMLABELS, 
                               'sort':'label', 
                               'rule':'"filter":{"artistid":%s}',
-                              'cast':False, 
                               'streamdetails':False, 
                               'label':132, 
                               'icon':'DefaultAlbumCover.png', 
@@ -247,7 +235,6 @@ CATEGORIES = {
                              'properties':SONGLABELS, 
                              'sort':'title', 
                              'rule':'"filter":{"artistid":%s}',
-                             'cast':False, 
                              'streamdetails':False, 
                              'label':134, 
                              'icon':'DefaultAudio.png', 
@@ -262,7 +249,6 @@ CATEGORIES = {
                            'properties':ALBUMLABELS, 
                            'sort':'label', 
                            'rule':'"filter":{"artistid":%s}',
-                           'cast':False, 
                            'streamdetails':False, 
                            'label':132, 
                            'icon':'DefaultAlbumCover.png', 

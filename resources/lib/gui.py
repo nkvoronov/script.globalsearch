@@ -9,7 +9,6 @@ def log(txt):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
-#TODO fetch cast when opening info?
 #TODO test speed
 class GUI(xbmcgui.WindowXMLDialog):
     def __init__(self, *args, **kwargs):
@@ -92,8 +91,6 @@ class GUI(xbmcgui.WindowXMLDialog):
                         listitem.addStreamInfo('audio', stream)
                     for stream in item['streamdetails']['subtitle']:
                         listitem.addStreamInfo('subtitle', stream)
-                if cat['cast']:
-                    listitem.setCast(item['cast'])
                 if cat['type'] == 'tvshows':
                     listitem.setProperty('TotalSeasons', str(item['season']))
                     listitem.setProperty('TotalEpisodes', str(item['episode']))
@@ -212,8 +209,6 @@ class GUI(xbmcgui.WindowXMLDialog):
             labels['duration'] = labels['runtime']
             del labels['file']
             del labels['runtime']
-            if item != 'musicvideo':
-                del labels['cast']
             if item != 'tvshow':
                 del labels['streamdetails']
                 del labels['resume']

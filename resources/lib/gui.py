@@ -9,8 +9,8 @@ def log(txt):
         txt = txt.decode('utf-8')
     message = u'%s: %s' % (ADDONID, txt)
     xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
-#TODO test speed
-class GUI(xbmcgui.WindowXMLDialog):
+
+class GUI(xbmcgui.WindowXML):
     def __init__(self, *args, **kwargs):
         self.params = kwargs['params']
         self.searchstring = kwargs['searchstring']
@@ -24,7 +24,7 @@ class GUI(xbmcgui.WindowXMLDialog):
         if self.searchstring == '':
             self._close()
         else:
-            self.window_id = xbmcgui.getCurrentWindowDialogId()
+            self.window_id = xbmcgui.getCurrentWindowId()
             xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
             if not self.nextsearch:
                 if self.params == {}:
@@ -56,9 +56,8 @@ class GUI(xbmcgui.WindowXMLDialog):
         self.getControl(SEARCHING).setLabel(xbmc.getLocalizedString(194))
 
     def _init_items(self):
-        self.playingtrailer = 'false'
         self.getControl(NEWSEARCH).setLabel(LANGUAGE(32299))
-        self.Player = MyPlayer(function=self._trailerstopped)
+        self.Player = MyPlayer()
 
     def _fetch_items(self):
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
@@ -111,6 +110,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                     listitem.setPath(item['file'])
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
+        self.getControl(cat['control']+1).reset()
         self.getControl(cat['control']+1).addItems(listitems)
         if count > 0:
             self.getControl(cat['control']).setLabel(str(count))
@@ -157,8 +157,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             channelid = channel['channelid']
             channelname = channel['label']
             channelthumb = channel['thumbnail']
-            json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetBroadcasts", "params":{"channelid":%i, "properties":["starttime", "endtime", "runtime", "genre", "plot"]}, "id":1}' 
-% channelid)
+            json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetBroadcasts", "params":{"channelid":%i, "properties":["starttime", "endtime", "runtime", "genre", "plot"]}, "id":1}' % channelid)
             json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
             if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('broadcasts')):
@@ -183,6 +182,7 @@ class GUI(xbmcgui.WindowXMLDialog):
                         listitem.setProperty("channelname", channelname)
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
+        self.getControl(EPG+1).reset()
         self.getControl(EPG+1).addItems(listitems)
         if count > 0:
             self.getControl(EPG).setLabel(str(count))
@@ -290,13 +290,11 @@ class GUI(xbmcgui.WindowXMLDialog):
         json_response = json.loads(json_query)
         action = 1
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
-            action = json_response['result']['value'] #{0: 'choose', 1: 'play', 2: 'resume',3: 'info'}
+            action = json_response['result']['value']
         return action
 
     def _play_item(self, key, value, listitem=None):
         if key == 'file':
-            self.playingtrailer = 'true'
-            self.getControl(ALL).setVisible(False)
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":"%s"}}, "id":1}' % (key, value))
         else:
             action = self._get_selectaction()
@@ -327,18 +325,12 @@ class GUI(xbmcgui.WindowXMLDialog):
                         action = 3
             if action == 3:
                 self._infoDialog(listitem)
-            elif action == 1 or action == 2:           
-                self._close()
+            elif action == 1 or action == 2:
                 if action == 2:
                     self.Player.resume = resume
                 xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":%d}}, "id":1}' % (key, int(value)))
 
-    def _trailerstopped(self):
-        self.getControl(ALL).setVisible(True)
-        self.playingtrailer = 'false'
-
     def _browse_item(self, path, window):
-        self._close()
         xbmc.executebuiltin('ActivateWindow(' + window + ',' + path + ',return)')
 
     def _check_focus(self):
@@ -438,18 +430,7 @@ class GUI(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
         if action.getId() in ACTION_CANCEL_DIALOG:
-            if self.playingtrailer == 'false':
-                self._close()
-            else:
-                self.Player.stop()
-                self._trailerstopped()
-        elif action.getId() in ACTION_OSD and self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-            xbmc.executebuiltin('ActivateWindow(12901)')
-        elif action.getId() in ACTION_SHOW_GUI and self.playingtrailer == 'true':
-            self.Player.stop()
-            self._trailerstopped()
-        elif action.getId() in ACTION_SHOW_INFO and self.playingtrailer == 'true' and xbmc.getCondVisibility('videoplayer.isfullscreen'):
-            xbmc.executebuiltin('ActivateWindow(142)')
+            self._close()
         elif action.getId() in ACTION_CONTEXT_MENU or action.getId() in ACTION_SHOW_INFO:
             controlId = self.getFocusId()
             if controlId in [MOVIES+1, TVSHOWS+1, SEASONS+1, EPISODES+1, MUSICVIDEOS+1, ARTISTS+1, ALBUMS+1, SONGS+1, EPG+1, ACTORS+1, DIRECTORS+1]:
@@ -470,14 +451,7 @@ class GUI(xbmcgui.WindowXMLDialog):
 class MyPlayer(xbmc.Player):
     def __init__(self, *args, **kwargs):
         xbmc.Player.__init__(self)
-        self.function = kwargs["function"]
         self.resume = 0
-
-    def onPlayBackEnded(self):
-        self.function()
-
-    def onPlayBackStopped(self):
-        self.function()
 
     def onPlayBackStarted(self):
         for count in range(50):

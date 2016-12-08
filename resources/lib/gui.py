@@ -109,8 +109,6 @@ class GUI(xbmcgui.WindowXMLDialog):
                     listitem.setProperty('resume', str(int(item['resume']['position'])))
                 if cat['type'] == 'movies' or cat['type'] == 'tvshows' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos' or cat['type'] == 'songs':
                     listitem.setPath(item['file'])
-                    if cat['type'] != 'songs':
-                        listitem.setInfo(cat['media'], {'path':item['file']})
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
         self.getControl(cat['control']+1).addItems(listitems)
@@ -207,6 +205,7 @@ class GUI(xbmcgui.WindowXMLDialog):
             del labels['fanart']
         if item == 'movie' or item == 'tvshow' or item == 'episode' or item == 'musicvideo':
             labels['duration'] = labels['runtime']
+            labels['path'] = labels['file']
             del labels['file']
             del labels['runtime']
             if item != 'tvshow':

@@ -4,20 +4,6 @@ import json
 import operator
 from defs import *
 
-#TODO REMOVE
-MOVIES = 110
-TVSHOWS = 120
-SEASONS = 130
-EPISODES = 140
-MUSICVIDEOS = 150
-ARTISTS = 160
-ALBUMS = 170
-SONGS = 180
-EPG = 190
-ACTORS = 200
-DIRECTORS = 210
-#/TODO
-
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
@@ -366,30 +352,34 @@ class GUI(xbmcgui.WindowXML):
     def _context_menu(self, controlId, listitem):
         labels = ()
         functions = ()
-#TODO   media = listitem.getxxx()
-        if controlId == MOVIES+1 or controlId == ACTORS+1 or controlId == DIRECTORS+1:
+        media = ''
+        if listitem.getVideoInfoTag():
+            media = listitem.getVideoInfoTag().getMediaType()
+        elif listitem.getMusicInfoTag():
+            media = listitem.getMusicInfoTag().getMediaType()
+        if media == 'movie':
             labels += (xbmc.getLocalizedString(13346),)
             functions += ('info',)
             path = listitem.getVideoInfoTag().getTrailer()
             if path:
                 labels += (LANGUAGE(32205),)
                 functions += ('play',)
-        elif controlId == TVSHOWS+1:
+        elif media == 'tvshow':
             labels += (xbmc.getLocalizedString(20351), LANGUAGE(32207), LANGUAGE(32208),)
             functions += ('info', 'tvshowseasons', 'tvshowepisodes',)
-        elif controlId == EPISODES+1:
+        elif media == 'episode':
             labels += (xbmc.getLocalizedString(20352),)
             functions += ('info',)
-        elif controlId == MUSICVIDEOS+1:
+        elif media == 'musicvideo':
             labels += (xbmc.getLocalizedString(20393),)
             functions += ('info',)
-        elif controlId == ARTISTS+1:
+        elif media == 'artist':
             labels += (xbmc.getLocalizedString(21891), LANGUAGE(32209), LANGUAGE(32210),)
             functions += ('info', 'artistalbums', 'artistsongs',)
-        elif controlId == ALBUMS+1:
+        elif media == 'album':
             labels += (xbmc.getLocalizedString(13351), LANGUAGE(32203),)
             functions += ('info', 'browse',)
-        elif controlId == SONGS+1:
+        elif media == 'song':
             labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
             functions += ('info', 'songalbum',)
         if labels:
@@ -420,29 +410,33 @@ class GUI(xbmcgui.WindowXML):
     def onClick(self, controlId):
         if controlId == self.getCurrentContainerId():
             listitem = self.getControl(controlId).getSelectedItem()
-#TODO       media = listitem.getxxx()
-            if controlId == TVSHOWS+1:
+            media = ''
+            if listitem.getVideoInfoTag():
+                media = listitem.getVideoInfoTag().getMediaType()
+            elif listitem.getMusicInfoTag():
+                media = listitem.getMusicInfoTag().getMediaType()
+            if media == 'tvshow':
                 path = 'videodb://tvshows/titles/%s/' % str(listitem.getVideoInfoTag().getDbId())
                 self._browse_item(path, 'Videos')
-            elif controlId == SEASONS+1:
+            elif media == 'season':
                 path = 'videodb://tvshows/titles/%s/%s/' % (str(listitem.getProperty('tvshowid')), str(listitem.getVideoInfoTag().getSeason()))
                 self._browse_item(path, 'Videos')
-            elif controlId == ARTISTS+1:
+            elif media == 'artist':
                 path = 'musicdb://artists/%s/' % str(listitem.getMusicInfoTag().getDbId())
                 self._browse_item(path, 'Music')
-            elif controlId == ALBUMS+1:
+            elif media == 'album':
                 albumid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('albumid', albumid)
-            elif controlId == SONGS+1:
+            elif media == 'song':
                 songid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('songid', songid)
-            elif controlId == MOVIES+1 or controlId == ACTORS+1 or controlId == DIRECTORS+1:
+            elif media == 'movie':
                 movieid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('movieid', movieid, listitem)
-            elif controlId == EPISODES+1:
+            elif media == 'episode':
                 episodeid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('episodeid', episodeid, listitem)
-            elif controlId == MUSICVIDEOS+1:
+            elif media == 'musicvideo':
                 musicvideoid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('musicvideoid', musicvideoid, listitem)
         elif controlId == MENU:
@@ -458,11 +452,15 @@ class GUI(xbmcgui.WindowXML):
             controlId = self.getFocusId()
             if controlId == self.getCurrentContainerId():
                 listitem = self.getControl(controlId).getSelectedItem()
-#TODO           media = listitem.getxxx()
+                media = ''
+                if listitem.getVideoInfoTag():
+                    media = listitem.getVideoInfoTag().getMediaType()
+                elif listitem.getMusicInfoTag():
+                    media = listitem.getMusicInfoTag().getMediaType()
                 if action.getId() in ACTION_CONTEXT_MENU:
                     self._context_menu(controlId, listitem)
                 elif action.getId() in ACTION_SHOW_INFO:
-                    if controlId != EPG+1 and controlId != SEASONS+1:
+                    if media != '' and media != 'season':
                         self._show_info(listitem)
 
     def _close(self):

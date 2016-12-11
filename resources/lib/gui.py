@@ -4,6 +4,20 @@ import json
 import operator
 from defs import *
 
+#TODO REMOVE
+MOVIES = 110
+TVSHOWS = 120
+SEASONS = 130
+EPISODES = 140
+MUSICVIDEOS = 150
+ARTISTS = 160
+ALBUMS = 170
+SONGS = 180
+EPG = 190
+ACTORS = 200
+DIRECTORS = 210
+#/TODO
+
 def log(txt):
     if isinstance(txt,str):
         txt = txt.decode('utf-8')
@@ -36,12 +50,8 @@ class GUI(xbmcgui.WindowXML):
             self._fetch_items()
 
     def _hide_controls(self):
-        for cid in [MOVIES+9, TVSHOWS+9, SEASONS+9, EPISODES+9, MUSICVIDEOS+9, ARTISTS+9, ALBUMS+9, SONGS+9, EPG+9, ACTORS+9, DIRECTORS+9, NEWSEARCH, NORESULTS]:
+        for cid in [SEARCHBUTTON, NORESULTS]:
             self.getControl(cid).setVisible(False)
-
-    def _reset_controls(self):
-        for cid in [MOVIES+1, TVSHOWS+1, SEASONS+1, EPISODES+1, MUSICVIDEOS+1, ARTISTS+1, ALBUMS+1, SONGS+1, EPG+1, ACTORS+1, DIRECTORS+1]:
-            self.getControl(cid).reset()
 
     def _parse_argv(self):
         for key, value in CATEGORIES.iteritems():
@@ -53,11 +63,13 @@ class GUI(xbmcgui.WindowXML):
 
     def _reset_variables(self):
         self.focusset= 'false'
-        self.getControl(SEARCHING).setLabel(xbmc.getLocalizedString(194))
+        self.getControl(SEARCHLABEL).setLabel(xbmc.getLocalizedString(194))
 
     def _init_items(self):
-        self.getControl(NEWSEARCH).setLabel(LANGUAGE(32299))
+        self.getControl(SEARCHBUTTON).setLabel(LANGUAGE(32299))
         self.Player = MyPlayer()
+        self.menu = self.getControl(MENU)
+        self.content = {}
 
     def _fetch_items(self):
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
@@ -69,18 +81,16 @@ class GUI(xbmcgui.WindowXML):
         if cat['type'] == 'epg':
             self._fetch_channelgroups()
             return
-        self.getControl(CATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
+        self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         listitems = []
-        count = 0
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key(cat['type']):
             for item in json_response['result'][cat['type']]:
                 if extrafilter:
                     if item['albumid'] != int(extrafilter):
                         continue
-                count = count + 1
                 listitem = xbmcgui.ListItem(item['label'])
                 listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
                 if cat['streamdetails']:
@@ -110,18 +120,21 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setPath(item['file'])
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
                 listitems.append(listitem)
-        self.getControl(cat['control']+1).reset()
-        self.getControl(cat['control']+1).addItems(listitems)
-        if count > 0:
-            self.getControl(cat['control']).setLabel(str(count))
-            self.getControl(cat['control']+9).setVisible(True)
+        if len(listitems) > 0:
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
+            menuitem.setArt({'icon':cat['menuthumb']})
+            menuitem.setPath(cat['type'])
+            self.menu.addItem(menuitem)
+            self.content[cat['type']] = listitems
             if self.focusset == 'false':
+                self.clearList()
+                self.setContainerProperty('Content', cat['type'])
+                self.addItems(listitems)
                 xbmc.sleep(100)
-                self.setFocus(self.getControl(cat['control']+1))
                 self.focusset = 'true'
 
     def _fetch_channelgroups(self):
-        self.getControl(CATEGORY).setLabel(xbmc.getLocalizedString(19069))
+        self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(19069))
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannelGroups", "params":{"channeltype":"tv"}, "id":1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
@@ -151,7 +164,6 @@ class GUI(xbmcgui.WindowXML):
 
     def _fetch_epg(self, channels):
         listitems = []
-        count = 0
         # get all programs for every channel id
         for channel in channels:
             channelid = channel['channelid']
@@ -165,7 +177,6 @@ class GUI(xbmcgui.WindowXML):
                     broadcastname = item['label']
                     epgmatch = re.search('.*' + self.searchstring + '.*', broadcastname, re.I)
                     if epgmatch:
-                        count = count + 1
                         broadcastid = item['broadcastid']
                         duration = item['runtime']
                         genre = item['genre'][0]
@@ -182,15 +193,23 @@ class GUI(xbmcgui.WindowXML):
                         listitem.setProperty("channelname", channelname)
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
-        self.getControl(EPG+1).reset()
-        self.getControl(EPG+1).addItems(listitems)
-        if count > 0:
-            self.getControl(EPG).setLabel(str(count))
-            self.getControl(EPG+9).setVisible(True)
-            if self.focusset == 'false':
-                xbmc.sleep(100)
-                self.setFocus(self.getControl(EPG+9))
-                self.focusset = 'true'
+            if len(listitems) > 0:
+                menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
+                menuitem.setArt({'icon':cat['menuthumb']})
+                menuitem.setPath(cat['type'])
+                self.menu.addItem(menuitem)
+                self.content[cat['type']] = listitems
+                if self.focusset == 'false':
+                    self.clearList()
+                    self.setContainerProperty('Content', cat['type'])
+                    self.addItems(listitems)
+                    xbmc.sleep(100)
+                    self.focusset = 'true'
+
+    def _update_list(self, item):
+        self.clearList()
+        self.setContainerProperty('Content', item)
+        self.addItems(self.content[item])
 
     def _get_info(self, labels, item):
         labels['mediatype'] = item
@@ -280,7 +299,6 @@ class GUI(xbmcgui.WindowXML):
             extrafilter = listitem.getProperty('albumid')
         self._reset_variables()
         self._hide_controls()
-        self._reset_controls()
         self._get_items(CATEGORIES[key], search, extrafilter)
         self._check_focus()
 
@@ -324,7 +342,7 @@ class GUI(xbmcgui.WindowXML):
                     if functions[selection] == 'info':
                         action = 3
             if action == 3:
-                self._infoDialog(listitem)
+                self._show_info(listitem)
             elif action == 1 or action == 2:
                 if action == 2:
                     self.Player.resume = resume
@@ -334,20 +352,21 @@ class GUI(xbmcgui.WindowXML):
         xbmc.executebuiltin('ActivateWindow(' + window + ',' + path + ',return)')
 
     def _check_focus(self):
-        self.getControl(SEARCHING).setLabel('')
-        self.getControl(CATEGORY).setLabel('')
-        self.getControl(NEWSEARCH).setVisible(True)
+        self.getControl(SEARCHLABEL).setLabel('')
+        self.getControl(SEARCHCATEGORY).setLabel('')
+        self.getControl(SEARCHBUTTON).setVisible(True)
         if self.focusset == 'false':
             self.getControl(NORESULTS).setVisible(True)
-            self.setFocus(self.getControl(NEWSEARCH))
+            self.setFocus(self.getControl(SEARCHBUTTON))
             dialog = xbmcgui.Dialog()
             ret = dialog.yesno(xbmc.getLocalizedString(284), LANGUAGE(32298))
             if ret:
-                self._newSearch()
+                self._new_search()
 
-    def _showContextMenu(self, controlId, listitem):
+    def _context_menu(self, controlId, listitem):
         labels = ()
         functions = ()
+#TODO   media = listitem.getxxx()
         if controlId == MOVIES+1 or controlId == ACTORS+1 or controlId == DIRECTORS+1:
             labels += (xbmc.getLocalizedString(13346),)
             functions += ('info',)
@@ -377,7 +396,7 @@ class GUI(xbmcgui.WindowXML):
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
                 if functions[selection] == 'info':
-                    self._infoDialog(listitem)
+                    self._show_info(listitem)
                 elif functions[selection] == 'browse':
                     self._browse_item('musicdb://albums/%s/' % str(listitem.getMusicInfoTag().getDbId()), 'Music')
                 elif functions[selection] == 'play':
@@ -385,22 +404,23 @@ class GUI(xbmcgui.WindowXML):
                 else:
                     self._get_allitems(functions[selection], listitem)
 
-    def _infoDialog(self, listitem):
-        self.getControl(CONTENT).setVisible(False)
+    def _show_info(self, listitem):
+        self.getControl(MAINGROUP).setVisible(False)
         xbmcgui.Dialog().info(listitem)
-        self.getControl(CONTENT).setVisible(True)
+        self.getControl(MAINGROUP).setVisible(True)
 
-    def _newSearch(self):
+    def _new_search(self):
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
         keyboard.doModal()
         if(keyboard.isConfirmed()):
             self.searchstring = keyboard.getText()
-            self._reset_controls()
+            self.clearList()
             self.onInit()
 
     def onClick(self, controlId):
-        if controlId != NEWSEARCH:
+        if controlId == self.getCurrentContainerId():
             listitem = self.getControl(controlId).getSelectedItem()
+#TODO       media = listitem.getxxx()
             if controlId == TVSHOWS+1:
                 path = 'videodb://tvshows/titles/%s/' % str(listitem.getVideoInfoTag().getDbId())
                 self._browse_item(path, 'Videos')
@@ -425,21 +445,25 @@ class GUI(xbmcgui.WindowXML):
             elif controlId == MUSICVIDEOS+1:
                 musicvideoid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('musicvideoid', musicvideoid, listitem)
-        else:
-            self._newSearch()
+        elif controlId == MENU:
+            item = self.menu.getSelectedItem().getPath()
+            self._update_list(item)
+        elif controlId == SEARCHBUTTON:
+            self._new_search()
 
     def onAction(self, action):
         if action.getId() in ACTION_CANCEL_DIALOG:
             self._close()
         elif action.getId() in ACTION_CONTEXT_MENU or action.getId() in ACTION_SHOW_INFO:
             controlId = self.getFocusId()
-            if controlId in [MOVIES+1, TVSHOWS+1, SEASONS+1, EPISODES+1, MUSICVIDEOS+1, ARTISTS+1, ALBUMS+1, SONGS+1, EPG+1, ACTORS+1, DIRECTORS+1]:
+            if controlId == self.getCurrentContainerId():
                 listitem = self.getControl(controlId).getSelectedItem()
+#TODO           media = listitem.getxxx()
                 if action.getId() in ACTION_CONTEXT_MENU:
-                    self._showContextMenu(controlId, listitem)
+                    self._context_menu(controlId, listitem)
                 elif action.getId() in ACTION_SHOW_INFO:
                     if controlId != EPG+1 and controlId != SEASONS+1:
-                        self._infoDialog(listitem)
+                        self._show_info(listitem)
 
     def _close(self):
         log('script stopped')

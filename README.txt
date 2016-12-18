@@ -20,12 +20,15 @@ You can specify which categories should be searched (this overrides the user pre
 RunScript(script.globalsearch,movies=true)
 RunScript(script.globalsearch,tvshows=true&amp;musicvideos=true&amp;songs=true)
 
-available options: epg, movies, tvshows, episodes, musicvideos, artists, albums, songs, actors, directors
+available options: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
 
 
 
 I. Infolabels available in script-globalsearch.xml
 -------------------------------------------------------
+Container.Property(Content)
+- returns on of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
+
 EPG:
 ListItem.Label
 ListItem.Icon
@@ -200,13 +203,9 @@ ListItem.DBID
 
 II. Control id's used in script-globalsearch.xml
 ------------------------------------------------------
-100 - Main group id. The script will set this id to hidden when an info dialog is visible.
-
-990 - 'Searching...' label, visible when the script is searching
+990 - 'New search' button, visible when the script finished searching
 991 - Search category label, visible when the script is searching
-998 - 'New search' button, visible when the script finished searching
 999 - 'No results found' label, visible when no results are found
-
 9000 - Menu list
 
 

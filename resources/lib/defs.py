@@ -13,10 +13,8 @@ ACTION_CANCEL_DIALOG = (9, 10, 92, 216, 247, 257, 275, 61467, 61448,)
 ACTION_CONTEXT_MENU = (117,)
 ACTION_SHOW_INFO = (11,)
 
-MAINGROUP = 100
 SEARCHBUTTON = 990
-SEARCHLABEL = 991
-SEARCHCATEGORY = 992
+SEARCHCATEGORY = 991
 NORESULTS = 999
 MENU = 9000
 
@@ -45,6 +43,7 @@ CATEGORIES = {
                         'order':1,
                         'enabled':False,
                         'type':'movies',
+                        'content':'movies',
                         'method':'VideoLibrary.GetMovies',
                         'properties':MOVIELABELS,
                         'sort':'title',
@@ -59,6 +58,7 @@ CATEGORIES = {
                          'order':2,
                          'enabled':False,
                          'type':'tvshows',
+                         'content':'tvshows',
                          'method':'VideoLibrary.GetTVShows',
                          'properties':TVSHOWLABELS,
                          'sort':'label',
@@ -73,6 +73,7 @@ CATEGORIES = {
                           'order':3,
                           'enabled':False,
                           'type':'episodes',
+                          'content':'episodes',
                           'method':'VideoLibrary.GetEpisodes',
                           'properties':EPISODELABELS,
                           'sort':'title',
@@ -87,6 +88,7 @@ CATEGORIES = {
                              'order':4,
                              'enabled':False,
                              'type':'musicvideos',
+                             'content':'musicvideos',
                              'method':'VideoLibrary.GetMusicVideos',
                              'properties':MUSICVIDEOLABELS,
                              'sort':'label',
@@ -101,6 +103,7 @@ CATEGORIES = {
                          'order':5,
                          'enabled':False,
                          'type':'artists',
+                         'content':'artists',
                          'method':'AudioLibrary.GetArtists',
                          'properties':ARTISTLABELS,
                          'sort':'label',
@@ -115,6 +118,7 @@ CATEGORIES = {
                         'order':6,
                         'enabled':False,
                         'type':'albums',
+                        'content':'albums',
                         'method':'AudioLibrary.GetAlbums',
                         'properties':ALBUMLABELS,
                         'sort':'label',
@@ -129,6 +133,7 @@ CATEGORIES = {
                        'order':7,
                        'enabled':False,
                        'type':'songs',
+                       'content':'songs',
                        'method':'AudioLibrary.GetSongs',
                        'properties':SONGLABELS,
                        'sort':'title',
@@ -143,6 +148,7 @@ CATEGORIES = {
                      'order':9,
                      'enabled':False,
                      'type':'epg',
+                     'content':'epg',
                      'label':19069,
                      'menuthumb':'globalsearch-icon-livetv.png'
                     },  
@@ -150,6 +156,7 @@ CATEGORIES = {
                         'order':10,
                         'enabled':False,
                         'type':'movies',
+                        'content':'actors',
                         'method':'VideoLibrary.GetMovies',
                         'properties':MOVIELABELS,
                         'sort':'title',
@@ -164,6 +171,7 @@ CATEGORIES = {
                            'order':11,
                            'enabled':False,
                            'type':'movies',
+                           'content':'directors',
                            'method':'VideoLibrary.GetMovies',
                            'properties':MOVIELABELS,
                            'sort':'title',
@@ -178,6 +186,7 @@ CATEGORIES = {
                                'order':11,
                                'enabled':False,
                                'type':'seasons',
+                               'content':'seasons',
                                'method':'VideoLibrary.GetSeasons',
                                'properties':SEASONLABELS,
                                'sort':'label',
@@ -192,6 +201,7 @@ CATEGORIES = {
                                 'order':12,
                                 'enabled':False,
                                 'type':'episodes',
+                                'content':'episodes',
                                 'method':'VideoLibrary.GetEpisodes',
                                 'properties':EPISODELABELS,
                                 'sort':'title',
@@ -206,6 +216,7 @@ CATEGORIES = {
                               'order':13,
                               'enabled':False,
                               'type':'albums',
+                              'content':'albums',
                               'method':'AudioLibrary.GetAlbums',
                               'properties':ALBUMLABELS,
                               'sort':'label',
@@ -220,6 +231,7 @@ CATEGORIES = {
                              'order':14,
                              'enabled':False,
                              'type':'songs',
+                             'content':'songs',
                              'method':'AudioLibrary.GetSongs',
                              'properties':SONGLABELS,
                              'sort':'title',
@@ -234,6 +246,7 @@ CATEGORIES = {
                            'order':15,
                            'enabled':False,
                            'type':'albums',
+                           'content':'albums',
                            'method':'AudioLibrary.GetAlbums',
                            'properties':ALBUMLABELS,
                            'sort':'label',

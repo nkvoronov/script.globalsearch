@@ -16,6 +16,7 @@ class GUI(xbmcgui.WindowXML):
         self.searchstring = kwargs['searchstring']
 
     def onInit(self):
+        self.clearList()
         self._hide_controls()
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
@@ -49,13 +50,12 @@ class GUI(xbmcgui.WindowXML):
 
     def _reset_variables(self):
         self.focusset= 'false'
-        self.getControl(SEARCHLABEL).setLabel(xbmc.getLocalizedString(194))
 
     def _init_items(self):
-        self.getControl(SEARCHBUTTON).setLabel(LANGUAGE(32299))
         self.Player = MyPlayer()
         self.menu = self.getControl(MENU)
-        self.content = {}
+        self.content = {} 
+        self.oldfocus = 0
 
     def _fetch_items(self):
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
@@ -68,6 +68,7 @@ class GUI(xbmcgui.WindowXML):
             self._fetch_channelgroups()
             return
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
+        self.getControl(SEARCHCATEGORY).setVisible(True)
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
@@ -109,18 +110,19 @@ class GUI(xbmcgui.WindowXML):
         if len(listitems) > 0:
             menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
             menuitem.setArt({'icon':cat['menuthumb']})
-            menuitem.setPath(cat['type'])
+            menuitem.setPath(cat['content'])
             self.menu.addItem(menuitem)
-            self.content[cat['type']] = listitems
+            self.content[cat['content']] = listitems
             if self.focusset == 'false':
-                self.clearList()
-                self.setContainerProperty('Content', cat['type'])
+                self.setContainerProperty('Content', cat['content'])
                 self.addItems(listitems)
                 xbmc.sleep(100)
+                self.setFocusId(self.getCurrentContainerId())
                 self.focusset = 'true'
 
     def _fetch_channelgroups(self):
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(19069))
+        self.getControl(SEARCHCATEGORY).setVisible(True)
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannelGroups", "params":{"channeltype":"tv"}, "id":1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
@@ -338,8 +340,7 @@ class GUI(xbmcgui.WindowXML):
         xbmc.executebuiltin('ActivateWindow(' + window + ',' + path + ',return)')
 
     def _check_focus(self):
-        self.getControl(SEARCHLABEL).setLabel('')
-        self.getControl(SEARCHCATEGORY).setLabel('')
+        self.getControl(SEARCHCATEGORY).setVisible(False)
         self.getControl(SEARCHBUTTON).setVisible(True)
         if self.focusset == 'false':
             self.getControl(NORESULTS).setVisible(True)
@@ -395,9 +396,7 @@ class GUI(xbmcgui.WindowXML):
                     self._get_allitems(functions[selection], listitem)
 
     def _show_info(self, listitem):
-        self.getControl(MAINGROUP).setVisible(False)
         xbmcgui.Dialog().info(listitem)
-        self.getControl(MAINGROUP).setVisible(True)
 
     def _new_search(self):
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
@@ -409,36 +408,40 @@ class GUI(xbmcgui.WindowXML):
 
     def onClick(self, controlId):
         if controlId == self.getCurrentContainerId():
-            listitem = self.getControl(controlId).getSelectedItem()
+            listitem = self.getListItem(self.getCurrentListPosition())
             media = ''
-            if listitem.getVideoInfoTag():
+            if listitem.getVideoInfoTag().getMediaType():
                 media = listitem.getVideoInfoTag().getMediaType()
-            elif listitem.getMusicInfoTag():
+            elif listitem.getMusicInfoTag().getMediaType():
                 media = listitem.getMusicInfoTag().getMediaType()
-            if media == 'tvshow':
-                path = 'videodb://tvshows/titles/%s/' % str(listitem.getVideoInfoTag().getDbId())
-                self._browse_item(path, 'Videos')
-            elif media == 'season':
-                path = 'videodb://tvshows/titles/%s/%s/' % (str(listitem.getProperty('tvshowid')), str(listitem.getVideoInfoTag().getSeason()))
-                self._browse_item(path, 'Videos')
-            elif media == 'artist':
-                path = 'musicdb://artists/%s/' % str(listitem.getMusicInfoTag().getDbId())
-                self._browse_item(path, 'Music')
-            elif media == 'album':
-                albumid = listitem.getMusicInfoTag().getDbId()
-                self._play_item('albumid', albumid)
-            elif media == 'song':
-                songid = listitem.getMusicInfoTag().getDbId()
-                self._play_item('songid', songid)
-            elif media == 'movie':
+            if media == 'movie':
                 movieid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('movieid', movieid, listitem)
+            elif media == 'tvshow':
+                self._get_allitems('tvshowseasons', listitem)
+#                path = 'videodb://tvshows/titles/%s/' % str(listitem.getVideoInfoTag().getDbId())
+#                self._browse_item(path, 'Videos')
+            elif media == 'season':
+                self._get_allitems('tvshowseasons', listitem)
+#                path = 'videodb://tvshows/titles/%s/%s/' % (str(listitem.getProperty('tvshowid')), str(listitem.getVideoInfoTag().getSeason()))
+#                self._browse_item(path, 'Videos')
             elif media == 'episode':
                 episodeid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('episodeid', episodeid, listitem)
             elif media == 'musicvideo':
                 musicvideoid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('musicvideoid', musicvideoid, listitem)
+            elif media == 'artist':
+                self._get_allitems('artistalbums', listitem)
+#                path = 'musicdb://artists/%s/' % str(listitem.getMusicInfoTag().getDbId())
+#                self._browse_item(path, 'Music')
+            elif media == 'album':
+                self._get_allitems('albumsongs', listitem)
+#                albumid = listitem.getMusicInfoTag().getDbId()
+#                self._play_item('albumid', albumid)
+            elif media == 'song':
+                songid = listitem.getMusicInfoTag().getDbId()
+                self._play_item('songid', songid)
         elif controlId == MENU:
             item = self.menu.getSelectedItem().getPath()
             self._update_list(item)
@@ -451,17 +454,22 @@ class GUI(xbmcgui.WindowXML):
         elif action.getId() in ACTION_CONTEXT_MENU or action.getId() in ACTION_SHOW_INFO:
             controlId = self.getFocusId()
             if controlId == self.getCurrentContainerId():
-                listitem = self.getControl(controlId).getSelectedItem()
-                media = ''
-                if listitem.getVideoInfoTag():
-                    media = listitem.getVideoInfoTag().getMediaType()
-                elif listitem.getMusicInfoTag():
-                    media = listitem.getMusicInfoTag().getMediaType()
+                listitem = self.getListItem(self.getCurrentListPosition())
                 if action.getId() in ACTION_CONTEXT_MENU:
                     self._context_menu(controlId, listitem)
                 elif action.getId() in ACTION_SHOW_INFO:
+                    media = ''
+                    if listitem.getVideoInfoTag().getMediaType():
+                        media = listitem.getVideoInfoTag().getMediaType()
+                    elif listitem.getMusicInfoTag().getMediaType():
+                        media = listitem.getMusicInfoTag().getMediaType()
                     if media != '' and media != 'season':
                         self._show_info(listitem)
+        elif action.getId() in (3, 4, 107) and self.getFocusId() == MENU:
+            item = self.menu.getSelectedItem().getPath()
+            if item != self.oldfocus:
+                self.oldfocus = item
+                self._update_list(item)
 
     def _close(self):
         log('script stopped')

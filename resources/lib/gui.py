@@ -67,17 +67,16 @@ class GUI(xbmcgui.WindowXML):
         if cat['type'] == 'epg':
             self._fetch_channelgroups()
             return
+        if cat['order'] == 12 or cat['order'] == 14:
+            search = search, extrafilter
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
         self.getControl(SEARCHCATEGORY).setVisible(True)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % search))
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % (search)))
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         listitems = []
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key(cat['type']):
             for item in json_response['result'][cat['type']]:
-                if extrafilter:
-                    if item['albumid'] != int(extrafilter):
-                        continue
                 listitem = xbmcgui.ListItem(item['label'])
                 listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
                 if cat['streamdetails']:
@@ -94,15 +93,14 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setProperty('UnWatchedEpisodes', str(item['episode'] - item['watchedepisodes']))
                 elif cat['type'] == 'seasons':
                     listitem.setProperty('tvshowid', str(item['tvshowid']))
+                elif cat['type'] == 'albums':
+                    listitem.setProperty('artistid', str(item['artistid']))
+                elif cat['type'] == 'movies' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos':
+                    listitem.setProperty('resume', str(int(item['resume']['position'])))
                 elif cat['type'] == 'artists' or cat['type'] == 'albums':
                     info, props = self._split_labels(item, cat['properties'], cat['type'][0:-1] + '_')
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
-                elif cat['type'] == 'songs':
-                    listitem.setProperty('artistid', str(item['artistid']))
-                    listitem.setProperty('albumid', str(item['albumid']))
-                elif cat['type'] == 'movies' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos':
-                    listitem.setProperty('resume', str(int(item['resume']['position'])))
                 if cat['type'] == 'movies' or cat['type'] == 'tvshows' or cat['type'] == 'episodes' or cat['type'] == 'musicvideos' or cat['type'] == 'songs':
                     listitem.setPath(item['file'])
                 listitem.setInfo(cat['media'], self._get_info(item, cat['type'][0:-1]))
@@ -278,15 +276,23 @@ class GUI(xbmcgui.WindowXML):
 
     def _get_allitems(self, key, listitem):
         extrafilter = None
-        if key == 'tvshowseasons' or key == 'tvshowepisodes':
+        if key == 'tvshowseasons':
             search = listitem.getVideoInfoTag().getDbId()
-        elif key == 'artistalbums' or key == 'artistsongs':
+        elif key == 'seasonepisodes':
+            search = listitem.getProperty('tvshowid')
+            extrafilter = listitem.getVideoInfoTag().getSeason()
+        elif key == 'artistalbums':
             search = listitem.getMusicInfoTag().getDbId()
+        elif key == 'albumsongs':
+            search = listitem.getProperty('artistid')
+            extrafilter = listitem.getMusicInfoTag().getDbId()
         else:
             search = listitem.getProperty('artistid')[1:-1]
             extrafilter = listitem.getProperty('albumid')
         self._reset_variables()
         self._hide_controls()
+        self.clearList()
+        self.menu.reset()
         self._get_items(CATEGORIES[key], search, extrafilter)
         self._check_focus()
 
@@ -381,8 +387,8 @@ class GUI(xbmcgui.WindowXML):
             labels += (xbmc.getLocalizedString(13351), LANGUAGE(32203),)
             functions += ('info', 'browse',)
         elif media == 'song':
-            labels += (xbmc.getLocalizedString(658), LANGUAGE(32206),)
-            functions += ('info', 'songalbum',)
+            labels += (xbmc.getLocalizedString(658),)
+            functions += ('info',)
         if labels:
             selection = xbmcgui.Dialog().contextmenu(labels)
             if selection >= 0:
@@ -422,7 +428,7 @@ class GUI(xbmcgui.WindowXML):
 #                path = 'videodb://tvshows/titles/%s/' % str(listitem.getVideoInfoTag().getDbId())
 #                self._browse_item(path, 'Videos')
             elif media == 'season':
-                self._get_allitems('tvshowseasons', listitem)
+                self._get_allitems('seasonepisodes', listitem)
 #                path = 'videodb://tvshows/titles/%s/%s/' % (str(listitem.getProperty('tvshowid')), str(listitem.getVideoInfoTag().getSeason()))
 #                self._browse_item(path, 'Videos')
             elif media == 'episode':

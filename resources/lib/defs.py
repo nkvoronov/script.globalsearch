@@ -197,7 +197,7 @@ CATEGORIES = {
                                'menuthumb':'globalsearch-icon-seasons.png',
                                'media':'video'
                               },
-              'tvshowepisodes':{
+              'seasonepisodes':{
                                 'order':12,
                                 'enabled':False,
                                 'type':'episodes',
@@ -205,7 +205,7 @@ CATEGORIES = {
                                 'method':'VideoLibrary.GetEpisodes',
                                 'properties':EPISODELABELS,
                                 'sort':'title',
-                                'rule':'"tvshowid":%s',
+                                'rule':'"tvshowid":%s, "season":%s',
                                 'streamdetails':True,
                                 'label':20360,
                                 'icon':'DefaultVideo.png',
@@ -227,7 +227,7 @@ CATEGORIES = {
                               'menuthumb':'globalsearch-icon-albums.png',
                               'media':'music'
                              },
-              'artistsongs':{
+              'albumsongs':{
                              'order':14,
                              'enabled':False,
                              'type':'songs',
@@ -235,26 +235,12 @@ CATEGORIES = {
                              'method':'AudioLibrary.GetSongs',
                              'properties':SONGLABELS,
                              'sort':'title',
-                             'rule':'"filter":{"artistid":%s}',
+#                             'rule':'"filter": {"and":[{"field":"artistid", "operator":"is", "value":%s}, {"field":"albumid", "operator":"is", "value":%s}]}',
+                             'rule':'"artistid":%s, "albumid":%s',
                              'streamdetails':False,
                              'label':134,
                              'icon':'DefaultAudio.png',
                              'menuthumb':'globalsearch-icon-songs.png',
                              'media':'music'
-                            },
-              'songalbum':{
-                           'order':15,
-                           'enabled':False,
-                           'type':'albums',
-                           'content':'albums',
-                           'method':'AudioLibrary.GetAlbums',
-                           'properties':ALBUMLABELS,
-                           'sort':'label',
-                           'rule':'"filter":{"artistid":%s}',
-                           'streamdetails':False,
-                           'label':132,
-                           'icon':'DefaultAlbumCover.png',
-                           'menuthumb':'globalsearch-icon-songs.png',
-                           'media':'music'
-                          }
+                            }
              }

@@ -846,7 +846,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
-						<visible>!String.IsEqual(Container.Property(Content), artists)</visible>
+							<visible>String.IsEqual(Container.Property(Content), artists)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>

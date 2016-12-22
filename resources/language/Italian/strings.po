@@ -58,7 +58,7 @@ msgstr "Ricerca EPG"
 
 msgctxt "#32010"
 msgid "Search Directors"
-msgstr "Cerca Registi"
+msgstr "Ricerca Registi"
 
 msgctxt "#32101"
 msgid "Enter search string"

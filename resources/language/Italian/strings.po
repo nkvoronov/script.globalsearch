@@ -56,9 +56,17 @@ msgctxt "#32009"
 msgid "Search EPG"
 msgstr "Ricerca EPG"
 
+msgctxt "#32010"
+msgid "Search Directors"
+msgstr "Cerca Registi"
+
 msgctxt "#32101"
 msgid "Enter search string"
 msgstr "Inserisci stringa di ricerca"
+
+msgctxt "#32102"
+msgid "Items"
+msgstr "Elementi"
 
 msgctxt "#32203"
 msgid "Browse album"
@@ -96,6 +104,10 @@ msgctxt "#32211"
 msgid "Movies starring"
 msgstr "Cast del Film"
 
+msgctxt "#32298"
+msgid "Search again?"
+msgstr "Ricercare di nuovo?"
+
 msgctxt "#32299"
-msgid "NEW SEARCH"
-msgstr "NUOVA RICERCA"
+msgid "New search"
+msgstr "Nuova Ricerca"

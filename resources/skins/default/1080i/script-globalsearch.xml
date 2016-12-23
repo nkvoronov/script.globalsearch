@@ -230,7 +230,7 @@
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="cubic" easing="out">500</scrolltime>
 				<animation effect="fade" time="200">VisibleChange</animation>
-				<itemlayout height="360" width="285" condition="String.IsEqual(Container.Property(Content), movies) | String.IsEqual(Container.Property(Content), tvshows) | String.IsEqual(Container.Property(Content), seasons) | String.IsEqual(Container.Property(Content), actors) | String.IsEqual(Container.Property(Content), directors)">
+				<itemlayout height="360" width="285" condition="Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons)">
 					<control type="image">
 						<left>0</left>
 						<top>-1</top>
@@ -281,13 +281,13 @@
 						</control>
 					</control>
 				</itemlayout>
-				<itemlayout height="360" width="470" condition="String.IsEqual(Container.Property(Content), episodes) | String.IsEqual(Container.Property(Content), musicvideos)">
+				<itemlayout height="360" width="470" condition="Container.Content(episodes) | Container.Content(musicvideos)">
 					<control type="image">
 						<left>1</left>
 						<top>10</top>
 						<width>380</width>
 						<height>250</height>
-						<texture border="2" fallback="DefaultVideo.png" background="true">$INFO[ListItem.Icon]</texture>
+						<texture border="2" background="true">$INFO[ListItem.Icon]</texture>
 						<aspectratio>scale</aspectratio>
 						<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 						<bordersize>5</bordersize>
@@ -311,7 +311,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>[B]$INFO[ListItem.TvShowTitle][/B]</label>
-						<visible>String.IsEqual(Container.Property(Content), episodes)</visible>
+						<visible>Container.Content(episodes)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -323,7 +323,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>[B]$INFO[ListItem.Artist][/B]</label>
-						<visible>String.IsEqual(Container.Property(Content), musicvideos)</visible>
+						<visible>Container.Content(musicvideos)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -359,13 +359,13 @@
 						</control>
 					</control>
 				</itemlayout>
-				<itemlayout height="360" width="350" condition="String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)">
+				<itemlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)">
 					<control type="image">
 						<left>1</left>
 						<top>10</top>
 						<width>300</width>
 						<height>300</height>
-						<texture border="2" fallback="DefaultArtist.png" background="true">$INFO[ListItem.Icon]</texture>
+						<texture border="2" background="true">$INFO[ListItem.Icon]</texture>
 						<aspectratio>scale</aspectratio>
 						<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 						<bordersize>5</bordersize>
@@ -389,7 +389,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>String.IsEqual(Container.Property(Content), artists)</visible>
+						<visible>Container.Content(artists)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -401,7 +401,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>[B]$INFO[ListItem.Artist][/B]</label>
-						<visible>String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs)</visible>
+						<visible>Container.Content(albums) | Container.Content(songs)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -413,7 +413,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>[B]$INFO[ListItem.Property(ChannelName)][/B]</label>
-						<visible>String.IsEqual(Container.Property(Content), epg)</visible>
+						<visible>Container.Content(epg)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -425,7 +425,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>!String.IsEqual(Container.Property(Content), artists)</visible>
+						<visible>!Container.Content(artists)</visible>
 					</control>
 					<control type="group">
 						<left>250</left>
@@ -450,7 +450,7 @@
 						</control>
 					</control>
 				</itemlayout>
-				<focusedlayout height="360" width="285" condition="String.IsEqual(Container.Property(Content), movies) | String.IsEqual(Container.Property(Content), tvshows) | String.IsEqual(Container.Property(Content), seasons) | String.IsEqual(Container.Property(Content), actors) | String.IsEqual(Container.Property(Content), directors)">
+				<focusedlayout height="360" width="285" condition="Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons)">
 					<control type="group">
 						<animation effect="slide" start="0,0" end="-40,0" time="300">Focus</animation>
 						<animation effect="slide" start="-40,0" end="0,0" time="125">UnFocus</animation>
@@ -555,7 +555,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>!String.IsEqual(Container.Property(Content), seasons)</visible>
+							<visible>!Container.Content(seasons)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -578,7 +578,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), seasons)</visible>
+							<visible>Container.Content(seasons)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -621,7 +621,7 @@
 						</control>
 					</control>
 				</focusedlayout>
-				<focusedlayout height="360" width="470" condition="String.IsEqual(Container.Property(Content), episodes) | String.IsEqual(Container.Property(Content), musicvideos)">
+				<focusedlayout height="360" width="470" condition="Container.Content(episodes) | Container.Content(musicvideos)">
 					<control type="group">
 						<animation effect="slide" start="0,0" end="-40,0" time="300">Focus</animation>
 						<animation effect="slide" start="-40,0" end="0,0" time="125">UnFocus</animation>
@@ -630,7 +630,7 @@
 							<top>10</top>
 							<width>380</width>
 							<height>250</height>
-							<texture border="2" fallback="DefaultVideo.png" background="true">$INFO[ListItem.Icon]</texture>
+							<texture border="2" background="true">$INFO[ListItem.Icon]</texture>
 							<aspectratio>scale</aspectratio>
 							<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 							<bordersize>5</bordersize>
@@ -654,7 +654,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>[B]$INFO[ListItem.TvShowTitle][/B]</label>
-							<visible>String.IsEqual(Container.Property(Content), episodes)</visible>
+							<visible>Container.Content(episodes)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -666,7 +666,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>[B]$INFO[ListItem.Artist][/B]</label>
-							<visible>String.IsEqual(Container.Property(Content), musicvideos)</visible>
+							<visible>Container.Content(musicvideos)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -747,7 +747,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), episodes)</visible>
+							<visible>Container.Content(episodes)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -770,7 +770,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), musicvideos)</visible>
+							<visible>Container.Content(musicvideos)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -813,7 +813,7 @@
 						</control>
 					</control>
 				</focusedlayout>
-				<focusedlayout height="360" width="350" condition="String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)">
+				<focusedlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)">
 					<control type="group">
 						<animation effect="slide" start="0,0" end="-40,0" time="300">Focus</animation>
 						<animation effect="slide" start="-40,0" end="0,0" time="125">UnFocus</animation>
@@ -822,7 +822,7 @@
 							<top>10</top>
 							<width>300</width>
 							<height>300</height>
-							<texture border="2" fallback="DefaultArtist.png" background="true">$INFO[ListItem.Icon]</texture>
+							<texture border="2" background="true">$INFO[ListItem.Icon]</texture>
 							<aspectratio>scale</aspectratio>
 							<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 							<bordersize>5</bordersize>
@@ -846,7 +846,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
-							<visible>String.IsEqual(Container.Property(Content), artists)</visible>
+							<visible>Container.Content(artists)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -858,7 +858,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>[B]$INFO[ListItem.Artist][/B]</label>
-							<visible>String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs)</visible>
+							<visible>Container.Content(albums) | Container.Content(songs)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -870,7 +870,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>[B]$INFO[ListItem.Property(ChannelName)][/B]</label>
-							<visible>String.IsEqual(Container.Property(Content), epg)</visible>
+							<visible>Container.Content(epg)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -882,7 +882,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
-							<visible>!String.IsEqual(Container.Property(Content), artists)</visible>
+							<visible>!Container.Content(artists)</visible>
 						</control>
 						<control type="group">
 							<left>250</left>
@@ -930,7 +930,7 @@
 						<animation effect="fade" start="0" end="100" time="200" delay="250">Focus</animation>
 						<animation effect="fade" start="100" end="0" time="50">UnFocus</animation>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), artists)</visible>
+							<visible>Container.Content(artists)</visible>
 							<top>20</top>
 							<control type="image">
 								<top>0</top>
@@ -953,7 +953,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), artists)</visible>
+							<visible>Container.Content(artists)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -976,7 +976,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs)</visible>
+							<visible>Container.Content(albums) | Container.Content(songs)</visible>
 							<top>20</top>
 							<control type="image">
 								<top>0</top>
@@ -999,7 +999,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs)</visible>
+							<visible>Container.Content(albums) | Container.Content(songs)</visible>
 							<top>140</top>
 							<control type="image">
 								<top>0</top>
@@ -1023,7 +1023,7 @@
 						</control>
 						<control type="group">
 							<top>240</top>
-							<visible>String.IsEqual(Container.Property(Content), songs)</visible>
+							<visible>Container.Content(songs)</visible>
 							<control type="image">
 								<left>11</left>
 								<top>0</top>
@@ -1042,7 +1042,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>String.IsEqual(Container.Property(Content), epg)</visible>
+							<visible>Container.Content(epg)</visible>
 							<top>20</top>
 							<control type="image">
 								<top>0</top>
@@ -1084,15 +1084,17 @@
 						<width>95</width>
 						<height>95</height>
 						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Art(poster)]</texture>
-						<visible>String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)</visible>
+						<aspectratio>keep</aspectratio>
+						<visible>![Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)]</visible>
 					</control>
 					<control type="image">
 						<left>0</left>
 						<top>0</top>
 						<width>95</width>
 						<height>95</height>
-						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Icon)]</texture>
-						<visible>![String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)]</visible>
+						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Icon]</texture>
+						<aspectratio>keep</aspectratio>
+						<visible>Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)</visible>
 					</control>
 					<control type="label">
 						<left>100</left>
@@ -1112,22 +1114,17 @@
 						<width>95</width>
 						<height>95</height>
 						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Art(poster)]</texture>
-						<visible>String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)</visible>
+						<aspectratio>keep</aspectratio>
+						<visible>![Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)]</visible>
 					</control>
 					<control type="image">
 						<left>0</left>
 						<top>0</top>
 						<width>95</width>
 						<height>95</height>
-						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Icon)]</texture>
-						<visible>![String.IsEqual(Container.Property(Content), artists) | String.IsEqual(Container.Property(Content), albums) | String.IsEqual(Container.Property(Content), songs) | String.IsEqual(Container.Property(Content), epg)]</visible>
-					</control>
-					<control type="image">
-						<left>0</left>
-						<top>0</top>
-						<width>95</width>
-						<height>95</height>
-						<texture>$INFO[ListItem.Art(thumb)]</texture>
+						<texture colordiffuse="44FFFFFF">$INFO[ListItem.Icon]</texture>
+						<aspectratio>keep</aspectratio>
+						<visible>Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)</visible>
 					</control>
 					<control type="label">
 						<left>100</left>

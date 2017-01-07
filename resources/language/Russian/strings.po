@@ -56,9 +56,19 @@ msgctxt "#32009"
 msgid "Search EPG"
 msgstr "Поиск телепередач"
 
+msgctxt "#32010"
+msgid "Search Directors"
+msgstr "Поиск режиссеров"
+
+#empty strings from id 32010 to 32100
+
 msgctxt "#32101"
 msgid "Enter search string"
 msgstr "Строка поиска"
+
+msgctxt "#32102"
+msgid "Items"
+msgstr "Элементы"
 
 msgctxt "#32203"
 msgid "Browse album"
@@ -96,6 +106,24 @@ msgctxt "#32211"
 msgid "Movies starring"
 msgstr "В главных ролях"
 
+#empty strings from id 32212 to 32297
+
+msgctxt "#32298"
+msgid "Search again?"
+msgstr "Искать снова?"
+
 msgctxt "#32299"
 msgid "NEW SEARCH"
 msgstr "НОВЫЙ ПОИСК"
+
+msgctxt "#32212"
+msgid "Resume from"
+msgstr "Продолжить c"
+
+msgctxt "#32213"
+msgid "Resume"
+msgstr "Продолжить"
+
+msgctxt "#32214"
+msgid "Start from beginning"
+msgstr "Начать с начала"

@@ -18,7 +18,7 @@
 			<width>1920</width>
 			<height>1080</height>
 			<aspectratio>scale</aspectratio>
-			<texture colordiffuse="330BAA8E">globalsearch-overlay.png</texture>
+			<texture colordiffuse="330BAA8E">globalsearch-overlay.jpg</texture>
 		</control>
 		<control type="image">
 			<left>0</left>

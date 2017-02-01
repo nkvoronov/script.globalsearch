@@ -331,9 +331,9 @@ class GUI(xbmcgui.WindowXML):
                 if selection >= 0:
                     if functions[selection] == 'play':
                         action = 1
-                    if functions[selection] == 'resume':
+                    elif functions[selection] == 'resume':
                         action = 2
-                    if functions[selection] == 'info':
+                    elif functions[selection] == 'info':
                         action = 3
             if action == 3:
                 self._show_info(listitem)

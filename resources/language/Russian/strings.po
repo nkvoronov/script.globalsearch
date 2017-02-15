@@ -113,8 +113,8 @@ msgid "Search again?"
 msgstr "Искать снова?"
 
 msgctxt "#32299"
-msgid "NEW SEARCH"
-msgstr "НОВЫЙ ПОИСК"
+msgid "New search"
+msgstr "Новый поиск"
 
 msgctxt "#32212"
 msgid "Resume from"

@@ -113,7 +113,7 @@ msgid "Search again?"
 msgstr ""
 
 msgctxt "#32299"
-msgid "NEW SEARCH"
+msgid "New search"
 msgstr ""
 
 msgctxt "#32212"

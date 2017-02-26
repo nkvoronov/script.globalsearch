@@ -31,6 +31,6 @@ if (__name__ == '__main__'):
         del params['searchstring']
     if searchstring:
         import gui
-        ui = gui.GUI('script-globalsearch.xml', CWD, 'default', searchstring=searchstring, params=params)
+        ui = gui.GUI('script-globalsearch.xml', CWD, 'default', '1080p', True, searchstring=searchstring, params=params)
         ui.doModal()
         del ui

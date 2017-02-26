@@ -194,8 +194,9 @@ class GUI(xbmcgui.WindowXML):
 
     def _update_list(self, item, content):
         self.clearList()
-        self.addItems(self.content[item])
         self.setContent(content)
+        xbmc.sleep(2)
+        self.addItems(self.content[item])
 
     def _get_info(self, labels, item):
         labels['mediatype'] = item

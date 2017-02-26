@@ -229,7 +229,6 @@
 				<viewtype label="536">icon</viewtype>
 				<preloaditems>4</preloaditems>
 				<scrolltime tween="cubic" easing="out">500</scrolltime>
-				<animation effect="fade" time="200">VisibleChange</animation>
 				<itemlayout height="360" width="285" condition="Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons)">
 					<control type="image">
 						<left>0</left>
@@ -240,6 +239,7 @@
 						<bordertexture border="20">globalsearch-shadow.png</bordertexture>
 						<bordersize>20</bordersize>
 						<animation effect="slide" end="-15,0" time="0" condition="true">Conditional</animation>
+						<fadetime>500</fadetime>
 					</control>
 					<control type="image">
 						<left>5</left>
@@ -291,6 +291,7 @@
 						<aspectratio>scale</aspectratio>
 						<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 						<bordersize>5</bordersize>
+						<fadetime>500</fadetime>
 					</control>
 					<control type="image">
 						<left>1</left>
@@ -369,6 +370,7 @@
 						<aspectratio>scale</aspectratio>
 						<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 						<bordersize>5</bordersize>
+						<fadetime>500</fadetime>
 					</control>
 					<control type="image">
 						<left>1</left>
@@ -462,6 +464,7 @@
 							<texture border="2" fallback="DefaultVideo.png" background="true">$INFO[ListItem.Art(poster)]</texture>
 							<bordertexture colordiffuse="60FFFFFF">globalsearch-black.png</bordertexture>
 							<bordersize>4</bordersize>
+							<fadetime>500</fadetime>
 						</control>
 						<control type="image">
 							<left>5</left>
@@ -522,7 +525,7 @@
 						<left>190</left>
 						<width>70</width>
 						<height>330</height>
-						<fadetime>300</fadetime>
+						<fadetime>500</fadetime>
 						<texture colordiffuse="FF12A0C7">globalsearch-white.png</texture>
 						<animation effect="zoom" start="0,100" end="100,100" time="250" center="auto">Focus</animation>
 						<animation effect="zoom" start="100,100" end="0,100" time="125" center="auto" delay="50">UnFocus</animation>
@@ -539,7 +542,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-rating.png</texture>
 							</control>
@@ -562,7 +565,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-year.png</texture>
 							</control>
@@ -585,7 +588,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-number.png</texture>
 							</control>
@@ -634,6 +637,7 @@
 							<aspectratio>scale</aspectratio>
 							<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 							<bordersize>5</bordersize>
+							<fadetime>500</fadetime>
 						</control>
 						<control type="image">
 							<left>1</left>
@@ -714,7 +718,7 @@
 						<top>12</top>
 						<width>70</width>
 						<height>330</height>
-						<fadetime>300</fadetime>
+						<fadetime>500</fadetime>
 						<texture colordiffuse="FF12A0C7">globalsearch-white.png</texture>
 						<animation effect="zoom" start="0,100" end="100,100" time="250" center="auto">Focus</animation>
 						<animation effect="zoom" start="100,100" end="0,100" time="125" center="auto" delay="50">UnFocus</animation>
@@ -731,7 +735,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-rating.png</texture>
 							</control>
@@ -754,7 +758,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-number.png</texture>
 							</control>
@@ -777,7 +781,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-year.png</texture>
 							</control>
@@ -826,6 +830,7 @@
 							<aspectratio>scale</aspectratio>
 							<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 							<bordersize>5</bordersize>
+							<fadetime>500</fadetime>
 						</control>
 						<control type="image">
 							<left>1</left>
@@ -919,7 +924,7 @@
 						<top>12</top>
 						<width>70</width>
 						<height>300</height>
-						<fadetime>300</fadetime>
+						<fadetime>500</fadetime>
 						<texture colordiffuse="FF12A0C7">globalsearch-white.png</texture>
 						<animation effect="zoom" start="0,100" end="100,100" time="250" center="auto">Focus</animation>
 						<animation effect="zoom" start="100,100" end="0,100" time="125" center="auto" delay="50">UnFocus</animation>
@@ -937,7 +942,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-formed.png</texture>
 							</control>
@@ -960,7 +965,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-disbanded.png</texture>
 							</control>
@@ -983,7 +988,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-rating.png</texture>
 							</control>
@@ -1006,7 +1011,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-year.png</texture>
 							</control>
@@ -1049,7 +1054,7 @@
 								<left>0</left>
 								<width>70</width>
 								<height>32</height>
-								<fadetime>300</fadetime>
+								<fadetime>500</fadetime>
 								<aspectratio align="center">keep</aspectratio>
 								<texture>globalsearch-list-clock.png</texture>
 							</control>

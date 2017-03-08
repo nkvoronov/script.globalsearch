@@ -1,5 +1,4 @@
 import datetime
-import infodialog
 import json
 import operator
 from defs import *
@@ -319,7 +318,7 @@ class GUI(xbmcgui.WindowXML):
                     m, s = divmod(resume, 60)
                     h, m = divmod(m, 60)
                     val = '%d:%02d:%02d' % (h, m, s)
-                    labels += (xbmc.getLocalizedString(12022) % val,)
+                    labels += (LANGUAGE(32212) % val,)
                     functions += ('resume',)
                     labels += (xbmc.getLocalizedString(12021),)
                     functions += ('play',)

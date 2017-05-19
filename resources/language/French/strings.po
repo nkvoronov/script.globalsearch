@@ -56,9 +56,17 @@ msgctxt "#32009"
 msgid "Search EPG"
 msgstr "Recherches des EPGs"
 
+msgctxt "#32010"
+msgid "Search Directors"
+msgstr "Rechercher les réalisateurs"
+
 msgctxt "#32101"
 msgid "Enter search string"
 msgstr "Saisir un mot pour la recherche"
+
+msgctxt "#32102"
+msgid "Items"
+msgstr "Articles"
 
 msgctxt "#32203"
 msgid "Browse album"
@@ -95,6 +103,10 @@ msgstr "Trouver toutes les chansons"
 msgctxt "#32211"
 msgid "Movies starring"
 msgstr "Films avec"
+
+msgctxt "#32298"
+msgid "Search again?"
+msgstr "Effectuer une nouvelle recherche ?"
 
 msgctxt "#32299"
 msgid "NEW SEARCH"

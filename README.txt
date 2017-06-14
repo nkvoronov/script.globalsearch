@@ -26,7 +26,7 @@ available options: movies, tvshows, episodes, musicvideos, artists, albums, song
 
 I. Infolabels available in script-globalsearch.xml
 -------------------------------------------------------
-Container.Property(Content)
+Container.Content
 - returns on of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
 
 EPG:

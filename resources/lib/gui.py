@@ -19,7 +19,6 @@ class GUI(xbmcgui.WindowXML):
         self._hide_controls()
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
-        # some sanitize work for search string: strip the input and replace some chars
         self.searchstring = self._clean_string(self.searchstring).strip()
         if self.searchstring == '':
             self._close()
@@ -482,5 +481,7 @@ class MyPlayer(xbmc.Player):
         for count in range(50):
             if self.isPlayingVideo():
                 break
+            elif self.isPlayingAudio():
+                return
             xbmc.sleep(100)
         self.seekTime(float(self.resume))

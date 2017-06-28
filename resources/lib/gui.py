@@ -174,6 +174,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 plot = item['plot']
                 outline = item['plotoutline']
                 rating = str(round(float(item['rating']),1))
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''
@@ -191,7 +195,15 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 trailer = item['trailer']
                 originaltitle = item['originaltitle']
                 year = str(item['year'])
-                resume = str(item['resume']['position'])
+                #####
+                position = item['resume']['position'] + 0.001
+                total = item['resume']['total'] + 0.001
+                resume = str(int(position))
+                position_percent = int(position / total * 100.0)
+                if position_percent == 100:
+                    position_percent = 0
+                percentplayed = str(position_percent)
+                #####
                 if item['streamdetails']['audio'] != []:
                     audiochannels = str(item['streamdetails']['audio'][0]['channels'])
                     audiocodec = str(item['streamdetails']['audio'][0]['codec'])
@@ -263,6 +275,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", movieid )
                 listitem.setProperty( "resume", resume )
+                #####
+                listitem.setProperty( "percentplayed", percentplayed )
+                #####
                 listitem.setProperty( "title", movie )
                 listitems.append(listitem)
         self.getControl( control ).addItems( listitems )
@@ -278,7 +293,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         listitems = []
         self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20343) )
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": ["title", "genre", "studio", "premiered", "plot", "fanart", "thumbnail", "playcount", "year", "mpaa", "episode", "rating", "userrating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetTVShows", "params": {"properties": ["title", "genre", "studio", "premiered", "plot", "fanart", "thumbnail", "playcount", "year", "mpaa", "episode", "watchedepisodes", "rating", "userrating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('tvshows'):
@@ -286,12 +301,19 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 tvshow = item['title']
                 count = count + 1
                 episode = str(item['episode'])
+                #####                                
+                watchedepisodes = str(item['watchedepisodes'])
+                #####
                 genre = " / ".join(item['genre'])
                 mpaa = item['mpaa']
                 playcount = str(item['playcount'])
                 plot = item['plot']
                 premiered = item['premiered']
                 rating = str(round(float(item['rating']),1))
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''
@@ -316,6 +338,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "art(banner)", banner )
                 listitem.setProperty( "art(landscape)", landscape )
                 listitem.setProperty( "episode", episode )
+                #####                                
+                listitem.setProperty( "watchedepisodes", watchedepisodes )
+                #####
                 listitem.setProperty( "mpaa", mpaa )
                 listitem.setProperty( "year", year )
                 listitem.setProperty( "genre", genre )
@@ -421,6 +446,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 runtime = str(int((item['runtime'] / 60.0) + 0.5))
                 premiered = item['firstaired']
                 rating = str(round(float(item['rating']),1))
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''
@@ -434,7 +463,15 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 banner = item['art'].get('tvshow.banner', '')
                 landscape = item['art'].get('tvshow.landscape', '')
                 sPoster = item['art'].get('season.poster', '')
-                resume = str(item['resume']['position'])
+                #####
+                position = item['resume']['position'] + 0.001
+                total = item['resume']['total'] + 0.001
+                resume = str(int(position))
+                position_percent = int(position / total * 100.0)
+                if position_percent == 100:
+                    position_percent = 0
+                percentplayed = str(position_percent)
+                #####
                 if item['streamdetails']['audio'] != []:
                     audiochannels = str(item['streamdetails']['audio'][0]['channels'])
                     audiocodec = str(item['streamdetails']['audio'][0]['codec'])
@@ -500,6 +537,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", episodeid )
                 listitem.setProperty( "resume", resume )
+                #####
+                listitem.setProperty( "percentplayed", percentplayed )
+                #####
                 listitem.setProperty( "title", episode )
                 listitems.append(listitem)
         self.getControl( 141 ).addItems( listitems )
@@ -515,7 +555,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         listitems = []
         self.getControl( 191 ).setLabel( xbmc.getLocalizedString(20389) )
         count = 0
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": ["title", "streamdetails", "runtime", "genre", "studio", "artist", "album", "year", "plot", "fanart", "thumbnail", "file", "playcount", "director", "rating", "userrating", "art"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.GetMusicVideos", "params": {"properties": ["title", "streamdetails", "runtime", "genre", "studio", "artist", "album", "year", "plot", "fanart", "thumbnail", "file", "playcount", "director", "rating", "userrating", "art", "resume"], "sort": { "method": "label" }, "filter": {"field": "title", "operator": "contains", "value": "%s"} }, "id": 1}' % self.searchstring)
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('musicvideos'):
@@ -535,6 +575,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 genre = " / ".join(item['genre'])
                 plot = item['plot']
                 rating = str(round(float(item['rating']),1))
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''
@@ -542,6 +586,15 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 thumb = item['thumbnail']
                 playcount = str(item['playcount'])
                 year = str(item['year'])
+                #####
+                position = item['resume']['position'] + 0.001
+                total = item['resume']['total'] + 0.001
+                resume = str(int(position))
+                position_percent = int(position / total * 100.0)
+                if position_percent == 100:
+                    position_percent = 0
+                percentplayed = str(position_percent)
+                #####
                 if year == '0':
                     year = ''
                 if item['streamdetails']['audio'] != []:
@@ -611,6 +664,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "audiochannels", audiochannels )
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", musicvideoid )
+                #####
+                listitem.setProperty( "resume", resume )                
+                listitem.setProperty( "percentplayed", percentplayed )
+                #####
                 listitems.append(listitem)
         self.getControl( 151 ).addItems( listitems )
         if count > 0:
@@ -703,6 +760,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 genre = " / ".join(item['genre'])
                 mood = " / ".join(item['mood'])
                 rating = str(item['rating'])
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''
@@ -772,6 +833,10 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 track = str(item['track'])
                 playcount = str(item['playcount'])
                 rating = str(item['rating'])
+                #####
+                if rating == '0.0':
+                    rating = ''
+                #####
                 userrating = str(item['userrating'])
                 if userrating == '0':
                     userrating = ''

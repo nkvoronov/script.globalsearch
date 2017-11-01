@@ -1,5 +1,5 @@
 v8.0.0
-- rewrite for Kodi J*
+- rewrite for Kodi Leia
 
 v7.3.1
 - remove test settings

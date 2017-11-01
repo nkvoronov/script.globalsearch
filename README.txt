@@ -2,13 +2,11 @@
 INFORMATION FOR SKINNERS
 ------------------------
 
-
-
 CONTENTS:
 0.   Running the addon 
-I.   Infolabels available in script-globalsearch-main.xml
-II. Control id's used in script-globalsearch-main.xml
-III.   Available window properties
+I.   Infolabels available in script-globalsearch.xml
+II.  Control id's used in script-globalsearch.xml
+III. Available window properties
 
 
 
@@ -22,12 +20,15 @@ You can specify which categories should be searched (this overrides the user pre
 RunScript(script.globalsearch,movies=true)
 RunScript(script.globalsearch,tvshows=true&amp;musicvideos=true&amp;songs=true)
 
-available options: epg, movies, tvshows, episodes, musicvideos, artists, albums, songs, actors, directors
+available options: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
 
 
 
-I. Infolabels available in script-globalsearch-main.xml
+I. Infolabels available in script-globalsearch.xml
 -------------------------------------------------------
+Container.Content
+- returns on of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
+
 EPG:
 ListItem.Label
 ListItem.Icon
@@ -200,59 +201,12 @@ ListItem.DBID
 
 
 
-II. Control id's used in script-globalsearch-main.xml
+II. Control id's used in script-globalsearch.xml
 ------------------------------------------------------
-100 - Main group id. All code should be included in this group. The script will set this id to hidden when playing a trailer.
-101 - Content group id. All code, except the background images, can be included in this group. The script will set this id to hidden when an info dialog is visible.
-
-110 - Label containing the number of found movies
-111 - Container for found movies
-119 - The script will set this id to visible when movies are found
-
-120 - Label containing the number of found tv shows
-121 - Container for found tv shows 
-129 - The script will set this id to visible when tv shows are found
-
-130 - Label containing the number of found seasons
-131 - Container for found seasons  
-139 - The script will set this id to visible when seasons are found
-
-140 - Label containing the number of found episodes
-141 - Container for found episodes 
-149 - The script will set this id to visible when episodes are found
-
-150 - label containing the number of found music videos
-151 - Container for found music videos 
-159 - The script will set this id to visible when music videos are found
-
-160 - Label containing the number of found artists
-161 - Container for found artists 
-169 - The script will set this id to visible when artists are found
-
-170 - Label containing the number of found albums
-171 - Container for found albums 
-179 - The script will set this id to visible when albums are found
-
-180 - Label containing the number of found songs
-181 - Container for found songs 
-189 - The script will set this id to visible when songs are found
-
-190 - Label containing the number of found programmes
-191 - Container for found programmes 
-199 - The script will set this id to visible when programmes are found
-
-200 - Label containing the number of found movies containing the actor
-201 - Container for found movies containing the actor
-209 - The script will set this id to visible when movies containing the actor are found
-
-210 - Label containing the number of found movies containing the director
-211 - Container for found movies containing the director
-219 - The script will set this id to visible when movies containing the director are found
-
-990 - 'Searching...' label, visible when the script is searching
+990 - 'New search' button, visible when the script finished searching
 991 - Search category label, visible when the script is searching
-998 - 'New search' button, visible when the script finished searching
 999 - 'No results found' label, visible when no results are found
+9000 - Menu list
 
 
 

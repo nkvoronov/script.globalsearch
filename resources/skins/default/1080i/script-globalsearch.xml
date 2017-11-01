@@ -1104,7 +1104,7 @@
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>0</top>
+						<top>5</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
@@ -1114,44 +1114,44 @@
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Genre]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(movies) | Container.Content(tvshows) | Container.Content(artists)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.TVShowTitle]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(seasons) | Container.Content(episodes)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Property(artist_genre)]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(artists)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Artist]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(musicvideos) | Container.Content(albums) | Container.Content(songs)</visible>
@@ -1186,7 +1186,7 @@
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>0</top>
+						<top>5</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
@@ -1196,44 +1196,44 @@
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Genre]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(movies) | Container.Content(tvshows)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.TVShowTitle]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(seasons) | Container.Content(episodes)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Property(artist_genre)]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(artists)</visible>
 					</control>
 					<control type="label">
 						<left>110</left>
-						<top>50</top>
+						<top>45</top>
 						<height>50</height>
 						<width>1348</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font27</font>
 						<label>$INFO[ListItem.Artist]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(musicvideos) | Container.Content(albums) | Container.Content(songs)</visible>

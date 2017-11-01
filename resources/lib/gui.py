@@ -44,7 +44,8 @@ class GUI(xbmcgui.WindowXML):
 
     def _load_settings(self):
         for key, value in CATEGORIES.iteritems():
-            CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
+            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes'):
+                CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
 
     def _reset_variables(self):
         self.focusset= 'false'
@@ -63,7 +64,7 @@ class GUI(xbmcgui.WindowXML):
 
     def _get_items(self, cat, search):
         if cat['content'] == 'epg':
-            self._fetch_channelgroups()
+            self._fetch_channelgroups(cat)
             return
         if cat['type'] == 'seasonepisodes' or cat['type'] == 'albumsongs':
             search = search[0], search[1]
@@ -115,7 +116,7 @@ class GUI(xbmcgui.WindowXML):
                 self.setFocusId(self.getCurrentContainerId())
                 self.focusset = 'true'
 
-    def _fetch_channelgroups(self):
+    def _fetch_channelgroups(self, cat):
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(19069))
         self.getControl(SEARCHCATEGORY).setVisible(True)
         channelgrouplist = []
@@ -126,9 +127,9 @@ class GUI(xbmcgui.WindowXML):
             for item in json_response['result']['channelgroups']:
                 channelgrouplist.append(item['channelgroupid'])
             if channelgrouplist:
-                self._fetch_channels(channelgrouplist)
+                self._fetch_channels(cat, channelgrouplist)
 
-    def _fetch_channels(self, channelgrouplist):
+    def _fetch_channels(self, cat, channelgrouplist):
         # get all channel id's
         channellist = []
         for channelgroupid in channelgrouplist:
@@ -143,9 +144,9 @@ class GUI(xbmcgui.WindowXML):
             channels = [dict(tuples) for tuples in set(tuple(item.items()) for item in channellist)]
             # sort
             channels.sort(key=operator.itemgetter('channelid'))
-            self._fetch_epg(channels)
+            self._fetch_epg(cat, channels)
 
-    def _fetch_epg(self, channels):
+    def _fetch_epg(self, cat, channels):
         listitems = []
         # get all programs for every channel id
         for channel in channels:
@@ -176,19 +177,19 @@ class GUI(xbmcgui.WindowXML):
                         listitem.setProperty("channelname", channelname)
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
-            if len(listitems) > 0:
-                menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
-                menuitem.setArt({'icon':cat['menuthumb']})
-                menuitem.setProperty('type', cat['type'])
-                menuitem.setProperty('content', cat['content'])
-                self.menu.addItem(menuitem)
-                self.content[cat['type']] = listitems
-                if self.focusset == 'false':
-                    self.clearList()
-                    self.setContent(cat['content'])
-                    self.addItems(listitems)
-                    xbmc.sleep(100)
-                    self.focusset = 'true'
+        if len(listitems) > 0:
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
+            menuitem.setArt({'icon':cat['menuthumb']})
+            menuitem.setProperty('type', cat['type'])
+            menuitem.setProperty('content', cat['content'])
+            self.menu.addItem(menuitem)
+            self.content[cat['type']] = listitems
+            if self.focusset == 'false':
+                self.setContent(cat['content'])
+                self.addItems(listitems)
+                xbmc.sleep(100)
+                self.setFocusId(self.getCurrentContainerId())
+                self.focusset = 'true'
 
     def _update_list(self, item, content):
         self.clearList()

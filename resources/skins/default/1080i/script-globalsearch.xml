@@ -277,7 +277,7 @@
 							<width>50</width>
 							<height>32</height>
 							<textcolor>FFF0F0F0</textcolor>
-							<font>font10_title</font>
+							<font>font20_title</font>
 							<label>$INFO[ListItem.UserRating]</label>
 						</control>
 					</control>
@@ -356,7 +356,7 @@
 							<width>50</width>
 							<height>32</height>
 							<textcolor>FFF0F0F0</textcolor>
-							<font>font10_title</font>
+							<font>font20_title</font>
 							<label>$INFO[ListItem.UserRating]</label>
 						</control>
 					</control>
@@ -448,7 +448,7 @@
 							<width>50</width>
 							<height>32</height>
 							<textcolor>FFF0F0F0</textcolor>
-							<font>font10_title</font>
+							<font>font20_title</font>
 							<label>$INFO[ListItem.UserRating]</label>
 						</control>
 					</control>
@@ -502,7 +502,7 @@
 								<width>50</width>
 								<height>32</height>
 								<textcolor>FFF0F0F0</textcolor>
-								<font>font10_title</font>
+								<font>font20_title</font>
 								<label>$INFO[ListItem.UserRating]</label>
 							</control>
 						</control>
@@ -553,7 +553,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Rating]</label>
 							</control>
@@ -576,7 +576,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Year]</label>
 							</control>
@@ -599,7 +599,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Episode]</label>
 							</control>
@@ -702,7 +702,7 @@
 								<width>50</width>
 								<height>32</height>
 								<textcolor>FFF0F0F0</textcolor>
-								<font>font10_title</font>
+								<font>font20_title</font>
 								<label>$INFO[ListItem.UserRating]</label>
 							</control>
 						</control>
@@ -746,7 +746,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Rating]</label>
 							</control>
@@ -769,7 +769,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Season]</label>
 							</control>
@@ -792,7 +792,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Year]</label>
 							</control>
@@ -908,7 +908,7 @@
 								<width>50</width>
 								<height>32</height>
 								<textcolor>FFF0F0F0</textcolor>
-								<font>font10_title</font>
+								<font>font20_title</font>
 								<label>$INFO[ListItem.UserRating]</label>
 							</control>
 						</control>
@@ -953,7 +953,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Property(Artist_Formed)]</label>
 							</control>
@@ -976,7 +976,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Property(Artist_Disbanded)]</label>
 							</control>
@@ -999,7 +999,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Rating]</label>
 							</control>
@@ -1022,7 +1022,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Year]</label>
 							</control>
@@ -1065,7 +1065,7 @@
 								<width>70</width>
 								<height>32</height>
 								<align>center</align>
-								<font>font_textbox</font>
+								<font>font25_narrow</font>
 								<selectedcolor>FFF0F0F0</selectedcolor>
 								<label fallback="-">$INFO[ListItem.Property(Duration)]</label>
 							</control>
@@ -1156,6 +1156,17 @@
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(musicvideos) | Container.Content(albums) | Container.Content(songs)</visible>
 					</control>
+					<control type="label">
+						<left>110</left>
+						<top>45</top>
+						<height>50</height>
+						<width>1348</width>
+						<aligny>center</aligny>
+						<font>font27</font>
+						<label>$INFO[ListItem.Property(Starttime)]</label>
+						<shadowcolor>22000000</shadowcolor>
+						<visible>Container.Content(epg)</visible>
+					</control>
 				</itemlayout>
 				<focusedlayout height="100" width="1458">
 					<control type="image">
@@ -1237,6 +1248,17 @@
 						<label>$INFO[ListItem.Artist]</label>
 						<shadowcolor>22000000</shadowcolor>
 						<visible>Container.Content(musicvideos) | Container.Content(albums) | Container.Content(songs)</visible>
+					</control>
+					<control type="label">
+						<left>110</left>
+						<top>45</top>
+						<height>50</height>
+						<width>1348</width>
+						<aligny>center</aligny>
+						<font>font27</font>
+						<label>$INFO[ListItem.Property(Starttime)]</label>
+						<shadowcolor>22000000</shadowcolor>
+						<visible>Container.Content(epg)</visible>
 					</control>
 				</focusedlayout>
 			</control>

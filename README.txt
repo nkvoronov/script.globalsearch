@@ -27,7 +27,7 @@ available options: movies, tvshows, episodes, musicvideos, artists, albums, song
 I. Infolabels available in script-globalsearch.xml
 -------------------------------------------------------
 Container.Content
-- returns on of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
+- returns one of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
 
 EPG:
 ListItem.Label
@@ -41,7 +41,7 @@ ListItem.Property(ChannelName)
 ListItem.Property(DBID)
 
 
-MOVIES (and movies by actor/director):
+MOVIES (and movies by ACTOR/DIRECTOR):
 ListItem.Label
 ListItem.Icon
 ListItem.Art()
@@ -203,9 +203,9 @@ ListItem.DBID
 
 II. Control id's used in script-globalsearch.xml
 ------------------------------------------------------
-990 - 'New search' button, visible when the script finished searching
-991 - Search category label, visible when the script is searching
-999 - 'No results found' label, visible when no results are found
+990  - 'New search' button, visible when the script finished searching
+991  - Search category label, visible when the script is searching
+999  - 'No results found' label, visible when no results are found
 9000 - Menu list
 
 

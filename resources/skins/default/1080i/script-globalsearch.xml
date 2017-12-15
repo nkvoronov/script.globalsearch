@@ -182,16 +182,6 @@
 							<label>$INFO[ListItem.Label]</label>
 							<shadowcolor>22000000</shadowcolor>
 						</control>
-						<control type="label">
-							<left>104</left>
-							<top>30</top>
-							<height>95</height>
-							<width>350</width>
-							<aligny>center</aligny>
-							<font>font13</font>
-							<label>$INFO[ListItem.Property(type)]-$INFO[ListItem.Property(content)]</label>
-							<shadowcolor>22000000</shadowcolor>
-						</control>
 					</itemlayout>
 					<focusedlayout height="95" width="462">
 						<control type="image">
@@ -225,16 +215,6 @@
 							<aligny>center</aligny>
 							<font>font37</font>
 							<label>$INFO[ListItem.Label]</label>
-							<shadowcolor>22000000</shadowcolor>
-						</control>
-						<control type="label">
-							<left>104</left>
-							<top>30</top>
-							<height>95</height>
-							<width>350</width>
-							<aligny>center</aligny>
-							<font>font13</font>
-							<label>$INFO[ListItem.Property(type)]-$INFO[ListItem.Property(content)]</label>
 							<shadowcolor>22000000</shadowcolor>
 						</control>
 					</focusedlayout>

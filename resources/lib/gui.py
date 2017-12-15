@@ -193,6 +193,7 @@ class GUI(xbmcgui.WindowXML):
 
     def _update_list(self, item, content):
         self.clearList()
+        xbmc.sleep(30)
         self.setContent(content)
         xbmc.sleep(2)
         self.addItems(self.content[item])

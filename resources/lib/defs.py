@@ -144,11 +144,11 @@ CATEGORIES = {
                        'menuthumb':'globalsearch-icon-songs.png',
                        'media':'music'
                       },
-              'epg':{
+              'livetv':{
                      'order':9,
                      'enabled':False,
-                     'type':'epg',
-                     'content':'epg',
+                     'type':'livetv',
+                     'content':'livetv',
                      'label':19069,
                      'menuthumb':'globalsearch-icon-livetv.png'
                     },  

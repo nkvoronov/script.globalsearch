@@ -63,7 +63,7 @@ class GUI(xbmcgui.WindowXML):
         self._check_focus()
 
     def _get_items(self, cat, search):
-        if cat['content'] == 'epg':
+        if cat['content'] == 'livetv':
             self._fetch_channelgroups(cat)
             return
         if cat['type'] == 'seasonepisodes' or cat['type'] == 'albumsongs':
@@ -144,9 +144,9 @@ class GUI(xbmcgui.WindowXML):
             channels = [dict(tuples) for tuples in set(tuple(item.items()) for item in channellist)]
             # sort
             channels.sort(key=operator.itemgetter('channelid'))
-            self._fetch_epg(cat, channels)
+            self._fetch_livetv(cat, channels)
 
-    def _fetch_epg(self, cat, channels):
+    def _fetch_livetv(self, cat, channels):
         listitems = []
         # get all programs for every channel id
         for channel in channels:
@@ -159,8 +159,8 @@ class GUI(xbmcgui.WindowXML):
             if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('broadcasts')):
                 for item in json_response['result']['broadcasts']:
                     broadcastname = item['label']
-                    epgmatch = re.search('.*' + self.searchstring + '.*', broadcastname, re.I)
-                    if epgmatch:
+                    livetvmatch = re.search('.*' + self.searchstring + '.*', broadcastname, re.I)
+                    if livetvmatch:
                         broadcastid = item['broadcastid']
                         duration = item['runtime']
                         genre = item['genre'][0]
@@ -204,7 +204,7 @@ class GUI(xbmcgui.WindowXML):
         del labels['%sid' % item]
         labels['title'] = labels['label']
         del labels['label']
-        if item != 'artist' and item != 'album' and item != 'song' and item != 'epg':
+        if item != 'artist' and item != 'album' and item != 'song' and item != 'livetv':
             del labels['art']
         else:
             del labels['thumbnail']

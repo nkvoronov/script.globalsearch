@@ -361,7 +361,7 @@
 						</control>
 					</control>
 				</itemlayout>
-				<itemlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)">
+				<itemlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(livetv)">
 					<control type="image">
 						<left>1</left>
 						<top>10</top>
@@ -416,7 +416,7 @@
 						<aligny>center</aligny>
 						<selectedcolor>FFF0F0F0</selectedcolor>
 						<label>[B]$INFO[ListItem.Property(ChannelName)][/B]</label>
-						<visible>Container.Content(epg)</visible>
+						<visible>Container.Content(livetv)</visible>
 					</control>
 					<control type="label">
 						<left>15</left>
@@ -818,7 +818,7 @@
 						</control>
 					</control>
 				</focusedlayout>
-				<focusedlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(epg)">
+				<focusedlayout height="360" width="350" condition="Container.Content(artists) | Container.Content(albums) | Container.Content(songs) | Container.Content(livetv)">
 					<control type="group">
 						<animation effect="slide" start="0,0" end="-40,0" time="300">Focus</animation>
 						<animation effect="slide" start="-40,0" end="0,0" time="125">UnFocus</animation>
@@ -876,7 +876,7 @@
 							<aligny>center</aligny>
 							<selectedcolor>FFF0F0F0</selectedcolor>
 							<label>[B]$INFO[ListItem.Property(ChannelName)][/B]</label>
-							<visible>Container.Content(epg)</visible>
+							<visible>Container.Content(livetv)</visible>
 						</control>
 						<control type="label">
 							<left>15</left>
@@ -1048,7 +1048,7 @@
 							</control>
 						</control>
 						<control type="group">
-							<visible>Container.Content(epg)</visible>
+							<visible>Container.Content(livetv)</visible>
 							<top>20</top>
 							<control type="image">
 								<top>0</top>
@@ -1076,7 +1076,7 @@
 			<control type="list" id="51">
 				<left>462</left>
 				<top>200</top>
-				<width>1458</width>
+				<width>1038</width>
 				<height>700</height>
 				<onleft>9000</onleft>
 				<viewtype label="535">biglist</viewtype>
@@ -1106,9 +1106,9 @@
 						<left>110</left>
 						<top>5</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font14</font>
 						<label>[B]$INFO[ListItem.Label][/B]</label>
 						<shadowcolor>22000000</shadowcolor>
 					</control>
@@ -1116,7 +1116,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Genre]</label>
@@ -1127,7 +1127,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.TVShowTitle]</label>
@@ -1138,7 +1138,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Property(artist_genre)]</label>
@@ -1149,7 +1149,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Artist]</label>
@@ -1160,19 +1160,19 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Property(Starttime)]</label>
 						<shadowcolor>22000000</shadowcolor>
-						<visible>Container.Content(epg)</visible>
+						<visible>Container.Content(livetv)</visible>
 					</control>
 				</itemlayout>
 				<focusedlayout height="100" width="1458">
 					<control type="image">
 						<left>0</left>
 						<top>0</top>
-						<width>1458</width>
+						<width>1038</width>
 						<height>100</height>
 						<texture colordiffuse="FF12A0C7">globalsearch-focus.png</texture>
 						<visible>Control.HasFocus(51)</visible>
@@ -1199,9 +1199,9 @@
 						<left>110</left>
 						<top>5</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
-						<font>font37</font>
+						<font>font14</font>
 						<label>[B]$INFO[ListItem.Label][/B]</label>
 						<shadowcolor>22000000</shadowcolor>
 					</control>
@@ -1209,7 +1209,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Genre]</label>
@@ -1220,7 +1220,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.TVShowTitle]</label>
@@ -1231,7 +1231,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Property(artist_genre)]</label>
@@ -1242,7 +1242,7 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Artist]</label>
@@ -1253,14 +1253,96 @@
 						<left>110</left>
 						<top>45</top>
 						<height>50</height>
-						<width>1348</width>
+						<width>928</width>
 						<aligny>center</aligny>
 						<font>font27</font>
 						<label>$INFO[ListItem.Property(Starttime)]</label>
 						<shadowcolor>22000000</shadowcolor>
-						<visible>Container.Content(epg)</visible>
+						<visible>Container.Content(livetv)</visible>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="group">
+				<left>1500</left>
+				<top>0</top>
+				<visible>Control.IsVisible(51)</visible>
+				<control type="image">
+					<left>-5</left>
+					<top>-5</top>
+					<width>430</width>
+					<height>1080</height>
+					<texture>globalsearch-panel.png</texture>
+					<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
+					<bordersize>5</bordersize>
+				</control>
+				<control type="image">
+					<left>20</left>
+					<top>100</top>
+					<width>380</width>
+					<height>380</height>
+					<texture background="true">$INFO[ListItem.Art(poster)]</texture>
+					<aspectratio>keep</aspectratio>
+					<visible>Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons)</visible>
+				</control>
+				<control type="image">
+					<left>20</left>
+					<top>100</top>
+					<width>380</width>
+					<height>380</height>
+					<texture>$INFO[ListItem.Icon]</texture>
+					<aspectratio>keep</aspectratio>
+					<visible>![Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons)]</visible>
+				</control>
+				<control type="textbox">
+					<left>10</left>
+					<top>500</top>
+					<height>498</height>
+					<width>400</width>
+					<aligny>justify</aligny>
+					<font>font25_narrow</font>
+					<label>$INFO[ListItem.Plot]</label>
+					<visible>Container.Content(movies) | Container.Content(tvshows) | Container.Content(seasons) | Container.Content(episodes) | Container.Content(musicvideos)</visible>
+				</control>
+				<control type="textbox">
+					<left>10</left>
+					<top>500</top>
+					<height>498</height>
+					<width>400</width>
+					<aligny>justify</aligny>
+					<font>font25_narrow</font>
+					<label>$INFO[ListItem.Property(Plot)]</label>
+					<visible>Container.Content(livetv)</visible>
+				</control>
+				<control type="textbox">
+					<left>10</left>
+					<top>500</top>
+					<height>498</height>
+					<width>400</width>
+					<aligny>justify</aligny>
+					<font>font25_narrow</font>
+					<label>$INFO[ListItem.Property(Artist_Description)]</label>
+					<visible>Container.Content(artists)</visible>
+				</control>
+				<control type="textbox">
+					<left>10</left>
+					<top>500</top>
+					<height>498</height>
+					<width>400</width>
+					<aligny>justify</aligny>
+					<font>font25_narrow</font>
+					<label>$INFO[ListItem.Property(Album_Description)]</label>
+					<visible>Container.Content(albums)</visible>
+				</control>
+				<control type="textbox">
+					<left>10</left>
+					<top>500</top>
+					<height>498</height>
+					<width>400</width>
+					<aligny>justify</aligny>
+					<font>font25_narrow</font>
+					<label>$INFO[ListItem.Comment]</label>
+					<visible>Container.Content(songs)</visible>
+				</control>
 			</control>
 			<control type="button">
 				<left>1171</left>
@@ -1275,6 +1357,7 @@
 				<onclick>SetFocus(500)</onclick>
 				<onclick>PageUp</onclick>
 				<animation effect="fade" time="200">VisibleChange</animation>
+				<animation effect="slide" start ="0,0" end="-210,0" condition="Control.IsVisible(51)">Conditional</animation>
 				<visible>Container.HasPrevious</visible>
 			</control>
 			<control type="button">
@@ -1290,6 +1373,7 @@
 				<onclick>SetFocus(500)</onclick>
 				<onclick>PageDown</onclick>
 				<animation effect="fade" time="200">VisibleChange</animation>
+				<animation effect="slide" start ="0,0" end="-210,0" condition="Control.IsVisible(51)">Conditional</animation>
 				<visible>Container.HasNext</visible>
 			</control>
 			<control type="group">
@@ -1324,6 +1408,7 @@
 					<itemgap>6</itemgap>
 					<width>1366</width>
 					<align>right</align>
+					<animation effect="slide" start ="0,0" end="-420,0" condition="Control.IsVisible(51)">Conditional</animation>
 					<control type="image">
 						<width>110</width>
 						<height>60</height>

@@ -20,16 +20,16 @@ You can specify which categories should be searched (this overrides the user pre
 RunScript(script.globalsearch,movies=true)
 RunScript(script.globalsearch,tvshows=true&amp;musicvideos=true&amp;songs=true)
 
-available options: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
+available options: movies, tvshows, episodes, musicvideos, artists, albums, songs, livetv, actors, directors
 
 
 
 I. Infolabels available in script-globalsearch.xml
 -------------------------------------------------------
 Container.Content
-- returns one of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, epg, actors, directors
+- returns one of the following: movies, tvshows, episodes, musicvideos, artists, albums, songs, livetv, actors, directors
 
-EPG:
+LIVETV:
 ListItem.Label
 ListItem.Icon
 ListItem.Property(Genre)

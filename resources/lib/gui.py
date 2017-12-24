@@ -405,6 +405,7 @@ class GUI(xbmcgui.WindowXML):
         keyboard.doModal()
         if(keyboard.isConfirmed()):
             self.searchstring = keyboard.getText()
+            self.menu.reset()
             self.clearList()
             self.onInit()
 

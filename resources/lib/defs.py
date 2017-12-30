@@ -32,11 +32,11 @@ EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "dire
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded",
                     "streamdetails", "art", "file", "resume"]
 
-ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart"]
+ARTISTLABELS = ["genre", "description", "formed", "disbanded", "born", "yearsactive", "died", "mood", "style", "instrument", "thumbnail", "fanart", "art"]
 
-ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "theme", "type", "mood", "style", "rating", "userrating", "artistid"]
+ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", "thumbnail", "fanart", "art", "theme", "type", "mood", "style", "rating", "userrating", "artistid"]
 
-SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "rating", "userrating", "track", "playcount", "artistid", "albumid"]
+SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "art", "rating", "userrating", "track", "playcount", "artistid", "albumid"]
 
 CATEGORIES = {
               'movies':{

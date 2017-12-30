@@ -206,6 +206,10 @@ class GUI(xbmcgui.WindowXML):
         del labels['label']
         if item != 'artist' and item != 'album' and item != 'song' and item != 'livetv':
             del labels['art']
+        elif item == 'artist' or item == 'album' or item == 'song':
+            del labels['art']
+            del labels['thumbnail']
+            del labels['fanart']
         else:
             del labels['thumbnail']
             del labels['fanart']
@@ -252,7 +256,8 @@ class GUI(xbmcgui.WindowXML):
             elif labels.get('banner'):
                 art['thumb'] = labels['banner']
         else:
-            art = {}
+            art = labels['art']
+            # needed for albums and songs
             art['thumb'] = labels['thumbnail']
             art['fanart'] = labels['fanart']
         art['icon'] = icon
@@ -261,7 +266,7 @@ class GUI(xbmcgui.WindowXML):
     def _split_labels(self, item, labels, prefix):
         props = {}
         for label in labels:
-            if label == 'thumbnail' or label == 'fanart' or label == 'rating' or label == 'userrating' or label == 'file' or label == 'artistid' or label == 'albumid' or label == 'songid' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
+            if label == 'thumbnail' or label == 'fanart' or label == 'art' or label == 'rating' or label == 'userrating' or label == 'file' or label == 'artistid' or label == 'albumid' or label == 'songid' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
                 continue
             if isinstance(item[label], list):
                 item[label] = " / ".join(item[label])

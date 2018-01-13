@@ -358,6 +358,8 @@ class GUI(xbmcgui.WindowXML):
             ret = dialog.yesno(xbmc.getLocalizedString(284), LANGUAGE(32298))
             if ret:
                 self._new_search()
+            else:
+                self._close()
 
     def _context_menu(self, controlId, listitem):
         labels = ()

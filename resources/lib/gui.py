@@ -32,6 +32,7 @@ class GUI(xbmcgui.WindowXML):
                     self._parse_argv()
             self._reset_variables()
             self._init_items()
+            self._set_view()
             self._fetch_items()
 
     def _hide_controls(self):
@@ -55,6 +56,11 @@ class GUI(xbmcgui.WindowXML):
         self.menu = self.getControl(MENU)
         self.content = {} 
         self.oldfocus = 0
+
+    def _set_view(self):
+        vid = ADDON.getSetting('view')
+        if vid:
+            xbmc.executebuiltin('Container.SetViewMode(%i)' % int(vid))
 
     def _fetch_items(self):
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
@@ -476,6 +482,7 @@ class GUI(xbmcgui.WindowXML):
                 self._update_list(item, content)
 
     def _close(self):
+        ADDON.setSetting('view', str(self.getCurrentContainerId()))
         log('script stopped')
         self.close()
         xbmc.sleep(300)

@@ -1,3 +1,8 @@
+v8.0.1
+- fix passing search categories to the script
+- save the selected viewmode
+- close globalsearch if no is selected when promted for a new search
+
 v8.0.0
 - rewrite for Kodi Leia
 

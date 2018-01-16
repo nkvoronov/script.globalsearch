@@ -40,8 +40,8 @@ class GUI(xbmcgui.WindowXML):
             self.getControl(cid).setVisible(False)
 
     def _parse_argv(self):
-        for key, value in CATEGORIES.iteritems():
-            CATEGORIES[key]['enabled'] = self.params.get(value, '') == 'true'
+        for key, value in self.params.items():
+            CATEGORIES[key]['enabled'] = self.params[key] == 'true'
 
     def _load_settings(self):
         for key, value in CATEGORIES.iteritems():

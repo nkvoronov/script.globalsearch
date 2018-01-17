@@ -474,7 +474,7 @@ class GUI(xbmcgui.WindowXML):
                         media = listitem.getMusicInfoTag().getMediaType()
                     if media != '' and media != 'season':
                         self._show_info(listitem)
-        elif action.getId() in (3, 4, 107) and self.getFocusId() == MENU:
+        elif self.getFocusId() == MENU and action.getId() in (1, 2, 3, 4, 107):
             item = self.menu.getSelectedItem().getProperty('type')
             content = self.menu.getSelectedItem().getProperty('content')
             if item != self.oldfocus:

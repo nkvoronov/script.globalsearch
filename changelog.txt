@@ -1,3 +1,6 @@
+v8.0.2
+- fix content selection when using a horizontal menu
+
 v8.0.1
 - fix passing search categories to the script
 - save the selected viewmode

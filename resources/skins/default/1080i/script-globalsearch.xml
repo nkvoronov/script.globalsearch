@@ -182,6 +182,17 @@
 							<label>$INFO[ListItem.Label]</label>
 							<shadowcolor>22000000</shadowcolor>
 						</control>
+						<control type="label">
+							<left>104</left>
+							<top>0</top>
+							<height>95</height>
+							<width>340</width>
+							<align>right</align>
+							<aligny>center</aligny>
+							<font>font37</font>
+							<label>$INFO[ListItem.Label2]</label>
+							<shadowcolor>22000000</shadowcolor>
+						</control>
 					</itemlayout>
 					<focusedlayout height="95" width="462">
 						<control type="image">
@@ -215,6 +226,17 @@
 							<aligny>center</aligny>
 							<font>font37</font>
 							<label>$INFO[ListItem.Label]</label>
+							<shadowcolor>22000000</shadowcolor>
+						</control>
+						<control type="label">
+							<left>104</left>
+							<top>0</top>
+							<height>95</height>
+							<width>340</width>
+							<align>right</align>
+							<aligny>center</aligny>
+							<font>font37</font>
+							<label>$INFO[ListItem.Label2]</label>
 							<shadowcolor>22000000</shadowcolor>
 						</control>
 					</focusedlayout>

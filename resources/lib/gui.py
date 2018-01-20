@@ -111,7 +111,7 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setIsFolder(True)
                 listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)))
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
             menuitem.setProperty('content', cat['content'])

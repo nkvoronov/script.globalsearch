@@ -107,6 +107,8 @@ class GUI(xbmcgui.WindowXML):
                 if cat['content'] == 'movies' or cat['content'] == 'tvshows' or cat['content'] == 'episodes' or cat['content'] == 'musicvideos' or cat['content'] == 'songs':
                     listitem.setPath(item['file'])
                 listitem.setInfo(cat['media'], self._get_info(item, cat['content'][0:-1]))
+                if cat['content'] == 'tvshows':
+                    listitem.setIsFolder(True)
                 listitems.append(listitem)
         if len(listitems) > 0:
             menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
@@ -208,7 +210,8 @@ class GUI(xbmcgui.WindowXML):
         labels['mediatype'] = item
         labels['dbid'] = labels['%sid' % item]
         del labels['%sid' % item]
-        labels['title'] = labels['label']
+        if item == 'season' or item == 'artist':
+            labels['title'] = labels['label']
         del labels['label']
         if item != 'artist' and item != 'album' and item != 'song' and item != 'livetv':
             del labels['art']
@@ -239,6 +242,7 @@ class GUI(xbmcgui.WindowXML):
                 labels['aired'] = labels['firstaired']
                 del labels['firstaired']
         if item == 'album':
+            labels['album'] = labels['title']
             del labels['artistid']
         if item == 'song':
             labels['tracknumber'] = labels['track']
@@ -272,7 +276,7 @@ class GUI(xbmcgui.WindowXML):
     def _split_labels(self, item, labels, prefix):
         props = {}
         for label in labels:
-            if label == 'thumbnail' or label == 'fanart' or label == 'art' or label == 'rating' or label == 'userrating' or label == 'file' or label == 'artistid' or label == 'albumid' or label == 'songid' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
+            if label == 'thumbnail' or label == 'fanart' or label == 'art' or label == 'rating' or label == 'userrating' or label == 'title' or label == 'file' or label == 'artistid' or label == 'albumid' or label == 'songid' or (prefix == 'album_' and (label == 'artist' or label == 'genre' or label == 'year')):
                 continue
             if isinstance(item[label], list):
                 item[label] = " / ".join(item[label])

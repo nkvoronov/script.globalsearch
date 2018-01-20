@@ -67,6 +67,7 @@ ListItem.AudioCodec
 ListItem.AudioChannels
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 TV SHOWS:
@@ -85,6 +86,7 @@ ListItem.UserRating
 ListItem.Playcount
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 SEASONS:
@@ -97,6 +99,7 @@ ListItem.Playcount
 ListItem.UserRating
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 EPISODES:
@@ -120,6 +123,7 @@ ListItem.AudioCodec
 ListItem.AudioChannels
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 MUSIC VIDEOS:
@@ -144,6 +148,7 @@ ListItem.AudioCodec
 ListItem.AudioChannels
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 ARTISTS:
@@ -152,6 +157,7 @@ ListItem.Icon
 ListItem.Art()
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 ListItem.Property(Artist_Born)
 ListItem.Property(Artist_Died)
 ListItem.Property(Artist_Formed)
@@ -168,11 +174,13 @@ ListItem.Label
 ListItem.Icon
 ListItem.Art()
 ListItem.Artist
+ListItem.Album
 ListItem.Genre
 ListItem.UserRating
 ListItem.Year
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 ListItem.Property(Album_Label)
 ListItem.Property(Album_Description)
 ListItem.Property(Album_Theme)
@@ -198,6 +206,7 @@ ListItem.Duration
 ListItem.Year
 ListItem.Path
 ListItem.DBID
+ListItem.DBType
 
 
 

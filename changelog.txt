@@ -2,6 +2,7 @@ v8.0.2
 - fix content selection when using a horizontal menu
 - fixed incorrect listitem.title for episodes
 - show result counts in the menu
+- fix content selection when using a horizontal menu
 
 v8.0.1
 - fix passing search categories to the script

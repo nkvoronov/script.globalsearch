@@ -41,7 +41,7 @@ ListItem.Property(ChannelName)
 ListItem.Property(DBID)
 
 
-MOVIES (and movies by ACTOR/DIRECTOR):
+MOVIES:
 ListItem.Label
 ListItem.Icon
 ListItem.Art()
@@ -68,6 +68,18 @@ ListItem.AudioChannels
 ListItem.Path
 ListItem.DBID
 ListItem.DBType
+
+
+ACTOR:
+ListItem.Label
+ListItem.Label2
+ListItem.Icon
+
+
+DIRECTOR:
+ListItem.Label
+ListItem.Label2
+ListItem.Icon
 
 
 TV SHOWS:

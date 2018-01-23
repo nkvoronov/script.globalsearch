@@ -80,10 +80,40 @@ class GUI(xbmcgui.WindowXML):
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         listitems = []
+        actors = {}
+        directors = {}
         if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key(cat['content']):
             for item in json_response['result'][cat['content']]:
-                listitem = xbmcgui.ListItem(item['label'])
-                listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
+                if cat['type'] == 'actors':
+                    for item in item['cast']:
+                        if search in item['name'].lower():
+                            name = item['name']
+                            if 'thumbnail' in item:
+                                thumb = item['thumbnail']
+                            else:
+                                thumb = cat['icon']
+                            val = {}
+                            val['thumb'] = thumb
+                            if name in actors and 'count' in actors[name]:
+                               val['count'] = actors[name]['count'] + 1
+                            else:
+                               val['count'] = 1
+                            actors[name] = val
+
+                elif cat['type'] == 'directors':
+                    for item in item['director']:
+                        if search in item.lower():
+                            name = item
+                            val = {}
+                            val['thumb'] = cat['icon']
+                            if name in directors and 'count' in directors[name]:
+                               val['count'] = directors[name]['count'] + 1
+                            else:
+                               val['count'] = 1
+                            directors[name] = val
+                else:
+                    listitem = xbmcgui.ListItem(item['label'])
+                    listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
                 if cat['streamdetails']:
                     for stream in item['streamdetails']['video']:
                         listitem.addStreamInfo('video', stream)
@@ -98,27 +128,49 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setProperty('UnWatchedEpisodes', str(item['episode'] - item['watchedepisodes']))
                 elif cat['content'] == 'seasons':
                     listitem.setProperty('tvshowid', str(item['tvshowid']))
-                elif cat['content'] == 'movies' or cat['content'] == 'episodes' or cat['content'] == 'musicvideos':
+                elif (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'episodes' or cat['content'] == 'musicvideos':
                     listitem.setProperty('resume', str(int(item['resume']['position'])))
                 elif cat['content'] == 'artists' or cat['content'] == 'albums':
                     info, props = self._split_labels(item, cat['properties'], cat['content'][0:-1] + '_')
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
-                if cat['content'] == 'movies' or cat['content'] == 'tvshows' or cat['content'] == 'episodes' or cat['content'] == 'musicvideos' or cat['content'] == 'songs':
+                if (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'tvshows' or cat['content'] == 'episodes' or cat['content'] == 'musicvideos' or cat['content'] == 'songs':
                     listitem.setPath(item['file'])
-                listitem.setInfo(cat['media'], self._get_info(item, cat['content'][0:-1]))
+                if cat['media']:
+                    listitem.setInfo(cat['media'], self._get_info(item, cat['content'][0:-1]))
                 if cat['content'] == 'tvshows':
                     listitem.setIsFolder(True)
-                listitems.append(listitem)
+                if cat['type'] != 'actors' and cat['type'] != 'directors':
+                    listitems.append(listitem)
+            if actors:
+                for name, val in sorted(actors.items()):
+                    listitem = xbmcgui.ListItem(name, str(val['count']))
+                    listitem.setArt({'icon':cat['icon'], 'thumb':val['thumb']})
+                    listitems.append(listitem)
+            if directors:
+                for name, val in sorted(directors.items()):
+                    listitem = xbmcgui.ListItem(name, str(val['count']))
+                    listitem.setArt({'icon':cat['icon'], 'thumb':val['thumb']})
+                    listitems.append(listitem)
         if len(listitems) > 0:
             menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)))
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
-            menuitem.setProperty('content', cat['content'])
+            if cat['type'] != 'actors' and cat['type'] != 'directors':
+                menuitem.setProperty('content', cat['content'])
+            elif cat['type'] == 'actors':
+                menuitem.setProperty('content', 'actors')
+            elif cat['type'] == 'directors':
+                menuitem.setProperty('content', 'directors')
             self.menu.addItem(menuitem)
             self.content[cat['type']] = listitems
             if self.focusset == 'false':
-                self.setContent(cat['content'])
+                if cat['type'] != 'actors' and cat['type'] != 'directors':
+                    self.setContent(cat['content'])
+                elif cat['type'] == 'actors':
+                    self.setContent('actors')
+                elif cat['type'] == 'directors':
+                    self.setContent('directors')
                 self.addItems(listitems)
                 xbmc.sleep(100)
                 self.setFocusId(self.getCurrentContainerId())
@@ -303,10 +355,15 @@ class GUI(xbmcgui.WindowXML):
             artist = listitem.getMusicInfoTag().getArtist()
             album = listitem.getLabel()
             search = [artist,album]
+        elif key == 'actormovies':
+            search = listitem.getLabel()
+        elif key == 'directormovies':
+            search = listitem.getLabel()
         self._reset_variables()
         self._hide_controls()
         self.clearList()
         self.menu.reset()
+        self.oldfocus = 0
         self._get_items(CATEGORIES[key], search)
         self._check_focus()
 
@@ -423,6 +480,7 @@ class GUI(xbmcgui.WindowXML):
         if(keyboard.isConfirmed()):
             self.searchstring = keyboard.getText()
             self.menu.reset()
+            self.oldfocus = 0
             self.clearList()
             self.onInit()
 
@@ -434,6 +492,10 @@ class GUI(xbmcgui.WindowXML):
                 media = listitem.getVideoInfoTag().getMediaType()
             elif listitem.getMusicInfoTag().getMediaType():
                 media = listitem.getMusicInfoTag().getMediaType()
+            elif xbmc.getCondVisibility('Container.Content(actors)'):
+                media = 'actors'
+            elif xbmc.getCondVisibility('Container.Content(directors)'):
+                media = 'directors'
             if media == 'movie':
                 movieid = listitem.getVideoInfoTag().getDbId()
                 self._play_item('movieid', movieid, listitem)
@@ -454,6 +516,10 @@ class GUI(xbmcgui.WindowXML):
             elif media == 'song':
                 songid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('songid', songid)
+            elif media == 'actors':
+                self._get_allitems('actormovies', listitem)
+            elif media == 'directors':
+                self._get_allitems('directormovies', listitem)
         elif controlId == MENU:
             item = self.menu.getSelectedItem().getProperty('type')
             content = self.menu.getSelectedItem().getProperty('content')
@@ -481,9 +547,11 @@ class GUI(xbmcgui.WindowXML):
         elif self.getFocusId() == MENU and action.getId() in (1, 2, 3, 4, 107):
             item = self.menu.getSelectedItem().getProperty('type')
             content = self.menu.getSelectedItem().getProperty('content')
-            if item != self.oldfocus:
+            if self.oldfocus and item != self.oldfocus:
                 self.oldfocus = item
                 self._update_list(item, content)
+            else:
+                self.oldfocus = item
 
     def _close(self):
         ADDON.setSetting('view', str(self.getCurrentContainerId()))

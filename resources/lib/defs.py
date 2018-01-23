@@ -38,6 +38,10 @@ ALBUMLABELS = ["title", "description", "albumlabel", "artist", "genre", "year", 
 
 SONGLABELS = ["title", "artist", "album", "genre", "duration", "year", "file", "thumbnail", "fanart", "comment", "art", "rating", "userrating", "track", "playcount", "artistid", "albumid"]
 
+ACTORLABELS = ["cast"]
+
+DIRECTORLABELS = ["director"]
+
 CATEGORIES = {
               'movies':{
                         'order':1,
@@ -151,21 +155,21 @@ CATEGORIES = {
                      'content':'livetv',
                      'label':19069,
                      'menuthumb':'globalsearch-icon-livetv.png'
-                    },  
+                    },
               'actors':{
                         'order':10,
                         'enabled':False,
                         'type':'actors',
                         'content':'movies',
                         'method':'VideoLibrary.GetMovies',
-                        'properties':MOVIELABELS,
+                        'properties':ACTORLABELS,
                         'sort':'title',
                         'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
-                        'streamdetails':True,
+                        'streamdetails':False,
                         'label':344,
-                        'icon':'DefaultVideo.png',
+                        'icon':'DefaultActor.png',
                         'menuthumb':'globalsearch-icon-actors.png',
-                        'media':'video'
+                        'media':''
                        },
               'directors':{
                            'order':11,
@@ -173,17 +177,47 @@ CATEGORIES = {
                            'type':'directors',
                            'content':'movies',
                            'method':'VideoLibrary.GetMovies',
-                           'properties':MOVIELABELS,
+                           'properties':DIRECTORLABELS,
                            'sort':'title',
                            'rule':'"filter":{"field":"director", "operator":"contains", "value":"%s"}',
-                           'streamdetails':True,
+                           'streamdetails':False,
                            'label':20348,
-                           'icon':'DefaultVideo.png',
+                           'icon':'DefaultDirector.png',
                            'menuthumb':'globalsearch-icon-directors.png',
-                           'media':'video'
+                           'media':''
                           },
+              'actormovies':{
+                        'order':12,
+                        'enabled':False,
+                        'type':'movies',
+                        'content':'movies',
+                        'method':'VideoLibrary.GetMovies',
+                        'properties':MOVIELABELS,
+                        'sort':'title',
+                        'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
+                        'streamdetails':True,
+                        'label':342,
+                        'icon':'DefaultVideo.png',
+                        'menuthumb':'globalsearch-icon-movies.png',
+                        'media':'video'
+                       },
+              'directormovies':{
+                        'order':13,
+                        'enabled':False,
+                        'type':'movies',
+                        'content':'movies',
+                        'method':'VideoLibrary.GetMovies',
+                        'properties':MOVIELABELS,
+                        'sort':'title',
+                        'rule':'"filter":{"field":"director", "operator":"contains", "value":"%s"}',
+                        'streamdetails':True,
+                        'label':342,
+                        'icon':'DefaultVideo.png',
+                        'menuthumb':'globalsearch-icon-movies.png',
+                        'media':'video'
+                       },
               'tvshowseasons':{
-                               'order':11,
+                               'order':14,
                                'enabled':False,
                                'type':'tvshowseasons',
                                'content':'seasons',
@@ -198,7 +232,7 @@ CATEGORIES = {
                                'media':'video'
                               },
               'seasonepisodes':{
-                                'order':12,
+                                'order':15,
                                 'enabled':False,
                                 'type':'seasonepisodes',
                                 'content':'episodes',
@@ -213,7 +247,7 @@ CATEGORIES = {
                                 'media':'video'
                                },
               'artistalbums':{
-                              'order':13,
+                              'order':16,
                               'enabled':False,
                               'type':'artistalbums',
                               'content':'albums',
@@ -228,7 +262,7 @@ CATEGORIES = {
                               'media':'music'
                              },
               'albumsongs':{
-                             'order':14,
+                             'order':17,
                              'enabled':False,
                              'type':'albumsongs',
                              'content':'songs',

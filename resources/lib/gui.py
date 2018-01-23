@@ -112,7 +112,7 @@ class GUI(xbmcgui.WindowXML):
                                val['count'] = 1
                             directors[name] = val
                 else:
-                    listitem = xbmcgui.ListItem(item['label'])
+                    listitem = xbmcgui.ListItem(item['label'], offscreen=True)
                     listitem.setArt(self._get_art(item, cat['icon'], cat['media']))
                 if cat['streamdetails']:
                     for stream in item['streamdetails']['video']:
@@ -144,16 +144,16 @@ class GUI(xbmcgui.WindowXML):
                     listitems.append(listitem)
             if actors:
                 for name, val in sorted(actors.items()):
-                    listitem = xbmcgui.ListItem(name, str(val['count']))
+                    listitem = xbmcgui.ListItem(name, str(val['count']), offscreen=True)
                     listitem.setArt({'icon':cat['icon'], 'thumb':val['thumb']})
                     listitems.append(listitem)
             if directors:
                 for name, val in sorted(directors.items()):
-                    listitem = xbmcgui.ListItem(name, str(val['count']))
+                    listitem = xbmcgui.ListItem(name, str(val['count']), offscreen=True)
                     listitem.setArt({'icon':cat['icon'], 'thumb':val['thumb']})
                     listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)))
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
             if cat['type'] != 'actors' and cat['type'] != 'directors':
@@ -227,7 +227,7 @@ class GUI(xbmcgui.WindowXML):
                         plot = item['plot']
                         starttime = item['starttime']
                         endtime = item['endtime']
-                        listitem = xbmcgui.ListItem(label=broadcastname, iconImage='DefaultFolder.png', thumbnailImage=channelthumb)
+                        listitem = xbmcgui.ListItem(label=broadcastname, iconImage='DefaultFolder.png', thumbnailImage=channelthumb, offscreen=True)
                         listitem.setProperty("icon", channelthumb)
                         listitem.setProperty("genre", genre)
                         listitem.setProperty("plot", plot)
@@ -238,7 +238,7 @@ class GUI(xbmcgui.WindowXML):
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']))
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
             menuitem.setProperty('content', cat['content'])

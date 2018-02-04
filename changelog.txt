@@ -1,3 +1,9 @@
+v9.0.0
+- changes for python 3
+
+v8.0.3
+- reset menu on init
+
 v8.0.2
 - fix content selection when using a horizontal menu
 - fixed incorrect listitem.title for episodes

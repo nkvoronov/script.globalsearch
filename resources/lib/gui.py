@@ -32,6 +32,7 @@ class GUI(xbmcgui.WindowXML):
                     self._parse_argv()
             self._reset_variables()
             self._init_items()
+            self.menu.reset()
             self._set_view()
             self._fetch_items()
 

@@ -1,3 +1,6 @@
+v9.0.1
+- add to favourites context menu item
+
 v9.0.0
 - changes for python 3
 

@@ -52,13 +52,13 @@ class GUI(xbmcgui.WindowXML):
                 CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
 
     def _get_preferences(self):
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"myvideos.selectaction"}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"myvideos.selectaction"}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         self.playaction = 1
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
             self.playaction = json_response['result']['value']
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"musiclibrary.showcompilationartists"}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"musiclibrary.showcompilationartists"}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         self.albumartists = "false"

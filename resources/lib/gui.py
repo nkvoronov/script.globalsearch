@@ -50,12 +50,12 @@ class GUI(xbmcgui.WindowXML):
                 CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
 
     def _get_preferences(self):
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"myvideos.selectaction"}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"myvideos.selectaction"}, "id": 1}')
         json_response = json.loads(json_query)
         self.playaction = 1
         if 'result' in json_response and json_response['result'] != None and 'value' in json_response['result']:
             self.playaction = json_response['result']['value']
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue","params":{"setting":"musiclibrary.showcompilationartists"}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"musiclibrary.showcompilationartists"}, "id": 1}')
         json_response = json.loads(json_query)
         self.albumartists = "false"
         if 'result' in json_response and json_response['result'] != None and 'value' in json_response['result']:

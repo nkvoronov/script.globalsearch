@@ -174,6 +174,7 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setPath(item['file'])
                 if cat['media']:
                     listitem.setInfo(cat['media'], self._get_info(item, cat['content'][0:-1]))
+                    listitem.setProperty('media', cat['media'])
                 if cat['content'] == 'tvshows':
                     listitem.setIsFolder(True)
                 if cat['type'] != 'actors' and cat['type'] != 'directors':
@@ -408,7 +409,7 @@ class GUI(xbmcgui.WindowXML):
     def _play_item(self, key, value, listitem=None):
         if key == 'file':
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":"%s"}}, "id":1}' % (key, value))
-        elif key == 'songid':
+        elif key == 'albumid' or key == 'songid':
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Player.Open", "params":{"item":{"%s":%d}}, "id":1}' % (key, int(value)))
         else:
             resume = int(listitem.getProperty('resume'))
@@ -460,9 +461,9 @@ class GUI(xbmcgui.WindowXML):
         labels = ()
         functions = ()
         media = ''
-        if listitem.getVideoInfoTag():
+        if listitem.getProperty('media') == 'video':
             media = listitem.getVideoInfoTag().getMediaType()
-        elif listitem.getMusicInfoTag():
+        elif listitem.getProperty('media') == 'music':
             media = listitem.getMusicInfoTag().getMediaType()
         if media == 'movie':
             labels += (xbmc.getLocalizedString(13346),)
@@ -486,6 +487,8 @@ class GUI(xbmcgui.WindowXML):
         elif media == 'album':
             labels += (xbmc.getLocalizedString(13351),)
             functions += ('info',)
+            labels += (xbmc.getLocalizedString(208),)
+            functions += ('play',)
         elif media == 'song':
             labels += (xbmc.getLocalizedString(658),)
             functions += ('info',)
@@ -517,7 +520,10 @@ class GUI(xbmcgui.WindowXML):
                 if functions[selection] == 'info':
                     self._show_info(listitem)
                 elif functions[selection] == 'play':
-                    self._play_item('file', path)
+                    if media != 'album':
+                        self._play_item('file', path)
+                    else:
+                        self._play_item('albumid', dbid)
                 elif functions[selection] == 'favourite':
                     self._add_favourite(listitem)
                 else:

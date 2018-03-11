@@ -1,5 +1,6 @@
 v9.0.1
 - add to favourites context menu item
+- case insensitive search for actors and directors
 
 v9.0.0
 - changes for python 3

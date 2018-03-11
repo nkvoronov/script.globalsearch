@@ -110,7 +110,7 @@ class GUI(xbmcgui.WindowXML):
             for item in json_response['result'][cat['content']]:
                 if cat['type'] == 'actors':
                     for item in item['cast']:
-                        if search in item['name'].lower():
+                        if search.lower() in item['name'].lower():
                             name = item['name']
                             if 'thumbnail' in item:
                                 thumb = item['thumbnail']
@@ -125,7 +125,7 @@ class GUI(xbmcgui.WindowXML):
                             actors[name] = val
                 elif cat['type'] == 'directors':
                     for item in item['director']:
-                        if search in item.lower():
+                        if search.lower() in item.lower():
                             name = item
                             val = {}
                             val['thumb'] = cat['icon']

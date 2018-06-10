@@ -301,7 +301,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 tvshow = item['title']
                 count = count + 1
                 episode = str(item['episode'])
-                #####                                
+                #####
                 watchedepisodes = str(item['watchedepisodes'])
                 #####
                 genre = " / ".join(item['genre'])
@@ -338,7 +338,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "art(banner)", banner )
                 listitem.setProperty( "art(landscape)", landscape )
                 listitem.setProperty( "episode", episode )
-                #####                                
+                #####
                 listitem.setProperty( "watchedepisodes", watchedepisodes )
                 #####
                 listitem.setProperty( "mpaa", mpaa )
@@ -665,7 +665,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                 listitem.setProperty( "path", path )
                 listitem.setProperty( "dbid", musicvideoid )
                 #####
-                listitem.setProperty( "resume", resume )                
+                listitem.setProperty( "resume", resume )
                 listitem.setProperty( "percentplayed", percentplayed )
                 #####
                 listitems.append(listitem)

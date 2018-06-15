@@ -1,3 +1,6 @@
+v8.0.6
+- move repo to gitlab
+
 v8.0.5
 - favourites fix
 

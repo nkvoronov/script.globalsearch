@@ -163,7 +163,17 @@ class GUI(xbmcgui.WindowXML):
                 elif cat['content'] == 'seasons':
                     listitem.setProperty('tvshowid', str(item['tvshowid']))
                 elif (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'episodes' or cat['content'] == 'musicvideos':
-                    listitem.setProperty('resume', str(int(item['resume']['position'])))
+                    position = int(item['resume']['position']) + 0.001
+                    total = int(item['resume']['total']) + 0.001
+                    resume = str(position)
+                    position_percent = int(position / total * 100.0)
+                    if position_percent == 100:
+                        position_percent = 0
+                    percentplayed = str(position_percent)
+                    listitem.setProperty('resume', resume)
+                    listitem.setProperty('percentplayed', percentplayed)
+                    listitem.setProperty('playcount', str(int(item['playcount'])))
+                    listitem.setProperty('content', cat['type'])
                 elif cat['content'] == 'artists' or cat['content'] == 'albums':
                     info, props = self._split_labels(item, cat['properties'], cat['content'][0:-1] + '_')
                     for key, value in props.iteritems():

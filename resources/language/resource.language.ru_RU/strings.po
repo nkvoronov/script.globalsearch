@@ -53,7 +53,7 @@ msgid "Search Actors"
 msgstr "Поиск актёров"
 
 msgctxt "#32009"
-msgid "Search EPG"
+msgid "Search Live TV"
 msgstr "Поиск телепередач"
 
 msgctxt "#32010"
@@ -102,7 +102,7 @@ msgstr "Найти все песни"
 
 msgctxt "#32211"
 msgid "Movies starring"
-msgstr "В главных ролях"
+msgstr "В ролях"
 
 msgctxt "#32212"
 msgid "Resume from %s"

@@ -290,7 +290,7 @@ class GUI(xbmcgui.WindowXML):
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), offscreen=True)
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
             menuitem.setProperty('content', cat['content'])

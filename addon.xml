@@ -3,9 +3,7 @@
 	<requires>
 		<import addon="xbmc.python" version="2.25.0"/>
 	</requires>
-	<extension point="xbmc.python.script" library="default.py">
-		<provides>executable</provides>
-	</extension>
+	<extension point="xbmc.python.script" library="default.py"/>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="bg_BG">Търси в библиотеката Ви.</summary>
 		<summary lang="ca_ES">Cerca a la teva biblioteca.</summary>

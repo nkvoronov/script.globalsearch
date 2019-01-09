@@ -25,6 +25,18 @@
 			<top>0</top>
 			<width>1920</width>
 			<height>1080</height>
+			<texture background="true" colordiffuse="40FFFFFF">$INFO[Container.ListItem.Art(tvshow.fanart)]</texture>
+			<aspectratio>scale</aspectratio>
+			<fadetime>400</fadetime>
+			<animation effect="fade" time="400">Visible</animation>
+			<animation effect="fade" time="400">Hidden</animation>
+			<visible>Container.Content(seasons) | Container.Content(episodes)</visible>
+		</control>
+		<control type="image">
+			<left>0</left>
+			<top>0</top>
+			<width>1920</width>
+			<height>1080</height>
 			<texture background="true" colordiffuse="40FFFFFF">$INFO[Container.ListItem.Art(fanart)]</texture>
 			<aspectratio>scale</aspectratio>
 			<fadetime>400</fadetime>

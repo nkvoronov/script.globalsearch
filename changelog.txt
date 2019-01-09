@@ -1,3 +1,6 @@
+v8.0.8
+- fix fanart for seasons and episodes
+
 v8.0.7
 - language
 

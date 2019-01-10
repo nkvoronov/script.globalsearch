@@ -41,7 +41,7 @@ msgid "Search Artists"
 msgstr "Поиск исполнителей"
 
 msgctxt "#32006"
-msgid "Search Abums"
+msgid "Search Albums"
 msgstr "Поиск альбомов"
 
 msgctxt "#32007"

@@ -69,8 +69,6 @@
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 2</license>
 		<forum>http://forum.kodi.tv/showthread.php?tid=109301</forum>
-		<website></website>
-		<email></email>
 		<source>https://gitlab.com/ronie/script.globalsearch/</source>
 		<assets>
 			<icon>resources/icon.png</icon>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.globalsearch" name="Global Search" version="8.0.10" provider-name="ronie">
+<addon id="script.globalsearch" name="Global Search" version="8.0.11" provider-name="ronie">
 	<requires>
-		<import addon="xbmc.python" version="2.25.0"/>
+		<import addon="xbmc.python" version="2.26.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="default.py"/>
 	<extension point="xbmc.addon.metadata">

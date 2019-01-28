@@ -53,7 +53,7 @@ msgid "Search Actors"
 msgstr "Поиск актёров"
 
 msgctxt "#32009"
-msgid "Search Live TV"
+msgid "Search EPG"
 msgstr "Поиск телепередач"
 
 msgctxt "#32010"

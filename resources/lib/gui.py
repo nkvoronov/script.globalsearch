@@ -47,7 +47,7 @@ class GUI(xbmcgui.WindowXML):
     def _load_settings(self):
         for key, value in CATEGORIES.items():
             if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes'):
-                CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
+                CATEGORIES[key]['enabled'] = ADDON.getSettingBool(key)
 
     def _get_preferences(self):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"myvideos.selectaction"}, "id": 1}')
@@ -83,9 +83,9 @@ class GUI(xbmcgui.WindowXML):
         self.oldfocus = 0
 
     def _set_view(self):
-        vid = ADDON.getSetting('view')
+        vid = ADDON.getSettingInt('view')
         if vid:
-            xbmc.executebuiltin('Container.SetViewMode(%i)' % int(vid))
+            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
         else:
             # no view will be loaded unless we call SetViewMode, might be a bug...
             xbmc.executebuiltin('Container.SetViewMode(-1)')
@@ -651,7 +651,7 @@ class GUI(xbmcgui.WindowXML):
                 self.oldfocus = item
 
     def _close(self):
-        ADDON.setSetting('view', str(self.getCurrentContainerId()))
+        ADDON.setSettingInt('view', self.getCurrentContainerId())
         log('script stopped')
         self.close()
         xbmc.sleep(300)

@@ -2,28 +2,132 @@
 # Addon Name: Global Search
 # Addon id: script.globalsearch
 # Addon Provider: ronie
+# Translator: Miro \"Valec\" Valko <mvalec@atlas.sk>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Addons\n"
-"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Kodi Translation Team\n"
+"PO-Revision-Date: 2019-03-09 17:34+0100\n"
+"Last-Translator: Miro \"Valec\" Valko <mvalec@atlas.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/xbmc-addons/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sk\n"
+"Language: sk_SK\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 2.2.1\n"
+
+msgctxt "Addon Summary"
+msgid "Search your library."
+msgstr "Vyhľadávanie vo vašej knižnici"
+
+msgctxt "Addon Description"
+msgid "This addon can find any item in your video and music library."
+msgstr "Tento doplnok dokáže vyhľadať akúkoľvek položku vo vašej knižnici videí a hudby."
 
 msgctxt "#32000"
 msgid "General"
 msgstr "Všeobecné"
 
+msgctxt "#32001"
+msgid "Search Movies"
+msgstr "Vyhľadať filmy"
+
+msgctxt "#32002"
+msgid "Search TV Shows"
+msgstr "Vyhľadať TV seriály"
+
+msgctxt "#32003"
+msgid "Search Episodes"
+msgstr "Vyhľadať epizódy"
+
+msgctxt "#32004"
+msgid "Search Music Videos"
+msgstr "Vyhľadať videoklipy"
+
+msgctxt "#32005"
+msgid "Search Artists"
+msgstr "Vyhľadať umelcov"
+
+msgctxt "#32006"
+msgid "Search Albums"
+msgstr "Vyhľadať albumy"
+
+msgctxt "#32007"
+msgid "Search Songs"
+msgstr "Vyhľadať skladby"
+
+msgctxt "#32008"
+msgid "Search Actors"
+msgstr "Vyhľadať hercov"
+
+msgctxt "#32009"
+msgid "Search EPG"
+msgstr "Vyhľadať TV vysielanie"
+
+msgctxt "#32010"
+msgid "Search Directors"
+msgstr "Vyhľadať režisérov"
+
+# empty strings from id 32010 to 32100
 msgctxt "#32101"
 msgid "Enter search string"
-msgstr "Zadajte hľadaný výraz"
+msgstr "Zadajte hľadaný text"
+
+msgctxt "#32102"
+msgid "Items"
+msgstr "Položky"
+
+msgctxt "#32203"
+msgid "Browse album"
+msgstr "Prechádzať albumy"
+
+msgctxt "#32204"
+msgid "Season information"
+msgstr "Informácie o sérii"
 
 msgctxt "#32205"
 msgid "Play trailer"
 msgstr "Prehrať upútavku"
+
+msgctxt "#32206"
+msgid "Find album"
+msgstr "Nájsť album"
+
+msgctxt "#32207"
+msgid "Find all seasons"
+msgstr "Nájsť všetky série"
+
+msgctxt "#32208"
+msgid "Find all episodes"
+msgstr "Nájsť všetky epizódy"
+
+msgctxt "#32209"
+msgid "Find all albums"
+msgstr "Nájsť všetky albumy"
+
+msgctxt "#32210"
+msgid "Find all songs"
+msgstr "Nájsť všetky piesne"
+
+msgctxt "#32211"
+msgid "Movies starring"
+msgstr "Movies starring"
+
+msgctxt "#32212"
+msgid "Resume from %s"
+msgstr "Pokračovať od %s"
+
+# empty strings from id 32213 to 32296
+msgctxt "#32297"
+msgid "Searching:"
+msgstr "Hľadám:"
+
+msgctxt "#32298"
+msgid "Search again?"
+msgstr "Hľadať znovu?"
+
+msgctxt "#32299"
+msgid "New search"
+msgstr "Nové hľadanie"

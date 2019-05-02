@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.globalsearch" name="Global Search" version="8.0.11.012" provider-name="ronie, YLLOW_DRAGON">
+<addon id="script.globalsearch" name="Global Search" version="8.0.12.013" provider-name="ronie, YLLOW_DRAGON">
 	<requires>
 		<import addon="xbmc.python" version="2.26.0"/>
 	</requires>
@@ -32,6 +32,7 @@
 		<summary lang="ro_RO">Căutați în mediateca dumneavoastră.</summary>
 		<summary lang="ru_RU">Поиск в вашей медиатеке.</summary>
 		<summary lang="sl_SI">Iščite v svoji knjižnici.</summary>
+		<summary lang="sk_SK">Vyhľadávanie vo vašej knižnici</summary>
 		<summary lang="sv_SE">Sök i ditt bibliotek.</summary>
 		<summary lang="tr_TR">Kitaplığını ara</summary>
 		<summary lang="zh_CN">资料库搜索</summary>
@@ -62,6 +63,7 @@
 		<description lang="ro_RO">Acest supliment poate găsi orice element în mediateca dumneavoastră video și audio.</description>
 		<description lang="ru_RU">Это дополнение поможет найти любую запись в вашей медиатеке.</description>
 		<description lang="sl_SI">Ta dodatek lahko poišče katerokoli podatek v vaši knjižnici filmov in glasbe.</description>
+		<description lang="sk_SK">Tento doplnok dokáže vyhľadať akúkoľvek položku vo vašej knižnici videí a hudby.</description>
 		<description lang="sv_SE">Detta tillägg kan hitta vilket objekt som helst i ditt video och musikbibliotek.</description>
 		<description lang="tr_TR">Bu eklenti video ve müzik kitaplığınızdaki herhangi bir öğeyi bulabilir.</description>
 		<description lang="zh_CN">此插件搜索你的视频和音乐资料库项目。</description>

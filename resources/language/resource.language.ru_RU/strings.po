@@ -34,7 +34,7 @@ msgstr "Поиск серий"
 
 msgctxt "#32004"
 msgid "Search Music Videos"
-msgstr "Поиск муз. клипов"
+msgstr "Поиск муз. видео"
 
 msgctxt "#32005"
 msgid "Search Artists"

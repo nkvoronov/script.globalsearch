@@ -46,7 +46,7 @@ class GUI(xbmcgui.WindowXML):
 
     def _load_settings(self):
         for key, value in CATEGORIES.items():
-            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes'):
+            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes', 'actormovies', 'directormovies'):
                 CATEGORIES[key]['enabled'] = ADDON.getSettingBool(key)
 
     def _get_preferences(self):
@@ -83,7 +83,10 @@ class GUI(xbmcgui.WindowXML):
         self.oldfocus = 0
 
     def _set_view(self):
-        vid = ADDON.getSettingInt('view')
+        try:
+            vid = ADDON.getSettingInt('view')
+        except:
+            vid = 0
         if vid:
             xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
         else:

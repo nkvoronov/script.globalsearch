@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.globalsearch" name="Global Search" version="8.0.12.017" provider-name="ronie, YLLOW_DRAGON">
+<addon id="script.globalsearch" name="Global Search" version="8.0.12.018" provider-name="ronie, YLLOW_DRAGON">
 	<requires>
 		<import addon="xbmc.python" version="2.26.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="default.py"/>
 	<extension point="xbmc.addon.metadata">
 		<summary lang="en_GB">Search your library.</summary>
-		<summary lang="ru_RU">Пошук у вашій бібліотеці.</summary>
-		<summary lang="uk_UA">Обкладинка Estuary v2 Extended Shortcuts від phil65, Piers, YLLOW_DRAGON, Guilouz.</summary>
+		<summary lang="ru_RU">Найдите в вашей библиотеке.</summary>
+		<summary lang="uk_UA">Пошук у вашій бібліотеці.</summary>
 		<description lang="en_GB">This addon can find any item in your video and music library.</description>
 		<description lang="ru_RU">Это дополнение поможет найти любую запись в вашей медиатеке.</description>
 		<description lang="uk_UA">Це доповнення допоможе знайти будь-який запис у вашій бібліотеці.</description>

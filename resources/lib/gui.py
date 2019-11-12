@@ -161,25 +161,48 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setProperty('WatchedEpisodes', str(item['watchedepisodes']))
                     listitem.setProperty('UnWatchedEpisodes', str(item['episode'] - item['watchedepisodes']))
                 elif cat['content'] == 'seasons':
-                    listitem.setProperty('tvshowid', str(item['tvshowid']))
+                    tvshowid = str(item['tvshowid'])
+                    listitem.setProperty('tvshowid', tvshowid)
+                    genre, plot = self._get_tvshows_details(tvshowid)
+                    listitem.setProperty('genre', genre)
+                    listitem.setProperty('plot', plot)
                 elif (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'episodes' or cat['content'] == 'musicvideos':
-                    position = int(item['resume']['position']) + 0.001
-                    total = int(item['resume']['total']) + 0.001
+                    if cat['content'] == 'episodes':
+                        tvshowid = str(item['tvshowid'])
+                        genre, plot = self._get_tvshows_details(tvshowid)
+                        listitem.setProperty('genre', genre)
+                    position = int(item['resume']['position'])
+                    total = int(item['resume']['total'])
                     resume = str(position)
-                    position_percent = int(position / total * 100.0)
-                    if position_percent == 100:
-                        position_percent = 0
+                    position_percent = 0
+                    if total > 0:
+                        position_percent = int(float(position) / float(total) * 100.0)
+                        if position_percent == 100:
+                            position_percent = 0
                     percentplayed = str(position_percent)
                     listitem.setProperty('resume', resume)
                     listitem.setProperty('percentplayed', percentplayed)
                     listitem.setProperty('playcount', str(int(item['playcount'])))
                     listitem.setProperty('content', cat['type'])
                 elif cat['content'] == 'artists' or cat['content'] == 'albums':
+                    if cat['content'] == 'artists':
+                        genre = ""
+                        if len(item['genre']) > 0:
+                            genre = " / ".join(item['genre'])
+                        listitem.setProperty('genre', genre)
                     info, props = self._split_labels(item, cat['properties'], cat['content'][0:-1] + '_')
                     for key, value in props.iteritems():
                         listitem.setProperty(key, value)
+                if cat['content'] == 'artists':
+                    artistid = str(item['artistid'])
+                    folderpath = "musicdb://artists/%s/?albumartistsonly=%s" % (artistid, self.albumartists)
+                    listitem.setProperty('folderpath', folderpath)
                 if cat['content'] == 'albums':
-                    listitem.setProperty('artistid', str(item['artistid'][0]))
+                    albumid = str(item['albumid'])
+                    artistid = str(item['artistid'][0])
+                    folderpath = "musicdb://artists/%s/%s/?albumartistsonly=%s&artistid=%s" % (artistid, albumid, self.albumartists, artistid)
+                    listitem.setProperty('artistid', artistid)
+                    listitem.setProperty('folderpath', folderpath)
                 if cat['content'] == 'songs':
                     listitem.setProperty('artistid', str(item['artistid'][0]))
                     listitem.setProperty('albumid', str(item['albumid']))
@@ -227,6 +250,17 @@ class GUI(xbmcgui.WindowXML):
                 xbmc.sleep(100)
                 self.setFocusId(self.getCurrentContainerId())
                 self.focusset = 'true'
+
+    def _get_tvshows_details(self, tvshowid):
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetTVShowDetails", "params":{"tvshowid":%s,"properties":["genre","plot"]},"id":1}' % (tvshowid))
+        json_query = unicode(json_query, 'utf-8', errors='ignore')
+        json_response = json.loads(json_query)
+        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('tvshowdetails'):
+            genre = ""
+            if len(json_response['result']['tvshowdetails']['genre']) > 0:
+                    genre = " / ".join(json_response['result']['tvshowdetails']['genre'])
+            plot = json_response['result']['tvshowdetails']['plot']
+        return genre, plot
 
     def _fetch_channelgroups(self, cat):
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(19069))
@@ -369,8 +403,9 @@ class GUI(xbmcgui.WindowXML):
                 art['thumb'] = labels['poster']
             elif labels.get('banner'):
                 art['thumb'] = labels['banner']
-            elif labels.get('fanart'):
-                art['fanart'] = labels['fanart']
+            # needed for seasons and episodes
+            elif art.get('tvshow.fanart'):
+               art['fanart'] = art['tvshow.fanart']
         else:
             art = labels['art']
             # needed for albums and songs

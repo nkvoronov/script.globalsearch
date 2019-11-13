@@ -196,13 +196,13 @@ class GUI(xbmcgui.WindowXML):
                 if cat['content'] == 'artists':
                     artistid = str(item['artistid'])
                     folderpath = "musicdb://artists/%s/?albumartistsonly=%s" % (artistid, self.albumartists)
-                    listitem.setProperty('folderpath', folderpath)
+                    listitem.setPath(folderpath)
                 if cat['content'] == 'albums':
                     albumid = str(item['albumid'])
                     artistid = str(item['artistid'][0])
                     folderpath = "musicdb://artists/%s/%s/?albumartistsonly=%s&artistid=%s" % (artistid, albumid, self.albumartists, artistid)
                     listitem.setProperty('artistid', artistid)
-                    listitem.setProperty('folderpath', folderpath)
+                    listitem.setPath(folderpath)
                 if cat['content'] == 'songs':
                     listitem.setProperty('artistid', str(item['artistid'][0]))
                     listitem.setProperty('albumid', str(item['albumid']))
@@ -525,6 +525,7 @@ class GUI(xbmcgui.WindowXML):
         labels = ()
         functions = ()
         media = ''
+        path = ''
         if listitem.getProperty('media') == 'video':
             media = listitem.getVideoInfoTag().getMediaType()
         elif listitem.getProperty('media') == 'music':
@@ -558,7 +559,7 @@ class GUI(xbmcgui.WindowXML):
             functions += ('info',)
         if listitem.getProperty('type') != 'livetv':
             if listitem.getProperty('content') in ('movies', 'episodes', 'musicvideos', 'songs'):
-                path = listitem. getPath()
+                path = listitem.getPath()
             elif listitem.getProperty('content') == 'tvshows':
                 dbid = listitem.getVideoInfoTag().getDbId()
                 path = "videodb://tvshows/titles/%s/" % dbid
@@ -606,7 +607,7 @@ class GUI(xbmcgui.WindowXML):
         if not thumbnail:
             thumbnail = listitem.getArt('icon')
         if listitem.getProperty('content') in ('movies', 'episodes', 'musicvideos', 'songs'):
-            path = listitem. getPath()
+            path = listitem.getPath()
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Favourites.AddFavourite", "params":{"type":"media", "title":"%s", "path":"%s", "thumbnail":"%s"}, "id": 1}' % (label, path, thumbnail))
         elif listitem.getProperty('content') == 'tvshows':
             dbid = listitem.getVideoInfoTag().getDbId()

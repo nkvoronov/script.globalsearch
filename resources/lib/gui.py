@@ -23,20 +23,29 @@ class GUI(xbmcgui.WindowXML):
         if self.searchstring == '':
             self._close()
         else:
-            self.window_id = xbmcgui.getCurrentWindowId()
-            xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
-            if not self.nextsearch:
-                if self.params == {}:
-                    self._load_settings()
-                else:
-                    self._parse_argv()
-                self._get_preferences()
-                self._load_favourites()
-            self._reset_variables()
-            self._init_items()
-            self.menu.reset()
-            self._set_view()
-            self._fetch_items()
+            try:
+                xbmc.executebuiltin('ActivateWindow(busydialognocancel)')
+                self.window_id = 10000
+                xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
+                if not self.nextsearch:
+                    if self.params == {}:
+                        self._load_settings()
+                    else:
+                        self._parse_argv()
+                    self._get_preferences()
+                    self._load_favourites()
+                self._reset_variables()
+                self._init_items()
+                self.menu.reset()
+                self._set_view()
+                self._fetch_items()
+                self.setFocusId(MENU)
+                self._set_view()
+                self.setFocusId(self.getCurrentContainerId())
+                xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
+            except Exception, e:
+                xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
+                log('ERROR: (' + repr(e) + ')')
 
     def _hide_controls(self):
         for cid in [SEARCHBUTTON, NORESULTS]:
@@ -84,7 +93,7 @@ class GUI(xbmcgui.WindowXML):
     def _init_items(self):
         self.Player = MyPlayer()
         self.menu = self.getControl(MENU)
-        self.content = {} 
+        self.content = {}
         self.oldfocus = 0
 
     def _set_view(self):

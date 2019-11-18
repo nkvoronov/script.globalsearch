@@ -119,3 +119,7 @@ msgstr "Искать снова?"
 msgctxt "#32299"
 msgid "New search"
 msgstr "Новый поиск"
+
+msgctxt "#32300"
+msgid "Content View"
+msgstr "Вид содержимого"

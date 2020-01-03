@@ -1,6 +1,6 @@
 import os
 import sys
-import urllib
+from urllib.parse import unquote_plus
 import xbmc
 import xbmcaddon
 
@@ -8,8 +8,8 @@ ADDON = xbmcaddon.Addon()
 ADDONID = ADDON.getAddonInfo('id')
 ADDONVERSION = ADDON.getAddonInfo('version')
 LANGUAGE = ADDON.getLocalizedString
-CWD = ADDON.getAddonInfo('path').decode('utf-8')
-RESOURCE = xbmc.translatePath(os.path.join(CWD, 'resources', 'lib').encode('utf-8')).decode('utf-8')
+CWD = ADDON.getAddonInfo('path')
+RESOURCE = xbmc.translatePath(os.path.join(CWD, 'resources', 'lib'))
 
 sys.path.append(RESOURCE)
 
@@ -21,7 +21,7 @@ if (__name__ == '__main__'):
     except:
         params = {}
     searchstring = params.get('searchstring','')
-    searchstring = urllib.unquote_plus(searchstring)
+    searchstring = unquote_plus(searchstring)
     if searchstring == '':
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
         keyboard.doModal()

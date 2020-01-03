@@ -4,10 +4,8 @@ import operator
 from defs import *
 
 def log(txt):
-    if isinstance(txt,str):
-        txt = txt.decode('utf-8')
-    message = u'%s: %s' % (ADDONID, txt)
-    xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
+    message = '%s: %s' % (ADDONID, txt)
+    xbmc.log(msg=message, level=xbmc.LOGDEBUG)
 
 class GUI(xbmcgui.WindowXML):
     def __init__(self, *args, **kwargs):
@@ -56,31 +54,28 @@ class GUI(xbmcgui.WindowXML):
             CATEGORIES[key]['enabled'] = self.params[key] == 'true'
 
     def _load_settings(self):
-        for key, value in CATEGORIES.iteritems():
-            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes'):
-                CATEGORIES[key]['enabled'] = ADDON.getSetting(key) == 'true'
+        for key, value in CATEGORIES.items():
+            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes', 'actormovies', 'directormovies'):
+                CATEGORIES[key]['enabled'] = ADDON.getSettingBool(key)
 
     def _get_preferences(self):
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"myvideos.selectaction"}, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         self.playaction = 1
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
+        if 'result' in json_response and json_response['result'] != None and 'value' in json_response['result']:
             self.playaction = json_response['result']['value']
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Settings.GetSettingValue", "params":{"setting":"musiclibrary.showcompilationartists"}, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         self.albumartists = "false"
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('value'):
+        if 'result' in json_response and json_response['result'] != None and 'value' in json_response['result']:
             if json_response['result']['value'] == "false":
                 self.albumartists = "true"
 
     def _load_favourites(self):
         self.favourites = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Favourites.GetFavourites", "params":{"properties":["path", "windowparameter"]}, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('favourites') and json_response['result']['favourites'] != None:
+        if 'result' in json_response and json_response['result'] != None and 'favourites' in json_response['result'] and json_response['result']['favourites'] != None:
             for item in json_response['result']['favourites']:
                 if 'path' in item:
                     self.favourites.append(item['path'])
@@ -97,9 +92,12 @@ class GUI(xbmcgui.WindowXML):
         self.oldfocus = 0
 
     def _set_view(self):
-        vid = ADDON.getSetting('view')
+        try:
+            vid = ADDON.getSettingInt('view')
+        except:
+            vid = 0
         if vid:
-            xbmc.executebuiltin('Container.SetViewMode(%i)' % int(vid))
+            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
         else:
             # no view will be loaded unless we call SetViewMode, might be a bug...
             xbmc.executebuiltin('Container.SetViewMode(-1)')
@@ -119,12 +117,11 @@ class GUI(xbmcgui.WindowXML):
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
         self.getControl(SEARCHCATEGORY).setVisible(True)
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % (search)))
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         listitems = []
         actors = {}
         directors = {}
-        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key(cat['content']):
+        if 'result' in json_response and(json_response['result'] != None) and cat['content'] in json_response['result']:
             for item in json_response['result'][cat['content']]:
                 if cat['type'] == 'actors':
                     for item in item['cast']:
@@ -200,7 +197,7 @@ class GUI(xbmcgui.WindowXML):
                             genre = " / ".join(item['genre'])
                         listitem.setProperty('genre', genre)
                     info, props = self._split_labels(item, cat['properties'], cat['content'][0:-1] + '_')
-                    for key, value in props.iteritems():
+                    for key, value in props.items():
                         listitem.setProperty(key, value)
                 if cat['content'] == 'artists':
                     artistid = str(item['artistid'])
@@ -276,9 +273,8 @@ class GUI(xbmcgui.WindowXML):
         self.getControl(SEARCHCATEGORY).setVisible(True)
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannelGroups", "params":{"channeltype":"tv"}, "id":1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('channelgroups')):
+        if('result' in json_response) and(json_response['result'] != None) and('channelgroups' in json_response['result']):
             for item in json_response['result']['channelgroups']:
                 channelgrouplist.append(item['channelgroupid'])
             if channelgrouplist:
@@ -289,9 +285,8 @@ class GUI(xbmcgui.WindowXML):
         channellist = []
         for channelgroupid in channelgrouplist:
             json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannels", "params":{"channelgroupid":%i, "properties":["channel", "thumbnail"]}, "id":1}' % channelgroupid)
-            json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
-            if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('channels')):
+            if('result' in json_response) and(json_response['result'] != None) and('channels' in json_response['result']):
                 for item in json_response['result']['channels']:
                     channellist.append(item)
         if channellist:
@@ -309,9 +304,8 @@ class GUI(xbmcgui.WindowXML):
             channelname = channel['label']
             channelthumb = channel['thumbnail']
             json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetBroadcasts", "params":{"channelid":%i, "properties":["starttime", "endtime", "runtime", "genre", "plot"]}, "id":1}' % channelid)
-            json_query = unicode(json_query, 'utf-8', errors='ignore')
             json_response = json.loads(json_query)
-            if(json_response.has_key('result')) and(json_response['result'] != None) and(json_response['result'].has_key('broadcasts')):
+            if('result' in json_response) and(json_response['result'] != None) and('broadcasts' in json_response['result']):
                 for item in json_response['result']['broadcasts']:
                     broadcastname = item['label']
                     livetvmatch = re.search('.*' + self.searchstring + '.*', broadcastname, re.I)
@@ -397,7 +391,7 @@ class GUI(xbmcgui.WindowXML):
             del labels['file']
             del labels['artistid']
             del labels['albumid']
-        for key, value in labels.iteritems():
+        for key, value in labels.items():
             if isinstance(value, list):
                 if key == 'artist' and item == 'musicvideo':
                     continue
@@ -714,7 +708,7 @@ class GUI(xbmcgui.WindowXML):
                 self.oldfocus = item
 
     def _close(self):
-        ADDON.setSetting('view', str(self.getCurrentContainerId()))
+        ADDON.setSettingInt('view', self.getCurrentContainerId())
         log('script stopped')
         self.close()
         xbmc.sleep(300)

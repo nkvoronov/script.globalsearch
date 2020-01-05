@@ -41,7 +41,7 @@ class GUI(xbmcgui.WindowXML):
                 self._set_view()
                 self.setFocusId(self.getCurrentContainerId())
                 xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
-            except Exception, e:
+            except Exception as e:
                 xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
                 log('ERROR: (' + repr(e) + ')')
 
@@ -259,9 +259,8 @@ class GUI(xbmcgui.WindowXML):
 
     def _get_tvshows_details(self, tvshowid):
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetTVShowDetails", "params":{"tvshowid":%s,"properties":["genre","plot"]},"id":1}' % (tvshowid))
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and(json_response['result'] != None) and json_response['result'].has_key('tvshowdetails'):
+        if ('result' in json_response) and(json_response['result'] != None) and ('tvshowdetails' in json_response['result']):
             genre = ""
             if len(json_response['result']['tvshowdetails']['genre']) > 0:
                     genre = " / ".join(json_response['result']['tvshowdetails']['genre'])
@@ -274,7 +273,7 @@ class GUI(xbmcgui.WindowXML):
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannelGroups", "params":{"channeltype":"tv"}, "id":1}')
         json_response = json.loads(json_query)
-        if('result' in json_response) and(json_response['result'] != None) and('channelgroups' in json_response['result']):
+        if('result' in json_response) and (json_response['result'] != None) and('channelgroups' in json_response['result']):
             for item in json_response['result']['channelgroups']:
                 channelgrouplist.append(item['channelgroupid'])
             if channelgrouplist:

@@ -5,13 +5,8 @@ import xbmc
 import xbmcaddon
 
 ADDON = xbmcaddon.Addon()
-ADDONID = ADDON.getAddonInfo('id')
-ADDONVERSION = ADDON.getAddonInfo('version')
 LANGUAGE = ADDON.getLocalizedString
 CWD = ADDON.getAddonInfo('path')
-RESOURCE = xbmc.translatePath(os.path.join(CWD, 'resources', 'lib'))
-
-sys.path.append(RESOURCE)
 
 
 if (__name__ == '__main__'):
@@ -30,7 +25,7 @@ if (__name__ == '__main__'):
     else:
         del params['searchstring']
     if searchstring:
-        import gui
+        from lib import gui
         ui = gui.GUI('script-globalsearch.xml', CWD, 'default', '1080i', True, searchstring=searchstring, params=params)
         ui.doModal()
         del ui

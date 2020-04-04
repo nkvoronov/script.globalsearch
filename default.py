@@ -8,9 +8,7 @@ ADDON = xbmcaddon.Addon()
 LANGUAGE = ADDON.getLocalizedString
 CWD = ADDON.getAddonInfo('path')
 
-
 if (__name__ == '__main__'):
-    searchstring = None
     try:
         params = dict(arg.split('=') for arg in sys.argv[ 1 ].split('&'))
     except:

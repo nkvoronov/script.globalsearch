@@ -73,5 +73,6 @@
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>
 		</assets>
+		<news>- fix listing of pvr results</news>
 	</extension>
 </addon>

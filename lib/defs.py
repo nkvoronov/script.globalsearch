@@ -166,7 +166,7 @@ CATEGORIES = {
                         'sort':'title',
                         'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
                         'streamdetails':False,
-                        'label':344,
+                        'label':32221,
                         'icon':'DefaultActor.png',
                         'menuthumb':'globalsearch-icon-actors.png',
                         'media':''
@@ -186,8 +186,23 @@ CATEGORIES = {
                            'menuthumb':'globalsearch-icon-directors.png',
                            'media':''
                           },
+              'tvactors':{
+                          'order':12,
+                          'enabled':False,
+                          'type':'tvactors',
+                          'content':'tvshows',
+                          'method':'VideoLibrary.GetTVShows',
+                          'properties':ACTORLABELS,
+                          'sort':'title',
+                          'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
+                          'streamdetails':False,
+                          'label':32222,
+                          'icon':'DefaultActor.png',
+                          'menuthumb':'globalsearch-icon-actors.png',
+                          'media':''
+                         },
               'actormovies':{
-                        'order':12,
+                        'order':13,
                         'enabled':False,
                         'type':'movies',
                         'content':'movies',
@@ -202,7 +217,7 @@ CATEGORIES = {
                         'media':'video'
                        },
               'directormovies':{
-                        'order':13,
+                        'order':14,
                         'enabled':False,
                         'type':'movies',
                         'content':'movies',
@@ -216,8 +231,23 @@ CATEGORIES = {
                         'menuthumb':'globalsearch-icon-movies.png',
                         'media':'video'
                        },
+              'actortvshows':{
+                              'order':15,
+                              'enabled':False,
+                              'type':'tvshows',
+                              'content':'tvshows',
+                              'method':'VideoLibrary.GetTVShows',
+                              'properties':TVSHOWLABELS,
+                              'sort':'title',
+                              'rule':'"filter":{"field":"actor", "operator":"contains", "value":"%s"}',
+                              'streamdetails':False,
+                              'label':20343,
+                              'icon':'DefaultVideo.png',
+                              'menuthumb':'globalsearch-icon-tvshows.png',
+                              'media':'video'
+                             },
               'tvshowseasons':{
-                               'order':14,
+                               'order':16,
                                'enabled':False,
                                'type':'tvshowseasons',
                                'content':'seasons',
@@ -232,7 +262,7 @@ CATEGORIES = {
                                'media':'video'
                               },
               'seasonepisodes':{
-                                'order':15,
+                                'order':17,
                                 'enabled':False,
                                 'type':'seasonepisodes',
                                 'content':'episodes',
@@ -247,7 +277,7 @@ CATEGORIES = {
                                 'media':'video'
                                },
               'artistalbums':{
-                              'order':16,
+                              'order':18,
                               'enabled':False,
                               'type':'artistalbums',
                               'content':'albums',
@@ -262,7 +292,7 @@ CATEGORIES = {
                               'media':'music'
                              },
               'albumsongs':{
-                             'order':17,
+                             'order':19,
                              'enabled':False,
                              'type':'albumsongs',
                              'content':'songs',

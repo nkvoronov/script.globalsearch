@@ -46,7 +46,7 @@ class GUI(xbmcgui.WindowXML):
 
     def _load_settings(self):
         for key, value in CATEGORIES.items():
-            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes', 'actormovies', 'directormovies'):
+            if key not in ('albumsongs', 'artistalbums', 'tvshowseasons', 'seasonepisodes', 'actormovies', 'directormovies', 'actortvshows'):
                 CATEGORIES[key]['enabled'] = ADDON.getSettingBool(key)
 
     def _get_preferences(self):
@@ -114,7 +114,7 @@ class GUI(xbmcgui.WindowXML):
         directors = {}
         if 'result' in json_response and(json_response['result'] != None) and cat['content'] in json_response['result']:
             for item in json_response['result'][cat['content']]:
-                if cat['type'] == 'actors':
+                if cat['type'] == 'actors' or cat['type'] == 'tvactors':
                     for item in item['cast']:
                         if search.lower() in item['name'].lower():
                             name = item['name']
@@ -150,9 +150,9 @@ class GUI(xbmcgui.WindowXML):
                         listitem.addStreamInfo('audio', stream)
                     for stream in item['streamdetails']['subtitle']:
                         listitem.addStreamInfo('subtitle', stream)
-                if cat['type'] != 'actors' and cat['type'] != 'directors':
+                if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
                     listitem.setProperty('content', cat['content'])
-                if cat['content'] == 'tvshows':
+                if cat['content'] == 'tvshows' and cat['type'] != 'tvactors':
                     listitem.setProperty('TotalSeasons', str(item['season']))
                     listitem.setProperty('TotalEpisodes', str(item['episode']))
                     listitem.setProperty('WatchedEpisodes', str(item['watchedepisodes']))
@@ -170,14 +170,14 @@ class GUI(xbmcgui.WindowXML):
                 if cat['content'] == 'songs':
                     listitem.setProperty('artistid', str(item['artistid'][0]))
                     listitem.setProperty('albumid', str(item['albumid']))
-                if (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'tvshows' or cat['content'] == 'episodes' or cat['content'] == 'musicvideos' or cat['content'] == 'songs':
+                if (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or (cat['content'] == 'tvshows' and cat['type'] != 'tvactors') or cat['content'] == 'episodes' or cat['content'] == 'musicvideos' or cat['content'] == 'songs':
                     listitem.setPath(item['file'])
                 if cat['media']:
                     listitem.setInfo(cat['media'], self._get_info(item, cat['content'][0:-1]))
                     listitem.setProperty('media', cat['media'])
-                if cat['content'] == 'tvshows':
+                if cat['content'] == 'tvshows' and cat['type'] != 'tvactors':
                     listitem.setIsFolder(True)
-                if cat['type'] != 'actors' and cat['type'] != 'directors':
+                if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
                     listitems.append(listitem)
             if actors:
                 for name, val in sorted(actors.items()):
@@ -192,21 +192,24 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setProperty('content', cat['type'])
                     listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
+            if cat['type'] != 'actors' and cat['type'] != 'tvactors': 
+                menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
+            else:
+                menuitem = xbmcgui.ListItem(LANGUAGE(cat['label']), str(len(listitems)), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
-            if cat['type'] != 'actors' and cat['type'] != 'directors':
+            if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
                 menuitem.setProperty('content', cat['content'])
-            elif cat['type'] == 'actors':
+            elif cat['type'] == 'actors' or cat['type'] == 'tvactors':
                 menuitem.setProperty('content', 'actors')
             elif cat['type'] == 'directors':
                 menuitem.setProperty('content', 'directors')
             self.menu.addItem(menuitem)
             self.content[cat['type']] = listitems
             if self.focusset == 'false':
-                if cat['type'] != 'actors' and cat['type'] != 'directors':
+                if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
                     self.setContent(cat['content'])
-                elif cat['type'] == 'actors':
+                elif cat['type'] == 'actors' or cat['type'] == 'tvactors':
                     self.setContent('actors')
                 elif cat['type'] == 'directors':
                     self.setContent('directors')
@@ -393,9 +396,7 @@ class GUI(xbmcgui.WindowXML):
             search = listitem.getMusicInfoTag().getDbId()
         elif key == 'albumsongs':
             search = listitem.getMusicInfoTag().getDbId()
-        elif key == 'actormovies':
-            search = listitem.getLabel()
-        elif key == 'directormovies':
+        elif key == 'actormovies' or key == 'directormovies' or key == 'actortvshows':
             search = listitem.getLabel()
         self._reset_variables()
         self._hide_controls()
@@ -618,7 +619,11 @@ class GUI(xbmcgui.WindowXML):
                 songid = listitem.getMusicInfoTag().getDbId()
                 self._play_item('songid', songid)
             elif media == 'actors':
-                self._get_allitems('actormovies', listitem)
+                content = listitem.getProperty('content')
+                if content == 'actors':
+                    self._get_allitems('actormovies', listitem)
+                if content == 'tvactors':
+                    self._get_allitems('actortvshows', listitem)
             elif media == 'directors':
                 self._get_allitems('directormovies', listitem)
         elif controlId == MENU:

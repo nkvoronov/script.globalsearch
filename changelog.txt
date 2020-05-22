@@ -1,3 +1,8 @@
+v9.0.4
+- add support for tv show actors
+- add videoresolution flag
+- small skin layout changes
+
 v9.0.3
 - fix listing of pvr results
 

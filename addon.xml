@@ -73,7 +73,8 @@
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>
 		</assets>
-		<news>- add support for tv show actors
+		<news>- add support for originaltitle search
+- add support for tv show actors
 - add videoresolution flag</news>
 	</extension>
 </addon>

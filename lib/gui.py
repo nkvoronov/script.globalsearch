@@ -105,9 +105,12 @@ class GUI(xbmcgui.WindowXML):
             return
         if cat['type'] == 'seasonepisodes':
             search = search[0], search[1]
+            rule = cat['rule'].format(query0 = search[0], query1 = search[1])
+        else:
+            rule = cat['rule'].format(query = search)
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(cat['label']))
         self.getControl(SEARCHCATEGORY).setVisible(True)
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], cat['rule'] % (search)))
+        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"%s", "params":{"properties":%s, "sort":{"method":"%s"}, %s}, "id": 1}' % (cat['method'], json.dumps(cat['properties']), cat['sort'], rule))
         json_response = json.loads(json_query)
         listitems = []
         actors = {}

@@ -94,9 +94,14 @@ class GUI(xbmcgui.WindowXML):
             xbmc.executebuiltin('Container.SetViewMode(-1)')
 
     def _fetch_items(self):
+        self.history = {}
+        self.level = 1
+        cats = []
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
             if CATEGORIES[key]['enabled']:
                 self._get_items(CATEGORIES[key], self.searchstring)
+                cats.append(CATEGORIES[key])
+        self.history[self.level] = [cats, self.searchstring]
         self._check_focus()
 
     def _get_items(self, cat, search):
@@ -115,6 +120,10 @@ class GUI(xbmcgui.WindowXML):
         listitems = []
         actors = {}
         directors = {}
+        if self.level > 1:
+            listitem = xbmcgui.ListItem('..', offscreen=True)
+            listitem.setArt({'icon':'DefaultFolderBack.png'})
+            listitems.append(listitem)
         if 'result' in json_response and(json_response['result'] != None) and cat['content'] in json_response['result']:
             for item in json_response['result'][cat['content']]:
                 if cat['type'] == 'actors' or cat['type'] == 'tvactors':
@@ -406,6 +415,8 @@ class GUI(xbmcgui.WindowXML):
         self.clearList()
         self.menu.reset()
         self.oldfocus = 0
+        self.level += 1
+        self.history[self.level] = [[CATEGORIES[key]], search]
         self._get_items(CATEGORIES[key], search)
         self._check_focus()
 
@@ -579,6 +590,17 @@ class GUI(xbmcgui.WindowXML):
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Favourites.AddFavourite", "params":{"type":"window", "window":"10502", "windowparameter":"musicdb://artists/%s/%s/?albumartistsonly=%s&artistid=%s", "title":"%s", "thumbnail":"%s"}, "id": 1}' % (artistid, dbid, self.albumartists, artistid, label, thumbnail))
         self._load_favourites()
 
+    def _nav_back(self):
+        self._reset_variables()
+        self._hide_controls()
+        self.clearList()
+        self.menu.reset()
+        self.oldfocus = 0
+        cats = self.history[self.level][0]
+        search = self.history[self.level][1]
+        for cat in cats:
+            self._get_items(cat, search)
+
     def _new_search(self):
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
         keyboard.doModal()
@@ -593,6 +615,9 @@ class GUI(xbmcgui.WindowXML):
         if controlId == self.getCurrentContainerId():
             listitem = self.getListItem(self.getCurrentListPosition())
             media = ''
+            if listitem.getLabel() == '..':
+                self.level -= 1
+                self._nav_back()
             if listitem.getVideoInfoTag().getMediaType():
                 media = listitem.getVideoInfoTag().getMediaType()
             elif listitem.getMusicInfoTag().getMediaType():

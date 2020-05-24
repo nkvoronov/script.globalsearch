@@ -96,7 +96,7 @@ CATEGORIES = {
                              'method':'VideoLibrary.GetMusicVideos',
                              'properties':MUSICVIDEOLABELS,
                              'sort':'label',
-                             'rule':'"filter":{{"field":"title", "operator":"contains", "value":"{query}"}}',
+                             'rule':'"filter":{{"or":[{{"field":"title", "operator":"contains", "value":"{query}"}}, {{"field":"artist", "operator":"contains", "value":"{query}"}}]}}',
                              'streamdetails':True,
                              'label':20389,
                              'icon':'DefaultVideo.png',

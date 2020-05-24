@@ -1,4 +1,5 @@
 v9.0.4
+- add support for searching musicvideos by artist name
 - add support for originaltitle search
 - add support for tv show actors
 - add videoresolution flag

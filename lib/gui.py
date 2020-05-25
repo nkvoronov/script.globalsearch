@@ -311,15 +311,12 @@ class GUI(xbmcgui.WindowXML):
             if self.focusset == 'false':
                 self.setContent(cat['content'])
                 self.addItems(listitems)
-                xbmc.sleep(100)
                 self.setFocusId(self.getCurrentContainerId())
                 self.focusset = 'true'
 
     def _update_list(self, item, content):
         self.clearList()
-        xbmc.sleep(30)
         self.setContent(content)
-        xbmc.sleep(2)
         self.addItems(self.content[item])
 
     def _get_info(self, labels, item):
@@ -711,10 +708,9 @@ class GUI(xbmcgui.WindowXML):
 
     def _close(self):
         ADDON.setSettingInt('view', self.getCurrentContainerId())
-        log('script stopped')
-        self.close()
-        xbmc.sleep(300)
         xbmcgui.Window(self.window_id).clearProperty('GlobalSearch.SearchString')
+        self.close()
+        log('script stopped')
 
 
 class MyPlayer(xbmc.Player):

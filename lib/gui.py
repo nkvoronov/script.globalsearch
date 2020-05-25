@@ -17,6 +17,9 @@ class GUI(xbmcgui.WindowXML):
         self._hide_controls()
         log('script version %s started' % ADDONVERSION)
         self.nextsearch = False
+        self.navback = False
+        self.history = {}
+        self.menuposition = 0
         self.searchstring = self._clean_string(self.searchstring).strip()
         if self.searchstring == '':
             self._close()
@@ -89,19 +92,20 @@ class GUI(xbmcgui.WindowXML):
             vid = 0
         if vid:
             xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
+            # kodi bug: need to call this twice
+            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
         else:
             # no view will be loaded unless we call SetViewMode, might be a bug...
             xbmc.executebuiltin('Container.SetViewMode(-1)')
 
     def _fetch_items(self):
-        self.history = {}
         self.level = 1
         cats = []
         for key, value in sorted(CATEGORIES.items(), key=lambda x: x[1]['order']):
             if CATEGORIES[key]['enabled']:
                 self._get_items(CATEGORIES[key], self.searchstring)
                 cats.append(CATEGORIES[key])
-        self.history[self.level] = [cats, self.searchstring]
+        self.history[self.level] = {'cats':cats, 'search':self.searchstring}
         self._check_focus()
 
     def _get_items(self, cat, search):
@@ -217,8 +221,22 @@ class GUI(xbmcgui.WindowXML):
             elif cat['type'] == 'directors':
                 menuitem.setProperty('content', 'directors')
             self.menu.addItem(menuitem)
+            if self.navback:
+                self.menu.selectItem(self.history[self.level]['menuposition'])
             self.content[cat['type']] = listitems
-            if self.focusset == 'false':
+            if self.navback and self.focusset == 'false':
+                if self.history[self.level]['menutype'] == cat['type']:
+                    if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
+                        self.setContent(cat['content'])
+                    elif cat['type'] == 'actors' or cat['type'] == 'tvactors':
+                        self.setContent('actors')
+                    elif cat['type'] == 'directors':
+                        self.setContent('directors')
+                    self.addItems(listitems)
+                    self.setCurrentListPosition(self.history[self.level]['containerposition'])
+                    self.menutype = cat['type']
+                    self.focusset = 'true'
+            elif self.focusset == 'false':
                 if cat['type'] != 'actors' and cat['type'] != 'directors' and cat['type'] != 'tvactors':
                     self.setContent(cat['content'])
                 elif cat['type'] == 'actors' or cat['type'] == 'tvactors':
@@ -226,8 +244,8 @@ class GUI(xbmcgui.WindowXML):
                 elif cat['type'] == 'directors':
                     self.setContent('directors')
                 self.addItems(listitems)
-                xbmc.sleep(100)
                 self.setFocusId(self.getCurrentContainerId())
+                self.menutype = cat['type']
                 self.focusset = 'true'
 
     def _fetch_channelgroups(self, cat):
@@ -416,7 +434,10 @@ class GUI(xbmcgui.WindowXML):
         self.menu.reset()
         self.oldfocus = 0
         self.level += 1
-        self.history[self.level] = [[CATEGORIES[key]], search]
+        self.history[self.level - 1]['menuposition']  = self.menuposition
+        self.history[self.level - 1]['menutype']  = self.menutype
+        self.history[self.level - 1]['containerposition']  = self.containerposition
+        self.history[self.level] = {'cats':[CATEGORIES[key]], 'search':search,}
         self._get_items(CATEGORIES[key], search)
         self._check_focus()
 
@@ -596,10 +617,12 @@ class GUI(xbmcgui.WindowXML):
         self.clearList()
         self.menu.reset()
         self.oldfocus = 0
-        cats = self.history[self.level][0]
-        search = self.history[self.level][1]
+        cats = self.history[self.level]['cats']
+        search = self.history[self.level]['search']
+        self.navback = True
         for cat in cats:
             self._get_items(cat, search)
+        self.navback = False
 
     def _new_search(self):
         keyboard = xbmc.Keyboard('', LANGUAGE(32101), False)
@@ -613,6 +636,7 @@ class GUI(xbmcgui.WindowXML):
 
     def onClick(self, controlId):
         if controlId == self.getCurrentContainerId():
+            self.containerposition = self.getCurrentListPosition()
             listitem = self.getListItem(self.getCurrentListPosition())
             media = ''
             if listitem.getLabel() == '..':
@@ -657,6 +681,8 @@ class GUI(xbmcgui.WindowXML):
         elif controlId == MENU:
             item = self.menu.getSelectedItem().getProperty('type')
             content = self.menu.getSelectedItem().getProperty('content')
+            self.menuposition = self.menu.getSelectedPosition()
+            self.menutype = self.menu.getSelectedItem().getProperty('type')
             self._update_list(item, content)
         elif controlId == SEARCHBUTTON:
             self._new_search()
@@ -681,6 +707,8 @@ class GUI(xbmcgui.WindowXML):
         elif self.getFocusId() == MENU and action.getId() in (1, 2, 3, 4, 107):
             item = self.menu.getSelectedItem().getProperty('type')
             content = self.menu.getSelectedItem().getProperty('content')
+            self.menuposition = self.menu.getSelectedPosition()
+            self.menutype = self.menu.getSelectedItem().getProperty('type')
             if self.oldfocus and item != self.oldfocus:
                 self.oldfocus = item
                 self._update_list(item, content)

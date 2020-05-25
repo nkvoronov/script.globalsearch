@@ -43,6 +43,41 @@
 				<bordersize>5</bordersize>
 			</control>
 			<control type="group">
+				<animation effect="slide" end="0,-115" time="300" tween="sine" easing="inout" condition="Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)">conditional</animation>
+				<control type="image">
+					<left>0</left>
+					<top>0</top>
+					<width>1920</width>
+					<height>115</height>
+					<texture>globalsearch-header.png</texture>
+				</control>
+				<control type="image">
+					<left>0</left>
+					<top>965</top>
+					<width>1920</width>
+					<height>115</height>
+					<texture flipy="true">globalsearch-header.png</texture>
+				</control>
+				<control type="group">
+					<top>30</top>
+					<left>90</left>
+					<control type="image">
+						<aspectratio>keep</aspectratio>
+						<width>56</width>
+						<height>56</height>
+						<texture colordiffuse="FF12A0C7">globalsearch-logo.png</texture>
+					</control>
+					<control type="image">
+						<left>40</left>
+						<top>10</top>
+						<aspectratio>keep</aspectratio>
+						<width>192</width>
+						<height>36</height>
+						<texture>globalsearch-logo-text.png</texture>
+					</control>
+				</control>
+			</control>
+			<control type="group">
 				<top>65</top>
 				<control type="image">
 					<left>333</left>
@@ -109,7 +144,7 @@
 				</control>
 			</control>
 			<control type="group">
-				<top>80</top>
+				<top>90</top>
 				<control type="label">
 					<left>0</left>
 					<top>80</top>
@@ -125,7 +160,7 @@
 				</control>
 				<control type="button" id="2">
 					<left>0</left>
-					<top>130</top>
+					<top>135</top>
 					<width>462</width>
 					<height>80</height>
 					<align>left</align>
@@ -142,7 +177,7 @@
 				</control>
 				<control type="label">
 					<left>0</left>
-					<top>200</top>
+					<top>220</top>
 					<width>462</width>
 					<height>50</height>
 					<textoffsetx>20</textoffsetx>
@@ -153,12 +188,11 @@
 					<textcolor>FF12A0C7</textcolor>
 					<label>$LOCALIZE[14211]</label>
 				</control>
-				<control type="fixedlist" id="9000">
+				<control type="list" id="9000">
 					<left>0</left>
-					<top>250</top>
+					<top>275</top>
 					<width>462</width>
-					<height>840</height>
-					<movement>6</movement>
+					<height>665</height>
 					<onup>2</onup>
 					<ondown>990</ondown>
 					<onleft>50</onleft>
@@ -1385,7 +1419,7 @@
 					<left>-5</left>
 					<top>-5</top>
 					<width>430</width>
-					<height>1080</height>
+					<height>1090</height>
 					<texture>globalsearch-panel.png</texture>
 					<bordertexture border="6">globalsearch-panel-shadow.png</bordertexture>
 					<bordersize>5</bordersize>
@@ -1503,52 +1537,7 @@
 			</control>
 		</control>
 		<control type="group">
-			<animation effect="slide" end="0,-115" time="300" tween="sine" easing="inout" condition="Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)">conditional</animation>
-			<control type="image">
-				<left>0</left>
-				<top>0</top>
-				<width>1920</width>
-				<height>115</height>
-				<texture>globalsearch-header.png</texture>
-			</control>
-			<control type="group">
-				<top>30</top>
-				<left>90</left>
-				<control type="image">
-					<aspectratio>keep</aspectratio>
-					<width>56</width>
-					<height>56</height>
-					<texture colordiffuse="FF12A0C7">globalsearch-logo.png</texture>
-				</control>
-				<control type="image">
-					<left>40</left>
-					<top>10</top>
-					<aspectratio>keep</aspectratio>
-					<width>192</width>
-					<height>36</height>
-					<texture>globalsearch-logo-text.png</texture>
-				</control>
-			</control>
-			<control type="label">
-				<top>0</top>
-				<align>right</align>
-				<right>20</right>
-				<height>200</height>
-				<width>900</width>
-				<font>font_clock</font>
-				<shadowcolor>22000000</shadowcolor>
-				<label>$INFO[System.Time]</label>
-			</control>
-		</control>
-		<control type="group">
 			<visible>![Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)]</visible>
-			<control type="image">
-				<left>0</left>
-				<top>965</top>
-				<width>1920</width>
-				<height>115</height>
-				<texture flipy="true">globalsearch-header.png</texture>
-			</control>
 			<control type="group">
 				<animation effect="fade" start="0" end="100" time="300" delay="300">WindowOpen</animation>
 				<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
@@ -1597,6 +1586,19 @@
 						<aspectratio align="center" aligny="top">keep</aspectratio>
 						<texture>$INFO[Container.ListItem.AudioChannels,globalsearch-flags/audiochannel/,.png]</texture>
 					</control>
+				</control>
+			</control>
+			<control type="group">
+				<animation effect="slide" end="0,-115" time="300" tween="sine" easing="inout" condition="Window.IsVisible(DialogVideoInfo.xml) | Window.IsVisible(DialogMusicInfo.xml)">conditional</animation>
+				<control type="label">
+					<top>0</top>
+					<align>right</align>
+					<right>20</right>
+					<height>200</height>
+					<width>900</width>
+					<font>font_clock</font>
+					<shadowcolor>22000000</shadowcolor>
+					<label>$INFO[System.Time]</label>
 				</control>
 			</control>
 			<control type="grouplist">

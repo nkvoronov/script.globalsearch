@@ -86,17 +86,11 @@ class GUI(xbmcgui.WindowXML):
         self.oldfocus = 0
 
     def _set_view(self):
-        try:
-            vid = ADDON.getSettingInt('view')
-        except:
-            vid = 0
-        if vid:
-            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
-            # kodi bug: need to call this twice
-            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
-        else:
-            # no view will be loaded unless we call SetViewMode, might be a bug...
-            xbmc.executebuiltin('Container.SetViewMode(-1)')
+        # no view will be loaded unless we call SetViewMode, might be a bug...
+        xbmc.executebuiltin('Container.SetViewMode(0)')
+        vid = ADDON.getSettingInt('view')
+        # kodi bug: need to call Container.SetViewMode twice
+        xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
 
     def _fetch_items(self):
         self.level = 1

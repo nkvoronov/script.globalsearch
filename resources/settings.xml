@@ -60,7 +60,7 @@
 				</setting>
 				<setting help="" id="view" label="24140" type="integer">
 					<level>0</level>
-					<default>-1</default>
+					<default>50</default>
 					<visible>false</visible>
 					<control type="edit" format="integer" />
 				</setting>

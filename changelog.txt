@@ -1,4 +1,5 @@
 v9.0.4
+- fix issue with unneeded seeking
 - add functionality to navigate back
 - add support for searching musicvideos by artist name
 - add support for originaltitle search

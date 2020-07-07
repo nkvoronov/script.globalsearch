@@ -1,3 +1,6 @@
+v8.0.13
+- fix issue with unneeded seeking
+
 v8.0.12
 - fix sorting of album songs and season episodes
 

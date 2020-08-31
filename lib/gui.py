@@ -249,7 +249,7 @@ class GUI(xbmcgui.WindowXML):
                     listitems.append(listitem)
         if len(listitems) > 0:
             if cat['type'] != 'actors' and cat['type'] != 'tvactors': 
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
+                menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
             else:
                 menuitem = xbmcgui.ListItem(LANGUAGE(cat['label']), str(len(listitems)), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})

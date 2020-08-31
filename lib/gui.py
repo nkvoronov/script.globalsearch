@@ -88,9 +88,9 @@ class GUI(xbmcgui.WindowXML):
     def _set_view(self):
         # no view will be loaded unless we call SetViewMode, might be a bug...
         xbmc.executebuiltin('Container.SetViewMode(0)')
-            vid = ADDON.getSettingInt('view')
+        vid = ADDON.getSettingInt('view')
         # kodi bug: need to call Container.SetViewMode twice
-            xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
+        xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
 
     def _fetch_items(self):
         self.level = 1

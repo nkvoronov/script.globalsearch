@@ -26,7 +26,7 @@ TVSHOWLABELS = ["genre", "year", "episode", "season", "rating", "userrating", "p
 
 SEASONLABELS = ["episode", "season", "showtitle", "tvshowid", "userrating", "watchedepisodes", "playcount", "art"]
 
-EPISODELABELS = ["episode", "season", "rating", "tvshowid", "userrating", "playcount", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed",
+EPISODELABELS = ["episode", "season", "rating", "userrating", "playcount", "director", "plot", "title", "originaltitle", "runtime", "writer", "showtitle", "firstaired", "lastplayed",
                  "votes", "dateadded", "streamdetails", "art", "file", "resume"]
 
 MUSICVIDEOLABELS = ["genre", "year", "rating", "userrating", "playcount", "director", "plot", "title", "runtime", "studio", "premiered", "lastplayed", "album", "artist", "dateadded",

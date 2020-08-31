@@ -1,17 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<settings>
-	<category label="32000">
-		<setting id="view" type="number" label="32300" default="50" />
-		<setting type="sep"/>
-		<setting id="movies" type="bool" label="32001" default="true" />
-		<setting id="actors" type="bool" label="32008" default="true" />
-		<setting id="directors" type="bool" label="32010" default="true" />
-		<setting id="tvshows" type="bool" label="32002" default="true" />
-		<setting id="episodes" type="bool" label="32003" default="true" />		
-		<setting id="musicvideos" type="bool" label="32004" default="true" />
-		<setting id="livetv" type="bool" label="32009" default="false" />
-		<setting id="artists" type="bool" label="32005" default="true" />
-		<setting id="albums" type="bool" label="32006" default="true" />
-		<setting id="songs" type="bool" label="32007" default="true" />
-	</category>
+<settings version="1">
+	<section id="addons">
+		<category id="32000" label="32000">
+			<group id="1">
+				<setting help="" id="movies" label="32001" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="actors" label="32011" type="boolean">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="directors" label="32012" type="boolean">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="tvshows" label="32002" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="episodes" label="32003" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="tvactors" label="32013" type="boolean">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="musicvideos" label="32004" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="livetv" label="32009" type="boolean">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="artists" label="32005" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="albums" label="32006" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="songs" label="32007" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
+				</setting>
+				<setting help="" id="view" label="24140" type="integer">
+					<level>0</level>
+					<default>50</default>
+					<visible>false</visible>
+					<control type="edit" format="integer" />
+				</setting>
+			</group>
+		</category>
+	</section>
 </settings>

@@ -24,29 +24,20 @@ class GUI(xbmcgui.WindowXML):
         if self.searchstring == '':
             self._close()
         else:
-            try:
-                xbmc.executebuiltin('ActivateWindow(busydialognocancel)')
-                self.window_id = 10000
-                xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
-                if not self.nextsearch:
-                    if self.params == {}:
-                        self._load_settings()
-                    else:
-                        self._parse_argv()
-                    self._get_preferences()
-                    self._load_favourites()
-                self._reset_variables()
-                self._init_items()
-                self.menu.reset()
-                self._set_view()
-                self._fetch_items()
-                self.setFocusId(MENU)
-                self._set_view()
-                self.setFocusId(self.getCurrentContainerId())
-                xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
-            except Exception as e:
-                xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
-                log('ERROR: (' + repr(e) + ')')
+            self.window_id = xbmcgui.getCurrentWindowId()
+            xbmcgui.Window(self.window_id).setProperty('GlobalSearch.SearchString', self.searchstring)
+            if not self.nextsearch:
+                if self.params == {}:
+                    self._load_settings()
+                else:
+                    self._parse_argv()
+                self._get_preferences()
+                self._load_favourites()
+            self._reset_variables()
+            self._init_items()
+            self.menu.reset()
+            self._set_view()
+            self._fetch_items()
 
     def _hide_controls(self):
         for cid in [SEARCHBUTTON, NORESULTS]:
@@ -95,15 +86,11 @@ class GUI(xbmcgui.WindowXML):
         self.oldfocus = 0
 
     def _set_view(self):
-        try:
+        # no view will be loaded unless we call SetViewMode, might be a bug...
+        xbmc.executebuiltin('Container.SetViewMode(0)')
             vid = ADDON.getSettingInt('view')
-        except:
-            vid = 0
-        if vid:
+        # kodi bug: need to call Container.SetViewMode twice
             xbmc.executebuiltin('Container.SetViewMode(%i)' % vid)
-        else:
-            # no view will be loaded unless we call SetViewMode, might be a bug...
-            xbmc.executebuiltin('Container.SetViewMode(-1)')
 
     def _fetch_items(self):
         self.level = 1
@@ -181,48 +168,15 @@ class GUI(xbmcgui.WindowXML):
                     listitem.setProperty('WatchedEpisodes', str(item['watchedepisodes']))
                     listitem.setProperty('UnWatchedEpisodes', str(item['episode'] - item['watchedepisodes']))
                 elif cat['content'] == 'seasons':
-                    tvshowid = str(item['tvshowid'])
-                    listitem.setProperty('tvshowid', tvshowid)
-                    genre, plot = self._get_tvshows_details(tvshowid)
-                    listitem.setProperty('genre', genre)
-                    listitem.setProperty('plot', plot)
+                    listitem.setProperty('tvshowid', str(item['tvshowid']))
                 elif (cat['content'] == 'movies' and cat['type'] != 'actors' and cat['type'] != 'directors') or cat['content'] == 'episodes' or cat['content'] == 'musicvideos':
-                    if cat['content'] == 'episodes':
-                        tvshowid = str(item['tvshowid'])
-                        genre, plot = self._get_tvshows_details(tvshowid)
-                        listitem.setProperty('genre', genre)
-                    position = int(item['resume']['position'])
-                    total = int(item['resume']['total'])
-                    resume = str(position)
-                    position_percent = 0
-                    if total > 0:
-                        position_percent = int(float(position) / float(total) * 100.0)
-                        if position_percent == 100:
-                            position_percent = 0
-                    percentplayed = str(position_percent)
-                    listitem.setProperty('resume', resume)
-                    listitem.setProperty('percentplayed', percentplayed)
-                    listitem.setProperty('playcount', str(int(item['playcount'])))
-                    listitem.setProperty('content', cat['type'])
+                    listitem.setProperty('resume', str(int(item['resume']['position'])))
                 elif cat['content'] == 'artists' or cat['content'] == 'albums':
-                    if cat['content'] == 'artists':
-                        genre = ""
-                        if len(item['genre']) > 0:
-                            genre = " / ".join(item['genre'])
-                        listitem.setProperty('genre', genre)
                     info, props = self._split_labels(item, cat['properties'], cat['content'][0:-1] + '_')
                     for key, value in props.items():
                         listitem.setProperty(key, value)
-                if cat['content'] == 'artists':
-                    artistid = str(item['artistid'])
-                    folderpath = "musicdb://artists/%s/?albumartistsonly=%s" % (artistid, self.albumartists)
-                    listitem.setPath(folderpath)
                 if cat['content'] == 'albums':
-                    albumid = str(item['albumid'])
-                    artistid = str(item['artistid'][0])
-                    folderpath = "musicdb://artists/%s/%s/?albumartistsonly=%s&artistid=%s" % (artistid, albumid, self.albumartists, artistid)
-                    listitem.setProperty('artistid', artistid)
-                    listitem.setPath(folderpath)
+                    listitem.setProperty('artistid', str(item['artistid'][0]))
                 if cat['content'] == 'songs':
                     listitem.setProperty('artistid', str(item['artistid'][0]))
                     listitem.setProperty('albumid', str(item['albumid']))
@@ -288,16 +242,6 @@ class GUI(xbmcgui.WindowXML):
                 self.menutype = cat['type']
                 self.focusset = 'true'
 
-    def _get_tvshows_details(self, tvshowid):
-        json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"VideoLibrary.GetTVShowDetails", "params":{"tvshowid":%s,"properties":["genre","plot"]},"id":1}' % (tvshowid))
-        json_response = json.loads(json_query)
-        if ('result' in json_response) and(json_response['result'] != None) and ('tvshowdetails' in json_response['result']):
-            genre = ""
-            if len(json_response['result']['tvshowdetails']['genre']) > 0:
-                genre = " / ".join(json_response['result']['tvshowdetails']['genre'])
-            plot = json_response['result']['tvshowdetails']['plot']
-        return genre, plot
-
     def _fetch_channelgroups(self, cat):
         self.getControl(SEARCHCATEGORY).setLabel(xbmc.getLocalizedString(19069))
         self.getControl(SEARCHCATEGORY).setVisible(True)
@@ -358,7 +302,7 @@ class GUI(xbmcgui.WindowXML):
                         listitem.setProperty("dbid", str(channelid))
                         listitems.append(listitem)
         if len(listitems) > 0:
-            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), str(len(listitems)), offscreen=True)
+            menuitem = xbmcgui.ListItem(xbmc.getLocalizedString(cat['label']), offscreen=True)
             menuitem.setArt({'icon':cat['menuthumb']})
             menuitem.setProperty('type', cat['type'])
             menuitem.setProperty('content', cat['content'])
@@ -559,7 +503,6 @@ class GUI(xbmcgui.WindowXML):
         labels = ()
         functions = ()
         media = ''
-        path = ''
         if listitem.getProperty('media') == 'video':
             media = listitem.getVideoInfoTag().getMediaType()
         elif listitem.getProperty('media') == 'music':

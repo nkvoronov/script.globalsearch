@@ -34,31 +34,41 @@ msgstr "Пошук серій"
 
 msgctxt "#32004"
 msgid "Search Music Videos"
-msgstr "Пошук муз. відео"
+msgstr "Пошук муз. кліпов"
 
 msgctxt "#32005"
 msgid "Search Artists"
 msgstr "Пошук виконавців"
 
 msgctxt "#32006"
-msgid "Search Albums"
+msgid "Search Abums"
 msgstr "Пошук альбомів"
 
 msgctxt "#32007"
 msgid "Search Songs"
 msgstr "Пошук пісень"
 
-msgctxt "#32008"
-msgid "Search Actors"
-msgstr "Пошук акторів"
+# empty string with id 32008
 
 msgctxt "#32009"
-msgid "Search EPG"
-msgstr "Пошук телепередач"
+msgid "Search Live TV"
+msgstr "Пошук ТБ"
 
-msgctxt "#32010"
-msgid "Search Directors"
-msgstr "Пошук режисерів"
+# empty string with id 32010
+
+msgctxt "#32011"
+msgid "Search Movie Actors"
+msgstr "Пошук актерів фільмов"
+
+msgctxt "#32012"
+msgid "Search Movie Directors"
+msgstr "Пошук режиссеров"
+
+msgctxt "#32013"
+msgid "Search TV Show Actors"
+msgstr "Пошук актерів серіалов"
+
+# empty strings from id 32012 to 32100
 
 msgctxt "#32101"
 msgid "Enter search string"
@@ -108,6 +118,18 @@ msgctxt "#32212"
 msgid "Resume from %s"
 msgstr "Продовжити c %s"
 
+# empty strings from id 32213 to 32220
+
+msgctxt "#32221"
+msgid "Movie Actors"
+msgstr "Актори фільмів"
+
+msgctxt "#32222"
+msgid "TV Show Actors"
+msgstr "Актори серіалів"
+
+# empty strings from id 32223 to 32296
+
 msgctxt "#32297"
 msgid "Searching:"
 msgstr "Пошук:"
@@ -119,7 +141,3 @@ msgstr "Шукати знову?"
 msgctxt "#32299"
 msgid "New search"
 msgstr "Новий пошук"
-
-msgctxt "#32300"
-msgid "Content View"
-msgstr "Вид вмісту"

@@ -18,7 +18,7 @@ msgstr ""
 
 msgctxt "#32000"
 msgid "General"
-msgstr "Общие"
+msgstr "Основные"
 
 msgctxt "#32001"
 msgid "Search Movies"
@@ -34,31 +34,41 @@ msgstr "Поиск серий"
 
 msgctxt "#32004"
 msgid "Search Music Videos"
-msgstr "Поиск муз. видео"
+msgstr "Поиск муз. клипов"
 
 msgctxt "#32005"
 msgid "Search Artists"
 msgstr "Поиск исполнителей"
 
 msgctxt "#32006"
-msgid "Search Albums"
+msgid "Search Abums"
 msgstr "Поиск альбомов"
 
 msgctxt "#32007"
 msgid "Search Songs"
 msgstr "Поиск песен"
 
-msgctxt "#32008"
-msgid "Search Actors"
-msgstr "Поиск актёров"
+# empty string with id 32008
 
 msgctxt "#32009"
-msgid "Search EPG"
-msgstr "Поиск телепередач"
+msgid "Search Live TV"
+msgstr "Поиск ТВ"
 
-msgctxt "#32010"
-msgid "Search Directors"
+# empty string with id 32010
+
+msgctxt "#32011"
+msgid "Search Movie Actors"
+msgstr "Поиск актеров фильмов"
+
+msgctxt "#32012"
+msgid "Search Movie Directors"
 msgstr "Поиск режиссеров"
+
+msgctxt "#32013"
+msgid "Search TV Show Actors"
+msgstr "Поиск актеров сериалов"
+
+# empty strings from id 32012 to 32100
 
 msgctxt "#32101"
 msgid "Enter search string"
@@ -66,7 +76,7 @@ msgstr "Строка поиска"
 
 msgctxt "#32102"
 msgid "Items"
-msgstr "Элементы"
+msgstr ""
 
 msgctxt "#32203"
 msgid "Browse album"
@@ -102,11 +112,23 @@ msgstr "Найти все песни"
 
 msgctxt "#32211"
 msgid "Movies starring"
-msgstr "В ролях"
+msgstr "В главных ролях"
 
 msgctxt "#32212"
 msgid "Resume from %s"
-msgstr "Продолжить c %s"
+msgstr "Продолжить с %s"
+
+# empty strings from id 32213 to 32220
+
+msgctxt "#32221"
+msgid "Movie Actors"
+msgstr "Актеры фильмов"
+
+msgctxt "#32222"
+msgid "TV Show Actors"
+msgstr "Актеры сериалов"
+
+# empty strings from id 32223 to 32296
 
 msgctxt "#32297"
 msgid "Searching:"
@@ -114,12 +136,8 @@ msgstr "Поиск:"
 
 msgctxt "#32298"
 msgid "Search again?"
-msgstr "Искать снова?"
+msgstr "Искать снова"
 
 msgctxt "#32299"
 msgid "New search"
 msgstr "Новый поиск"
-
-msgctxt "#32300"
-msgid "Content View"
-msgstr "Вид содержимого"

@@ -294,7 +294,7 @@ class GUI(xbmcgui.WindowXML):
         if ('result' in json_response) and(json_response['result'] != None) and ('tvshowdetails' in json_response['result']):
             genre = ""
             if len(json_response['result']['tvshowdetails']['genre']) > 0:
-                    genre = " / ".join(json_response['result']['tvshowdetails']['genre'])
+                genre = " / ".join(json_response['result']['tvshowdetails']['genre'])
             plot = json_response['result']['tvshowdetails']['plot']
         return genre, plot
 
@@ -721,7 +721,7 @@ class GUI(xbmcgui.WindowXML):
             elif media == 'actors':
                 content = listitem.getProperty('content')
                 if content == 'actors':
-                self._get_allitems('actormovies', listitem)
+                    self._get_allitems('actormovies', listitem)
                 if content == 'tvactors':
                     self._get_allitems('actortvshows', listitem)
             elif media == 'directors':

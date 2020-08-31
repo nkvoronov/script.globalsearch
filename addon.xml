@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.globalsearch" name="Global Search" version="8.0.12" provider-name="ronie">
+<addon id="script.globalsearch" name="Global Search" version="9.0.4" provider-name="ronie">
 	<requires>
-		<import addon="xbmc.python" version="2.26.0"/>
+		<import addon="xbmc.python" version="3.0.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="default.py"/>
 	<extension point="xbmc.addon.metadata">
@@ -13,7 +13,7 @@
 		<summary lang="en_GB">Search your library.</summary>
 		<summary lang="en_NZ">Search your library.</summary>
 		<summary lang="en_US">Search your library.</summary>
-		<summary lang="es_ES">Busca tu biblioteca.</summary>
+		<summary lang="es_ES">Busca en tu biblioteca.</summary>
 		<summary lang="fr_FR">Chercher dans la médiathèque.</summary>
 		<summary lang="fr_CA">Chercher dans votre bibliothèque</summary>
 		<summary lang="gl_ES">Buscar a súa biblioteca.</summary>
@@ -32,7 +32,6 @@
 		<summary lang="ro_RO">Căutați în mediateca dumneavoastră.</summary>
 		<summary lang="ru_RU">Поиск в вашей медиатеке.</summary>
 		<summary lang="sl_SI">Iščite v svoji knjižnici.</summary>
-		<summary lang="sk_SK">Vyhľadávanie vo vašej knižnici</summary>
 		<summary lang="sv_SE">Sök i ditt bibliotek.</summary>
 		<summary lang="tr_TR">Kitaplığını ara</summary>
 		<summary lang="zh_CN">资料库搜索</summary>
@@ -63,18 +62,20 @@
 		<description lang="ro_RO">Acest supliment poate găsi orice element în mediateca dumneavoastră video și audio.</description>
 		<description lang="ru_RU">Это дополнение поможет найти любую запись в вашей медиатеке.</description>
 		<description lang="sl_SI">Ta dodatek lahko poišče katerokoli podatek v vaši knjižnici filmov in glasbe.</description>
-		<description lang="sk_SK">Tento doplnok dokáže vyhľadať akúkoľvek položku vo vašej knižnici videí a hudby.</description>
 		<description lang="sv_SE">Detta tillägg kan hitta vilket objekt som helst i ditt video och musikbibliotek.</description>
 		<description lang="tr_TR">Bu eklenti video ve müzik kitaplığınızdaki herhangi bir öğeyi bulabilir.</description>
 		<description lang="zh_CN">此插件搜索你的视频和音乐资料库项目。</description>
-		<language></language>
 		<platform>all</platform>
-		<license>GNU GENERAL PUBLIC LICENSE Version 2</license>
+		<license>GPL-2.0-only</license>
 		<forum>https://forum.kodi.tv/showthread.php?tid=109301</forum>
 		<source>https://gitlab.com/ronie/script.globalsearch/</source>
 		<assets>
 			<icon>resources/icon.png</icon>
 			<fanart>resources/fanart.jpg</fanart>
 		</assets>
+		<news>- add support for searching musicvideos by artist name
+- add support for originaltitle search
+- add support for tv show actors
+- add videoresolution flag</news>
 	</extension>
 </addon>

@@ -1,3 +1,24 @@
+v9.0.4
+- fix issue with unneeded seeking
+- add functionality to navigate back
+- add support for searching musicvideos by artist name
+- add support for originaltitle search
+- add support for tv show actors
+- add videoresolution flag
+- small skin layout changes
+
+v9.0.3
+- fix listing of pvr results
+
+v9.0.2
+- cosmetics
+
+v9.0.1
+- bump
+
+v9.0.0
+- changes for python 3
+
 v8.0.12
 - fix sorting of album songs and season episodes
 
@@ -25,6 +46,9 @@ v8.0.5
 v8.0.4
 - add to favourites context menu item
 - case insensitive search for actors and directors
+
+v9.0.0
+- changes for python 3
 
 v8.0.3
 - reset menu on init

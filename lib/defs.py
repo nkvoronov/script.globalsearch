@@ -187,8 +187,8 @@ CATEGORIES = {
                            'media':''
                           },
               'tvactors':{
-                        'order':12,
-                        'enabled':False,
+                          'order':12,
+                          'enabled':False,
                           'type':'tvactors',
                           'content':'tvshows',
                           'method':'VideoLibrary.GetTVShows',

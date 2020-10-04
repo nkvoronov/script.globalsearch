@@ -82,7 +82,7 @@ class GUI(xbmcgui.WindowXML):
     def _init_items(self):
         self.Player = MyPlayer()
         self.menu = self.getControl(MENU)
-        self.content = {}
+        self.content = {} 
         self.oldfocus = 0
 
     def _set_view(self):
@@ -248,7 +248,7 @@ class GUI(xbmcgui.WindowXML):
         channelgrouplist = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"PVR.GetChannelGroups", "params":{"channeltype":"tv"}, "id":1}')
         json_response = json.loads(json_query)
-        if('result' in json_response) and (json_response['result'] != None) and('channelgroups' in json_response['result']):
+        if('result' in json_response) and(json_response['result'] != None) and('channelgroups' in json_response['result']):
             for item in json_response['result']['channelgroups']:
                 channelgrouplist.append(item['channelgroupid'])
             if channelgrouplist:
@@ -311,12 +311,17 @@ class GUI(xbmcgui.WindowXML):
             if self.focusset == 'false':
                 self.setContent(cat['content'])
                 self.addItems(listitems)
+                # wait for items to be added before we can set focus
+                xbmc.sleep(50)
                 self.setFocusId(self.getCurrentContainerId())
                 self.focusset = 'true'
 
     def _update_list(self, item, content):
         self.clearList()
+        # we need some sleep, else the correct container layout won't be loaded
+        xbmc.sleep(2)
         self.setContent(content)
+        xbmc.sleep(2)
         self.addItems(self.content[item])
 
     def _get_info(self, labels, item):
@@ -536,7 +541,7 @@ class GUI(xbmcgui.WindowXML):
             functions += ('info',)
         if listitem.getProperty('type') != 'livetv':
             if listitem.getProperty('content') in ('movies', 'episodes', 'musicvideos', 'songs'):
-                path = listitem.getPath()
+                path = listitem. getPath()
             elif listitem.getProperty('content') == 'tvshows':
                 dbid = listitem.getVideoInfoTag().getDbId()
                 path = "videodb://tvshows/titles/%s/" % dbid
@@ -584,7 +589,7 @@ class GUI(xbmcgui.WindowXML):
         if not thumbnail:
             thumbnail = listitem.getArt('icon')
         if listitem.getProperty('content') in ('movies', 'episodes', 'musicvideos', 'songs'):
-            path = listitem.getPath()
+            path = listitem. getPath()
             xbmc.executeJSONRPC('{"jsonrpc":"2.0", "method":"Favourites.AddFavourite", "params":{"type":"media", "title":"%s", "path":"%s", "thumbnail":"%s"}, "id": 1}' % (label, path, thumbnail))
         elif listitem.getProperty('content') == 'tvshows':
             dbid = listitem.getVideoInfoTag().getDbId()
